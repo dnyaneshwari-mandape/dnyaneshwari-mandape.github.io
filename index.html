@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dnyaneshwari Mandape — Product Designer</title>
 <meta name="description" content="Dnyaneshwari Mandape — AI-native Product Designer bridging business objectives with user-centric systems. Portfolio, case studies, resume.">
+
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dnyaneshwari Mandape — Product Designer">
+<meta property="og:description" content="AI-native Product Designer bridging business objectives with user-centric systems architecture.">
+<meta property="og:image" content="https://dnyaneshwari-mandape.github.io/assets/og-image.png">
+<meta property="og:url" content="https://dnyaneshwari-mandape.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dnyaneshwari Mandape — Product Designer">
+<meta name="twitter:description" content="AI-native Product Designer bridging business objectives with user-centric systems architecture.">
+<meta name="twitter:image" content="https://dnyaneshwari-mandape.github.io/assets/og-image.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -166,6 +180,21 @@
 
   footer{border-top:1px solid var(--border);padding:32px 0;color:var(--muted);font-size:0.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 
+  /* SCROLL REVEAL */
+  .reveal{
+    opacity:0;transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+  .reveal-group .reveal:nth-child(2){transition-delay:.08s;}
+  .reveal-group .reveal:nth-child(3){transition-delay:.16s;}
+  .reveal-group .reveal:nth-child(4){transition-delay:.24s;}
+  .reveal-group .reveal:nth-child(5){transition-delay:.32s;}
+  .reveal-group .reveal:nth-child(6){transition-delay:.4s;}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+
   @media (max-width:760px){
     .stats{grid-template-columns:1fr 1fr;}
     .projects{grid-template-columns:1fr;}
@@ -202,25 +231,25 @@
       <a class="btn btn-secondary" href="mailto:dnyaneshwari.mandape.ft21@nsut.ac.in">Get in touch</a>
     </div>
 
-    <div class="stats">
-      <div class="stat"><div class="num">6.5%</div><div class="label">Offer redemption uplift</div></div>
-      <div class="stat"><div class="num">600%</div><div class="label">3D asset production scaled</div></div>
-      <div class="stat"><div class="num">85/100</div><div class="label">System Usability Score</div></div>
-      <div class="stat"><div class="num">60%</div><div class="label">Reduction in click paths</div></div>
+    <div class="stats reveal-group">
+      <div class="stat reveal"><div class="num">6.5%</div><div class="label">Offer redemption uplift</div></div>
+      <div class="stat reveal"><div class="num">600%</div><div class="label">3D asset production scaled</div></div>
+      <div class="stat reveal"><div class="num">85/100</div><div class="label">System Usability Score</div></div>
+      <div class="stat reveal"><div class="num">60%</div><div class="label">Reduction in click paths</div></div>
     </div>
   </div>
 </section>
 
 <section class="section" id="work">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">Selected Work</div>
       <h2>Case studies & projects</h2>
       <p>0-to-1 products, design systems, and AI-led UX across insurance, e-commerce, and social platforms.</p>
     </div>
-    <div class="projects">
+    <div class="projects reveal-group">
 
-      <a class="project-card" href="case-study-element-store.html">
+      <a class="project-card reveal" href="case-study-element-store.html">
         <div class="thumb g1"><span class="badge">Case Study</span></div>
         <div class="project-body">
           <div class="ptitle">Element Store</div>
@@ -230,7 +259,7 @@
         </div>
       </a>
 
-      <div class="project-card">
+      <div class="project-card reveal">
         <div class="thumb g2"><span class="badge">Digit Insurance</span></div>
         <div class="project-body">
           <div class="ptitle">Gamified "Get Rewards" FAB</div>
@@ -239,7 +268,7 @@
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card reveal">
         <div class="thumb g3"><span class="badge">Digit Insurance</span></div>
         <div class="project-body">
           <div class="ptitle">3D Visual Language for Insurance</div>
@@ -248,7 +277,7 @@
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card reveal">
         <div class="thumb g4"><span class="badge">Personal Project</span></div>
         <div class="project-body">
           <div class="ptitle">Parametric 3D Iconology Engine</div>
@@ -257,7 +286,7 @@
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card reveal">
         <div class="thumb g5"><span class="badge">Concept</span></div>
         <div class="project-body">
           <div class="ptitle">AI Shopping Assistant</div>
@@ -266,7 +295,7 @@
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card reveal">
         <div class="thumb g6"><span class="badge">UX Redesign</span></div>
         <div class="project-body">
           <div class="ptitle">LinkedIn Semiotics</div>
@@ -281,12 +310,12 @@
 
 <section class="section" id="experience">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">Career</div>
       <h2>Experience</h2>
     </div>
-    <div class="timeline">
-      <div class="tl-item">
+    <div class="timeline reveal-group">
+      <div class="tl-item reveal">
         <div class="role">Design Trainee, Digit Insurance</div>
         <div class="meta">Bengaluru, KA · July 2025 – Current</div>
         <ul>
@@ -295,7 +324,7 @@
           <li>Owned UI modernization across 5 product touchpoints — 60+ 3D assets, 3.6% CTR lift.</li>
         </ul>
       </div>
-      <div class="tl-item">
+      <div class="tl-item reveal">
         <div class="role">Design Intern, Digit Insurance</div>
         <div class="meta">January 2025 – July 2025</div>
         <ul>
@@ -304,7 +333,7 @@
           <li>Designed visual identity & collateral for Lakshya'25 partner summit — 1,000+ attendees.</li>
         </ul>
       </div>
-      <div class="tl-item">
+      <div class="tl-item reveal">
         <div class="role">Product Design Intern, Between Boxes</div>
         <div class="meta">Gurugram, HR · May 2024 – July 2024</div>
         <ul>
@@ -319,7 +348,7 @@
 
 <section class="section">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">Toolkit</div>
       <h2>Skills & tools</h2>
     </div>
@@ -344,22 +373,22 @@
 
 <section class="section" id="achievements">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">Recognition</div>
       <h2>Achievements</h2>
     </div>
-    <div class="ach-grid">
-      <div class="ach-card">
+    <div class="ach-grid reveal-group">
+      <div class="ach-card reveal">
         <div class="icon">🏆</div>
         <h3>Wall of Awesomeness — Digit Insurance</h3>
         <p>Top performer for bridging design and marketing with high-impact contributions. April 2026.</p>
       </div>
-      <div class="ach-card">
+      <div class="ach-card reveal">
         <div class="icon">🎓</div>
         <h3>Award for Excellence — Placement Coordinator</h3>
         <p>Managed 20+ recruiter drives, facilitating industry hiring for the 2024–25 batch.</p>
       </div>
-      <div class="ach-card">
+      <div class="ach-card reveal">
         <div class="icon">🥇</div>
         <h3>Gold Medalist — NSUT Women Kabaddi</h3>
         <p>IIT BHU (Oct 2023), DTU (Apr 2023), IIT Kanpur (Apr 2022).</p>
@@ -370,7 +399,7 @@
 
 <section class="section" id="contact">
   <div class="wrap">
-    <div class="contact">
+    <div class="contact reveal">
       <h2>Let's build something worth using.</h2>
       <p>Open to product design roles & collaborations — reach out anytime.</p>
       <div class="actions">
@@ -388,5 +417,16 @@
   </div>
 </footer>
 
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
