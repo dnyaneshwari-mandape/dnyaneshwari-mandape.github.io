@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dnyaneshwari Mandape — Product Designer</title>
+<meta name="description" content="Dnyaneshwari Mandape — AI-native Product Designer bridging business objectives with user-centric systems. Portfolio, case studies, resume.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0c;
+    --bg-soft:#131316;
+    --card:#18181c;
+    --border:#28282e;
+    --text:#f4f3f0;
+    --muted:#9a9aa2;
+    --accent:#ff5a2e;
+    --accent-2:#7c9cff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  /* NAV */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,10,12,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 0;
+  }
+  .logo{font-weight:700;font-size:1.05rem;letter-spacing:-0.02em;}
+  .nav-links{display:flex;gap:32px;align-items:center;}
+  .nav-links a{font-size:0.92rem;color:var(--muted);transition:color .2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    background:var(--text);color:var(--bg);
+    padding:9px 18px;border-radius:100px;
+    font-size:0.88rem;font-weight:600;
+  }
+
+  /* HERO */
+  .hero{padding:100px 0 70px;position:relative;}
+  .hero .tag{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--border);border-radius:100px;
+    padding:6px 14px;font-size:0.82rem;color:var(--muted);
+    margin-bottom:28px;
+  }
+  .tag .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;}
+  .hero h1{
+    font-size:clamp(2.4rem,6vw,4.6rem);
+    font-weight:800;letter-spacing:-0.03em;line-height:1.05;
+    max-width:900px;
+  }
+  .hero h1 em{
+    font-family:'Playfair Display',serif;
+    font-style:italic;font-weight:500;
+    color:var(--accent);
+  }
+  .hero p.sub{
+    margin-top:26px;font-size:1.15rem;color:var(--muted);
+    max-width:640px;
+  }
+  .hero .actions{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;}
+  .btn{
+    padding:13px 26px;border-radius:100px;font-weight:600;font-size:0.94rem;
+    display:inline-flex;align-items:center;gap:8px;transition:transform .2s, opacity .2s;
+  }
+  .btn-primary{background:var(--accent);color:#100603;}
+  .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--text);}
+  .btn:hover{transform:translateY(-2px);opacity:.92;}
+
+  /* STATS */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:1px;background:var(--border);
+    border:1px solid var(--border);border-radius:18px;overflow:hidden;
+    margin-top:64px;
+  }
+  .stat{background:var(--bg-soft);padding:26px 22px;}
+  .stat .num{font-size:1.9rem;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
+  .stat .label{font-size:0.82rem;color:var(--muted);margin-top:4px;}
+
+  /* SECTION HEADS */
+  .section{padding:100px 0;}
+  .section-head{margin-bottom:48px;}
+  .kicker{color:var(--accent);font-size:0.85rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;}
+  .section-head h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-0.02em;}
+  .section-head p{color:var(--muted);margin-top:12px;max-width:560px;font-size:1.02rem;}
+
+  /* PROJECTS */
+  .projects{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .project-card{
+    background:var(--card);border:1px solid var(--border);border-radius:20px;
+    overflow:hidden;transition:transform .25s, border-color .25s;
+    display:flex;flex-direction:column;
+  }
+  .project-card:hover{transform:translateY(-6px);border-color:#3a3a42;}
+  .thumb{height:220px;position:relative;display:flex;align-items:flex-end;padding:20px;}
+  .thumb .badge{
+    background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);
+    padding:6px 12px;border-radius:100px;font-size:0.78rem;font-weight:600;color:#fff;
+  }
+  .thumb.g1{background:linear-gradient(135deg,#ff5a2e,#ffb199);}
+  .thumb.g2{background:linear-gradient(135deg,#7c9cff,#1e2a63);}
+  .thumb.g3{background:linear-gradient(135deg,#2dd4bf,#0f4c4a);}
+  .thumb.g4{background:linear-gradient(135deg,#f6c85f,#8a5a1f);}
+  .thumb.g5{background:linear-gradient(135deg,#c084fc,#3b1a5c);}
+  .thumb.g6{background:linear-gradient(135deg,#f472b6,#5c1a3b);}
+  .project-body{padding:24px;flex:1;display:flex;flex-direction:column;}
+  .project-body .ptitle{font-size:1.2rem;font-weight:700;letter-spacing:-0.01em;}
+  .project-body .prole{color:var(--accent);font-size:0.82rem;font-weight:600;margin-top:4px;}
+  .project-body .pdesc{color:var(--muted);font-size:0.92rem;margin-top:12px;flex:1;}
+  .project-body .plink{margin-top:18px;font-size:0.88rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;}
+
+  /* EXPERIENCE */
+  .timeline{border-left:1px solid var(--border);padding-left:36px;display:flex;flex-direction:column;gap:44px;}
+  .tl-item{position:relative;}
+  .tl-item::before{
+    content:'';position:absolute;left:-42px;top:4px;
+    width:11px;height:11px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 0 4px var(--bg);
+  }
+  .tl-item .role{font-size:1.15rem;font-weight:700;}
+  .tl-item .meta{color:var(--muted);font-size:0.88rem;margin-top:4px;}
+  .tl-item ul{margin-top:14px;padding-left:18px;color:var(--muted);font-size:0.94rem;display:flex;flex-direction:column;gap:8px;}
+
+  /* SKILLS */
+  .pills{display:flex;flex-wrap:wrap;gap:10px;}
+  .pill{
+    border:1px solid var(--border);padding:9px 16px;border-radius:100px;
+    font-size:0.88rem;color:var(--muted);
+  }
+
+  /* ACHIEVEMENTS */
+  .ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .ach-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;}
+  .ach-card .icon{font-size:1.6rem;}
+  .ach-card h3{font-size:1rem;font-weight:700;margin-top:14px;}
+  .ach-card p{color:var(--muted);font-size:0.88rem;margin-top:8px;}
+
+  /* CONTACT */
+  .contact{
+    background:linear-gradient(135deg,var(--bg-soft),var(--bg));
+    border:1px solid var(--border);border-radius:24px;padding:64px 48px;
+    text-align:center;
+  }
+  .contact h2{font-size:clamp(1.8rem,5vw,3rem);font-weight:800;letter-spacing:-0.02em;}
+  .contact p{color:var(--muted);margin-top:14px;}
+  .contact .actions{justify-content:center;margin-top:32px;}
+
+  footer{border-top:1px solid var(--border);padding:32px 0;color:var(--muted);font-size:0.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+
+  @media (max-width:760px){
+    .stats{grid-template-columns:1fr 1fr;}
+    .projects{grid-template-columns:1fr;}
+    .ach-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .contact{padding:44px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo">Dnyaneshwari Mandape</div>
+      <div class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a class="nav-cta" href="assets/resume.pdf" target="_blank" rel="noopener">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="tag"><span class="dot"></span> Open to new opportunities · Bengaluru, IN</div>
+    <h1>Product design that turns <em>complex systems</em> into products people trust.</h1>
+    <p class="sub">AI-native Product Designer bridging business objectives with user-centric systems architecture — from 0-to-1 product design to unified design systems and AI-led DesignOps.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#work">View Work →</a>
+      <a class="btn btn-secondary" href="mailto:dnyaneshwari.mandape.ft21@nsut.ac.in">Get in touch</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="num">6.5%</div><div class="label">Offer redemption uplift</div></div>
+      <div class="stat"><div class="num">600%</div><div class="label">3D asset production scaled</div></div>
+      <div class="stat"><div class="num">85/100</div><div class="label">System Usability Score</div></div>
+      <div class="stat"><div class="num">60%</div><div class="label">Reduction in click paths</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Selected Work</div>
+      <h2>Case studies & projects</h2>
+      <p>0-to-1 products, design systems, and AI-led UX across insurance, e-commerce, and social platforms.</p>
+    </div>
+    <div class="projects">
+
+      <a class="project-card" href="case-study-element-store.html">
+        <div class="thumb g1"><span class="badge">Case Study</span></div>
+        <div class="project-body">
+          <div class="ptitle">Element Store</div>
+          <div class="prole">E-commerce · UX/UI Design</div>
+          <p class="pdesc">Full case study walkthrough of the Element Store platform — research, flows, and final UI.</p>
+          <span class="plink">Read case study →</span>
+        </div>
+      </a>
+
+      <div class="project-card">
+        <div class="thumb g2"><span class="badge">Digit Insurance</span></div>
+        <div class="project-body">
+          <div class="ptitle">Gamified "Get Rewards" FAB</div>
+          <div class="prole">Product Design · Motion</div>
+          <p class="pdesc">Interactive unboxing animation flow for premium discounts, lifting offer redemption rate by 6.5%.</p>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="thumb g3"><span class="badge">Digit Insurance</span></div>
+        <div class="project-body">
+          <div class="ptitle">3D Visual Language for Insurance</div>
+          <div class="prole">Design System · 3D</div>
+          <p class="pdesc">Owned UI modernization across 5 core touchpoints — 60+ 3D assets, driving a 3.6% lift in widget CTR.</p>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="thumb g4"><span class="badge">Personal Project</span></div>
+        <div class="project-body">
+          <div class="ptitle">Parametric 3D Iconology Engine</div>
+          <div class="prole">Design Engineering</div>
+          <p class="pdesc">JSON-driven parametric 3D agent adapting spatial UIs across layouts — scaled 3D production by 600%.</p>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="thumb g5"><span class="badge">Concept</span></div>
+        <div class="project-body">
+          <div class="ptitle">AI Shopping Assistant</div>
+          <div class="prole">Conversational UX</div>
+          <p class="pdesc">End-to-end AI chatbot journey cutting click paths by 60%, scoring 85/100 on System Usability Scale.</p>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="thumb g6"><span class="badge">UX Redesign</span></div>
+        <div class="project-body">
+          <div class="ptitle">LinkedIn Semiotics</div>
+          <div class="prole">Information Architecture</div>
+          <p class="pdesc">Semiotic analysis & IA restructure improving task discoverability by up to 11%.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="experience">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Career</div>
+      <h2>Experience</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="role">Design Trainee, Digit Insurance</div>
+        <div class="meta">Bengaluru, KA · July 2025 – Current</div>
+        <ul>
+          <li>Designed a gamified "Get Rewards" FAB with unboxing animation, lifting offer redemption 6.5%.</li>
+          <li>Increased wellness subscription opt-ins 2.3% via a high-visibility tab interface.</li>
+          <li>Owned UI modernization across 5 product touchpoints — 60+ 3D assets, 3.6% CTR lift.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="role">Design Intern, Digit Insurance</div>
+        <div class="meta">January 2025 – July 2025</div>
+        <ul>
+          <li>Built the foundational visual design system for Valueattics (subsidiary reinsurer).</li>
+          <li>Used generative AI to rapidly iterate high-fidelity UI concepts across visual directions.</li>
+          <li>Designed visual identity & collateral for Lakshya'25 partner summit — 1,000+ attendees.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="role">Product Design Intern, Between Boxes</div>
+        <div class="meta">Gurugram, HR · May 2024 – July 2024</div>
+        <ul>
+          <li>Led 0-to-1 design of a new e-commerce platform via research and journey mapping.</li>
+          <li>Designed a localized "E-Shagun" digital wedding gifting flow.</li>
+          <li>Built a template-driven catalogue, cutting production time ~35%.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Toolkit</div>
+      <h2>Skills & tools</h2>
+    </div>
+    <div class="pills">
+      <span class="pill">UI & UX Design</span>
+      <span class="pill">Product Design</span>
+      <span class="pill">Figma</span>
+      <span class="pill">User Testing</span>
+      <span class="pill">Claude Design</span>
+      <span class="pill">Iconology & 3D Assets</span>
+      <span class="pill">Higgsfield AI</span>
+      <span class="pill">Google Stitch</span>
+      <span class="pill">Adobe After Effects</span>
+      <span class="pill">Adobe Illustrator</span>
+      <span class="pill">Adobe Photoshop</span>
+      <span class="pill">Canva</span>
+      <span class="pill">Affinity</span>
+      <span class="pill">Brand Identity Design</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="achievements">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Recognition</div>
+      <h2>Achievements</h2>
+    </div>
+    <div class="ach-grid">
+      <div class="ach-card">
+        <div class="icon">🏆</div>
+        <h3>Wall of Awesomeness — Digit Insurance</h3>
+        <p>Top performer for bridging design and marketing with high-impact contributions. April 2026.</p>
+      </div>
+      <div class="ach-card">
+        <div class="icon">🎓</div>
+        <h3>Award for Excellence — Placement Coordinator</h3>
+        <p>Managed 20+ recruiter drives, facilitating industry hiring for the 2024–25 batch.</p>
+      </div>
+      <div class="ach-card">
+        <div class="icon">🥇</div>
+        <h3>Gold Medalist — NSUT Women Kabaddi</h3>
+        <p>IIT BHU (Oct 2023), DTU (Apr 2023), IIT Kanpur (Apr 2022).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="contact">
+      <h2>Let's build something worth using.</h2>
+      <p>Open to product design roles & collaborations — reach out anytime.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:dnyaneshwari.mandape.ft21@nsut.ac.in">Email me</a>
+        <a class="btn btn-secondary" href="https://www.linkedin.com/in/dnyaneshwari-mandape/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px;">
+    <span>© 2026 Dnyaneshwari Mandape</span>
+    <span>Bengaluru, India · dnyaneshwari.mandape.ft21@nsut.ac.in</span>
+  </div>
+</footer>
+
+</body>
+</html>
