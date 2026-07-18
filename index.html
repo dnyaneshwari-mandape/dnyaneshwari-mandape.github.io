@@ -124,33 +124,81 @@
   .icon3d-tilt{
     transform-style:preserve-3d;
     transition:transform .35s cubic-bezier(.2,.7,.2,1);
-    animation:cubeEnter 1s cubic-bezier(.16,1,.3,1) both;
   }
-  .icon3d-cube{
-    position:relative;width:120px;height:120px;
+  .unbox-idle{
     transform-style:preserve-3d;
-    animation:cubeSpin 9s linear infinite, cubeFloat 3.4s ease-in-out infinite;
+    animation:unboxEnter 1s cubic-bezier(.16,1,.3,1) both, unboxFloat 3.6s ease-in-out .9s infinite;
+    cursor:pointer;
   }
-  .icon3d-cube .face{
-    position:absolute;width:120px;height:120px;
-    border:1px solid rgba(255,255,255,0.14);
-    backdrop-filter:blur(2px);
-    display:flex;align-items:center;justify-content:center;
+  .unbox{ position:relative; width:112px; height:82px; transform-style:preserve-3d; transform:rotateX(-14deg) rotateY(-28deg); }
+  .unbox-box{ position:absolute; inset:0; transform-style:preserve-3d; }
+  .ub-face{ position:absolute; border:1px solid rgba(0,0,0,0.25); }
+  .ub-front,.ub-back{ width:112px;height:82px; }
+  .ub-left,.ub-right{ width:112px;height:82px; }
+  .ub-bottom{ width:112px;height:112px; }
+  .ub-front { background:linear-gradient(160deg,#ff7a4a,#ff5a2e); transform:translateZ(56px); }
+  .ub-back  { background:linear-gradient(160deg,#b8380f,#8a2a0d); transform:rotateY(180deg) translateZ(56px); }
+  .ub-right { background:linear-gradient(160deg,#ff6a38,#e04c1e); transform:rotateY(90deg) translateZ(56px); }
+  .ub-left  { background:linear-gradient(160deg,#d94f21,#a8380f); transform:rotateY(-90deg) translateZ(56px); }
+  .ub-bottom{ background:linear-gradient(160deg,#3a1c10,#20100a); transform:rotateX(90deg) translateZ(41px); }
+  /* gift ribbon accents on box */
+  .ub-front::after, .ub-back::after{
+    content:'';position:absolute;left:50%;top:0;bottom:0;width:14px;margin-left:-7px;
+    background:linear-gradient(180deg,#fff7ec,#ffd9b8);
   }
-  .icon3d-cube .face svg{width:44px;height:44px;opacity:.92;}
-  .face-front { background:linear-gradient(135deg,#ff6a3d,#ff5a2e); transform:translateZ(60px); }
-  .face-back  { background:linear-gradient(135deg,#c23f16,#8a2a0d); transform:rotateY(180deg) translateZ(60px); }
-  .face-right { background:linear-gradient(135deg,#8f9fff,#7c9cff); transform:rotateY(90deg) translateZ(60px); }
-  .face-left  { background:linear-gradient(135deg,#5468cf,#3d4fa8); transform:rotateY(-90deg) translateZ(60px); }
-  .face-top   { background:linear-gradient(135deg,#ffd39b,#ff9a5a); transform:rotateX(90deg) translateZ(60px); }
-  .face-bottom{ background:linear-gradient(135deg,#3a1c10,#20100a); transform:rotateX(-90deg) translateZ(60px); }
 
-  @keyframes cubeSpin{ from{ transform:rotateY(0deg) rotateX(-16deg);} to{ transform:rotateY(360deg) rotateX(-16deg);} }
-  @keyframes cubeFloat{ 0%,100%{ margin-top:0px;} 50%{ margin-top:-16px;} }
-  @keyframes cubeEnter{ 0%{ opacity:0; transform:scale(.4) rotateX(40deg);} 100%{ opacity:1; transform:scale(1) rotateX(0deg);} }
+  .unbox-lid{
+    position:absolute; width:112px; height:112px; left:0; top:-41px;
+    transform-style:preserve-3d;
+    transform-origin:50% 100%;
+    transform:rotateX(90deg);
+    transition:transform .55s cubic-bezier(.34,1.4,.4,1);
+  }
+  .ub-lid-top{
+    width:112px;height:112px;
+    background:linear-gradient(160deg,#ffb27a,#ff7a3f);
+    transform:translateZ(0px);
+  }
+  .ub-lid-top::after{
+    content:'';position:absolute;left:50%;top:0;bottom:0;width:14px;margin-left:-7px;
+    background:linear-gradient(180deg,#fff7ec,#ffd9b8);
+  }
+  .ub-lid-top::before{
+    content:'';position:absolute;top:50%;left:0;right:0;height:14px;margin-top:-7px;
+    background:linear-gradient(90deg,#fff7ec,#ffd9b8);
+  }
+  .unbox.open .unbox-lid{ transform:rotateX(198deg); }
+
+  .unbox-burst{
+    position:absolute;left:50%;top:6px;width:10px;height:10px;margin-left:-5px;
+    border-radius:50%;background:radial-gradient(circle,#fff,var(--accent-2) 55%,transparent 72%);
+    opacity:0;transform:translateZ(70px) scale(.3);
+    transition:opacity .5s ease, transform .6s cubic-bezier(.2,.8,.2,1);
+    pointer-events:none;
+  }
+  .unbox.open .unbox-burst{ opacity:1; transform:translateZ(70px) scale(9); }
+
+  .unbox-mark{
+    position:absolute;left:50%;top:14px;width:38px;height:38px;margin-left:-19px;
+    border-radius:50%;background:linear-gradient(160deg,#9fb4ff,var(--accent-2));
+    display:flex;align-items:center;justify-content:center;
+    color:#0c1330;font-weight:800;font-size:.72rem;letter-spacing:-0.02em;
+    transform:translateZ(64px) scale(0) rotate(-30deg);
+    transition:transform .5s cubic-bezier(.3,1.6,.4,1) .12s;
+    box-shadow:0 0 18px rgba(124,156,255,0.7);
+  }
+  .unbox.open .unbox-mark{ transform:translateZ(64px) scale(1) rotate(0deg); }
+
+  .icon3d-hint{
+    text-align:center;font-size:.76rem;color:var(--muted);margin-top:8px;
+    opacity:.75;
+  }
+
+  @keyframes unboxFloat{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-10px);} }
+  @keyframes unboxEnter{ 0%{ opacity:0; transform:translateY(0) scale(.5);} 100%{ opacity:1; transform:translateY(0) scale(1);} }
   @keyframes glowPulse{ 0%,100%{ opacity:.6; transform:scale(1);} 50%{ opacity:1; transform:scale(1.12);} }
   @media (prefers-reduced-motion: reduce){
-    .icon3d-cube{animation:none;}
+    .unbox-idle{animation:none;}
     .icon3d-glow{animation:none;}
   }
 
@@ -258,14 +306,6 @@
     .contact{padding:44px 24px;}
     .hero-grid{grid-template-columns:1fr;}
     .icon3d-stage{height:200px;order:-1;}
-    .icon3d-cube, .face{width:90px;height:90px;}
-    .face-front,.face-back,.face-right,.face-left,.face-top,.face-bottom{transform:none;}
-    .face-front { transform:translateZ(45px); }
-    .face-back  { transform:rotateY(180deg) translateZ(45px); }
-    .face-right { transform:rotateY(90deg) translateZ(45px); }
-    .face-left  { transform:rotateY(-90deg) translateZ(45px); }
-    .face-top   { transform:rotateX(90deg) translateZ(45px); }
-    .face-bottom{ transform:rotateX(-90deg) translateZ(45px); }
   }
 </style>
 </head>
@@ -299,18 +339,29 @@
         </div>
       </div>
 
-      <div class="icon3d-stage" id="icon3dStage" aria-hidden="true">
-        <div class="icon3d-glow"></div>
-        <div class="icon3d-tilt" id="icon3dTilt">
-          <div class="icon3d-cube">
-            <div class="face face-front"><svg viewBox="0 0 24 24" fill="none" stroke="#100603" stroke-width="1.8"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
-            <div class="face face-back"></div>
-            <div class="face face-right"></div>
-            <div class="face face-left"></div>
-            <div class="face face-top"></div>
-            <div class="face face-bottom"></div>
+      <div>
+        <div class="icon3d-stage" id="icon3dStage" aria-hidden="true">
+          <div class="icon3d-glow"></div>
+          <div class="icon3d-tilt" id="icon3dTilt">
+            <div class="unbox-idle">
+              <div class="unbox" id="unboxObj">
+                <div class="unbox-burst"></div>
+                <div class="unbox-mark">DM</div>
+                <div class="unbox-box">
+                  <div class="ub-face ub-front"></div>
+                  <div class="ub-face ub-back"></div>
+                  <div class="ub-face ub-right"></div>
+                  <div class="ub-face ub-left"></div>
+                  <div class="ub-face ub-bottom"></div>
+                </div>
+                <div class="unbox-lid">
+                  <div class="ub-face ub-lid-top"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        <div class="icon3d-hint">hover to unbox ✦</div>
       </div>
     </div>
 
@@ -517,16 +568,22 @@
 
   const stage = document.getElementById('icon3dStage');
   const tilt = document.getElementById('icon3dTilt');
+  const unboxObj = document.getElementById('unboxObj');
   if (stage && tilt && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     stage.addEventListener('mousemove', (e) => {
       const r = stage.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width - 0.5;
       const py = (e.clientY - r.top) / r.height - 0.5;
-      tilt.style.transform = `rotateY(${px * 40}deg) rotateX(${-py * 40}deg)`;
+      tilt.style.transform = `rotateY(${px * 22}deg) rotateX(${-py * 22}deg)`;
     });
     stage.addEventListener('mouseleave', () => {
       tilt.style.transform = 'rotateY(0deg) rotateX(0deg)';
     });
+  }
+  if (stage && unboxObj) {
+    stage.addEventListener('mouseenter', () => unboxObj.classList.add('open'));
+    stage.addEventListener('mouseleave', () => unboxObj.classList.remove('open'));
+    stage.addEventListener('click', () => unboxObj.classList.toggle('open'));
   }
 
   const io = new IntersectionObserver((entries) => {
