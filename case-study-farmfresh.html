@@ -1,0 +1,1064 @@
+<title>Swiggy FarmFresh — Case Study</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#FCFAF7;
+    --paper-dim:#F3EEE8;
+    --card:#FFFFFF;
+    --salt:#FFF1E6;
+    --ink:#201C17;
+    --ink-soft:#5C4C3E;
+    --ink-faint:#948373;
+    --orange:#FC8019;
+    --orange-deep:#B45700;
+    --orange-tint:#FFF6EE;
+    --green:#1D7A46;
+    --green-soft:#3D8C63;
+    --sage:#E8F5EC;
+    --sage-line:#BFE2CD;
+    --line:#EAE2D9;
+    --shadow-1: 0 4px 20px rgba(28,27,27,0.06);
+    --shadow-2: 0 16px 44px rgba(28,27,27,0.11);
+    --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-voice: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+
+    --p-ink:#1C1C1C; --p-soft:#3D4152; --p-faint:#767A85; --p-line:#ECECEE;
+    --p-orange:#FC8019; --p-green:#1D7A46; --p-sage:#E8F5EC; --p-salt:#FFF1E6; --p-surface:#F7F7F5;
+  }
+  :root[data-theme="dark"]{
+    --paper:#18140F; --paper-dim:#211B15; --card:#241E17; --salt:#2C2119;
+    --ink:#F1EAE1; --ink-soft:#D6C6B6; --ink-faint:#A5917E;
+    --orange:#FF9C4D; --orange-deep:#FFC08A; --orange-tint:#2E2015;
+    --green:#7BC79E; --green-soft:#5FA97F; --sage:#17251C; --sage-line:#2C4234;
+    --line:#332A21; --shadow-1: 0 4px 20px rgba(0,0,0,0.35); --shadow-2: 0 16px 44px rgba(0,0,0,0.55);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#18140F; --paper-dim:#211B15; --card:#241E17; --salt:#2C2119;
+      --ink:#F1EAE1; --ink-soft:#D6C6B6; --ink-faint:#A5917E;
+      --orange:#FF9C4D; --orange-deep:#FFC08A; --orange-tint:#2E2015;
+      --green:#7BC79E; --green-soft:#5FA97F; --sage:#17251C; --sage-line:#2C4234;
+      --line:#332A21; --shadow-1: 0 4px 20px rgba(0,0,0,0.35); --shadow-2: 0 16px 44px rgba(0,0,0,0.55);
+    }
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--font-display);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img{max-width:100%;display:block;}
+  a{color:var(--orange-deep);}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
+
+  .shell{display:grid;grid-template-columns:220px minmax(0,1fr);max-width:1280px;margin:0 auto;}
+  @media (max-width:920px){ .shell{grid-template-columns:1fr;} }
+
+  .rail{position:sticky;top:0;align-self:start;height:100vh;padding:2.5rem 1rem 2rem 1.75rem;display:flex;flex-direction:column;gap:1.75rem;}
+  @media (max-width:920px){
+    .rail{position:sticky;height:auto;padding:0.9rem 1rem;flex-direction:row;align-items:center;overflow-x:auto;background:var(--paper);border-bottom:0.5px solid var(--line);z-index:20;gap:1.25rem;}
+    .rail-brand{display:none;}
+  }
+  .rail-brand{font-weight:800;font-size:15px;letter-spacing:-0.01em;}
+  .rail-brand span{color:var(--orange);}
+  .rail-nav{display:flex;flex-direction:column;gap:0.15rem;}
+  @media (max-width:920px){ .rail-nav{flex-direction:row;gap:1.25rem;white-space:nowrap;} }
+  .rail-nav a{text-decoration:none;color:var(--ink-faint);font-size:12.5px;font-weight:600;letter-spacing:0.03em;padding:0.4rem 0;border-left:2px solid transparent;padding-left:0.75rem;transition:color .15s ease, border-color .15s ease;}
+  @media (max-width:920px){ .rail-nav a{border-left:none;padding-left:0;border-bottom:2px solid transparent;} }
+  .rail-nav a:hover{color:var(--ink);}
+  .rail-nav a .n{font-family:var(--font-mono);color:var(--orange);margin-right:0.5em;font-size:11px;}
+  .rail-foot{margin-top:auto;font-size:11px;color:var(--ink-faint);}
+  @media (max-width:920px){ .rail-foot{display:none;} }
+
+  main{padding:3.5rem 3rem 6rem;min-width:0;}
+  @media (max-width:920px){ main{padding:2rem 1.25rem 4rem;} }
+
+  section{max-width:820px;margin:0 auto 6.5rem;scroll-margin-top:2rem;}
+  section.wide{max-width:1040px;}
+
+  .eyebrow{font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-deep);display:flex;align-items:center;gap:0.6rem;margin-bottom:0.9rem;}
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--orange);}
+
+  h1{font-size:clamp(2.1rem,4.4vw,3.4rem);font-weight:800;letter-spacing:-0.025em;line-height:1.05;margin:0 0 1rem;text-wrap:balance;}
+  h2{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin:0 0 1rem;text-wrap:balance;}
+  h3{font-size:1.15rem;font-weight:700;letter-spacing:-0.01em;margin:0 0 0.5rem;}
+  p{margin:0 0 1rem;max-width:66ch;color:var(--ink);}
+  p.lede{font-size:1.15rem;color:var(--ink-soft);max-width:62ch;}
+  .prose p:last-child{margin-bottom:0;}
+
+  .pull{font-family:var(--font-voice);font-style:italic;font-size:1.5rem;line-height:1.42;color:var(--green);border-left:3px solid var(--orange);padding-left:1.4rem;margin:2rem 0;max-width:56ch;}
+  .pull cite{display:block;font-family:var(--font-display);font-style:normal;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-faint);margin-top:0.9rem;}
+
+  .bento{background:var(--card);border:0.5px solid var(--line);border-radius:16px;padding:1.5rem 1.6rem;box-shadow:var(--shadow-1);}
+  .bento.tint-sage{background:var(--sage);border-color:var(--sage-line);box-shadow:none;}
+  .bento-tag{display:inline-block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:var(--green-soft);background:var(--sage);border:0.5px solid var(--sage-line);padding:3px 9px;border-radius:999px;margin-bottom:0.75rem;}
+  .bento-tag.orange{color:var(--orange-deep);background:var(--orange-tint);border-color:var(--salt);}
+
+  .grid{display:grid;gap:1rem;}
+  .grid-2{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .grid-3{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .grid-4{grid-template-columns:repeat(4,minmax(0,1fr));}
+  @media (max-width:720px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} }
+
+  .meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:0.5px solid var(--line);margin-top:2rem;}
+  @media (max-width:640px){ .meta{grid-template-columns:1fr;} }
+  .meta div{padding:1rem 1.4rem 1rem 0;border-bottom:0.5px solid var(--line);}
+  .meta div:nth-child(even){padding-left:1.4rem;}
+  @media (max-width:640px){ .meta div:nth-child(even){padding-left:0;} }
+  .meta .k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:0.3rem;}
+  .meta .v{font-size:14.5px;color:var(--ink);}
+
+  .stat{background:var(--paper-dim);border-radius:12px;padding:1.1rem 1.2rem;}
+  .stat .num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:1.5rem;font-weight:600;color:var(--green);line-height:1.1;}
+  .stat .lbl{font-size:12.5px;color:var(--ink-faint);margin-top:0.35rem;}
+  .assumption{font-size:10.5px;letter-spacing:0.04em;text-transform:uppercase;color:var(--orange-deep);font-family:var(--font-mono);}
+
+  .insight{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:1rem;padding:1.25rem 0;border-top:0.5px solid var(--line);}
+  .insight:last-child{border-bottom:0.5px solid var(--line);}
+  .insight .idx{font-family:var(--font-mono);font-size:1.4rem;font-weight:600;-webkit-text-stroke:1px var(--green-soft);color:transparent;}
+  .insight h4{margin:0 0 0.35rem;font-size:1.02rem;font-weight:700;}
+  .insight p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+  .insight .then{margin-top:0.6rem;font-size:13px;color:var(--green-soft);display:flex;gap:0.5rem;}
+  .insight .then b{color:var(--green);font-weight:700;}
+
+  .journey{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.9rem;margin:2rem 0;}
+  .journey .act{background:var(--card);border:0.5px solid var(--line);border-radius:14px;padding:1.1rem 1rem;position:relative;box-shadow:var(--shadow-1);}
+  .journey .act .roman{font-family:var(--font-mono);color:var(--orange);font-size:11px;letter-spacing:0.08em;}
+  .journey .act h5{margin:0.4rem 0 0.3rem;font-size:14.5px;font-weight:700;}
+  .journey .act p{font-size:12.5px;color:var(--ink-faint);margin:0;}
+
+  .act-block{margin:3.5rem 0 0;}
+  .act-head{display:flex;align-items:baseline;gap:1rem;margin-bottom:0.4rem;}
+  .act-head .roman{font-family:var(--font-mono);color:var(--orange);font-size:13px;letter-spacing:0.1em;}
+  .act-intro{color:var(--ink-soft);max-width:60ch;margin-bottom:2.2rem;}
+
+  .screen-row{display:grid;grid-template-columns:300px minmax(0,1fr);gap:2.5rem;align-items:start;padding:2.6rem 0;border-top:0.5px solid var(--line);}
+  .screen-row.reverse{grid-template-columns:minmax(0,1fr) 300px;}
+  .screen-row.reverse .frame{order:2;}
+  @media (max-width:780px){
+    .screen-row, .screen-row.reverse{grid-template-columns:1fr;}
+    .screen-row.reverse .frame{order:0;}
+  }
+
+  .frame{position:sticky;top:1.5rem;background:var(--card);border-radius:26px;padding:9px;box-shadow:var(--shadow-2);border:0.5px solid var(--line);}
+  .frame .cap{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);padding:0 0.4rem 0.6rem;letter-spacing:0.03em;}
+  .phone{border-radius:20px;overflow:hidden;border:0.5px solid var(--p-line);background:#fff;font-family:var(--font-display);}
+
+  .screen-copy .screen-no{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.08em;}
+  .screen-copy h3{font-size:1.35rem;margin-top:0.2rem;}
+  .screen-copy .role{font-size:13px;color:var(--green-soft);font-weight:600;margin-bottom:1rem;}
+  .field{margin-top:1.1rem;}
+  .field .flabel{font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange-deep);margin-bottom:0.3rem;}
+  .field p{font-size:14.5px;color:var(--ink-soft);margin:0;max-width:60ch;}
+
+  .callout{background:var(--orange-tint);border:0.5px solid var(--salt);border-radius:12px;padding:0.9rem 1.1rem;margin-top:1.1rem;font-size:13.5px;color:var(--orange-deep);display:flex;gap:0.6rem;}
+  .callout b{color:var(--ink);}
+
+  .hyp{border:0.5px solid var(--line);border-radius:14px;padding:1.2rem 1.3rem;background:var(--card);}
+  .hyp .tag{font-family:var(--font-mono);font-size:10.5px;color:var(--orange-deep);letter-spacing:0.06em;}
+  .hyp h4{margin:0.4rem 0 0.4rem;font-size:1rem;}
+  .hyp p{font-size:13.5px;color:var(--ink-soft);margin:0;}
+
+  .impact-card{border-radius:14px;padding:1.3rem 1.4rem;background:var(--sage);border:0.5px solid var(--sage-line);}
+  .impact-card h4{color:var(--green);font-size:1rem;margin:0 0 0.5rem;}
+  .impact-card p{font-size:13.5px;color:var(--ink-soft);margin:0;}
+
+  table.simple{border-collapse:collapse;width:100%;font-size:13.5px;}
+  table.simple th{text-align:left;font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-faint);padding:0.5rem 0.8rem 0.5rem 0;border-bottom:0.5px solid var(--line);}
+  table.simple td{padding:0.7rem 0.8rem 0.7rem 0;border-bottom:0.5px solid var(--line);vertical-align:top;color:var(--ink-soft);}
+
+  .closing{text-align:left;padding-top:2rem;border-top:0.5px solid var(--line);}
+  footer{max-width:820px;margin:0 auto;padding:2rem 0 0;font-size:12px;color:var(--ink-faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
+
+  ul.plain{list-style:none;margin:0;padding:0;}
+  ul.plain li{padding:0.6rem 0;border-top:0.5px solid var(--line);font-size:14.5px;color:var(--ink-soft);display:flex;gap:0.6rem;}
+  ul.plain li:last-child{border-bottom:0.5px solid var(--line);}
+  ul.plain li b{color:var(--ink);font-weight:600;min-width:11rem;flex-shrink:0;}
+
+  .ph{background:linear-gradient(135deg,#EAF6EF 0%,#FBEFE1 100%);display:flex;align-items:center;justify-content:center;color:#9CAF9E;}
+</style>
+
+<div class="shell">
+  <nav class="rail">
+    <div class="rail-brand">Farm<span>Fresh</span></div>
+    <div class="rail-nav">
+      <a href="#overview"><span class="n">01</span>Overview</a>
+      <a href="#problem"><span class="n">02</span>Problem</a>
+      <a href="#discovery"><span class="n">03</span>Discovery</a>
+      <a href="#strategy"><span class="n">04</span>Strategy</a>
+      <a href="#solution"><span class="n">05</span>Solution</a>
+      <a href="#validation"><span class="n">06</span>Validation</a>
+      <a href="#impact"><span class="n">07</span>Impact</a>
+    </div>
+    <div class="rail-foot">Internal concept pitch<br>Instamart · Fresh Commerce<br>v2 — 14 screens</div>
+  </nav>
+
+  <main>
+
+    <!-- ================= 01 OVERVIEW ================= -->
+    <section id="overview">
+      <div class="eyebrow">01 · Overview</div>
+      <h1>Swiggy FarmFresh</h1>
+      <p class="lede">A premium vertical inside Instamart that turns a produce purchase into a traceable one — who grew it, when it was harvested, how it was verified, how it reached the door — without leaving Instamart's app, brand, or checkout.</p>
+
+      <div class="prose" style="margin-top:2rem;">
+        <p><b>Project summary.</b> FarmFresh is a proposed extension of Instamart's fresh produce category, now specified as a fourteen-screen system: entry, browsing, a product detail page, and three dedicated trust surfaces — a Farmer Profile, a forward-running Farm Journey, and a standalone Trust &amp; Verification screen that closes with a computed Freshness Score. Checkout carries the same standard through to payment with a line-itemed Farmer Support Fee. The system ships with its own component library and documented empty, loading, and error states — the parts of a product that don't photograph well but decide whether it's actually buildable.</p>
+        <p><b>Background.</b> This revision replaces eleven static concept screens with a live, componentized specification — Instamart Entry, FarmFresh Home, Category Listing, Search &amp; Filters, Product Detail, Farmer Profile, Farm Journey, Trust &amp; Verification, Cart &amp; Checkout, Order Confirmation, Freshness Tracking, Weekly Subscriptions, System States, and a Component Library. The upgrade is structural, not cosmetic: trust used to live mostly on the PDP; it now has its own screen, its own math, and its own line item at checkout.</p>
+        <p><b>Why now.</b> <span class="assumption">Industry observation</span> — premium and traceable grocery is the fastest-moving wedge in quick-commerce. Instamart already has the delivery network and farm-partner relationships to compete here; what changed between v1 and v2 of this concept is the conviction that trust needs to be verifiable in one dedicated place, not scattered as badges across many screens.</p>
+      </div>
+
+      <div class="meta">
+        <div><div class="k">Role</div><div class="v">Senior Product Designer — 0→1 concept, end‑to‑end UX/UI</div></div>
+        <div><div class="k">Timeline</div><div class="v"><span class="assumption">Assumption</span> — 8-week concept sprint, extended from v1 to add checkout and the trust/verification layer</div></div>
+        <div><div class="k">Scope</div><div class="v">Mobile, Instamart-embedded: discovery → PDP → trust layer → cart → fulfillment → subscription → system states</div></div>
+        <div><div class="k">Constraints</div><div class="v">Must live inside existing Instamart IA, nav, checkout and brand system — no parallel app</div></div>
+        <div><div class="k">Team assumptions</div><div class="v"><span class="assumption">Assumption</span> — category ops maintains harvest, inspection and KYC data as structured inventory metadata</div></div>
+        <div><div class="k">Outcome</div><div class="v">14-screen system plus a documented component library, ready to hand to engineering</div></div>
+      </div>
+
+      <div class="pull">
+        We are not selling vegetables. We are making every purchase transparent.
+        <cite>FarmFresh product principle</cite>
+      </div>
+    </section>
+
+    <!-- ================= 02 PROBLEM ================= -->
+    <section id="problem">
+      <div class="eyebrow">02 · Problem statement</div>
+      <h2>Trust exists in the fine print. It needs to be the headline — and a number.</h2>
+      <p class="lede">Grocery buying moved fast in one direction — speed — and left provenance behind. Adjectives like "premium" and "chemical-free" don't survive scrutiny on their own; they need a source, an inspector, and a score.</p>
+
+      <div class="prose">
+        <p>Quick-commerce made grocery a ten-minute utility. That's a real win, and FarmFresh keeps it — but it flattened everything else about a purchase into a price and an ETA. Nothing in a standard produce listing today answers who grew it, when, or how it was checked before it shipped.</p>
+        <p><span class="assumption">Industry observation</span> — health-conscious and premium grocery shoppers are growing as a segment and will pay for assurance, not just speed. But assurance needs evidence with a number attached, not a badge. "96/100" is checkable in a way "Premium" never is.</p>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:1.5rem;">
+        <div class="bento">
+          <div class="bento-tag orange">Business problem</div>
+          <p style="font-size:14.5px;">Produce is undifferentiated inventory — it competes on price and delivery time alone against every other quick-commerce app, with no Swiggy-specific loyalty lever.</p>
+        </div>
+        <div class="bento">
+          <div class="bento-tag orange">User problem</div>
+          <p style="font-size:14.5px;">Shoppers can't answer "is this actually fresher or better" without leaving the app to trust the platform on faith.</p>
+        </div>
+        <div class="bento">
+          <div class="bento-tag orange">Platform problem</div>
+          <p style="font-size:14.5px;">Produce inherits the same card grid and PDP template as packaged FMCG, with no room for harvest time, farmer identity, or an inspection record.</p>
+        </div>
+      </div>
+
+      <div class="bento" style="margin-top:1.5rem;">
+        <div class="bento-tag">Design challenge</div>
+        <p style="margin:0;">Introduce a trust-and-provenance layer deep enough to be credible — including a checkout that keeps the promise through payment — without turning grocery shopping into research. Every signal resolves in one glance; the full audit trail is one tap away for the shopper who wants it.</p>
+      </div>
+
+      <h3 style="margin-top:2.2rem;">Success metrics</h3>
+      <p style="font-size:13.5px;" class="assumption">All figures below are directional targets requiring validation, not measured results.</p>
+      <div class="grid grid-4">
+        <div class="stat"><div class="num">↑ repeat</div><div class="lbl">Produce category repeat-purchase rate</div></div>
+        <div class="stat"><div class="num">↑ AOV</div><div class="lbl">FarmFresh vs. standard Fresh Items shelf</div></div>
+        <div class="stat"><div class="num">↑ attach</div><div class="lbl">Weekly subscription attach rate</div></div>
+        <div class="stat"><div class="num">↓ refund</div><div class="lbl">Freshness Guarantee claims, as a proxy for trust delivered vs. promised</div></div>
+      </div>
+    </section>
+
+    <!-- ================= 03 DISCOVERY ================= -->
+    <section id="discovery">
+      <div class="eyebrow">03 · Discovery &amp; insights</div>
+      <h2>Badges convinced no one. A number, an inspector, and a fee line item might.</h2>
+      <p class="lede">The biggest change from the first pass of this concept came from asking a harder question of every trust signal: not "does this look reassuring," but "could a shopper actually check it."</p>
+
+      <div class="prose">
+        <p><b>Competitive landscape.</b> <span class="assumption">Industry observation</span> — organic and farm-direct grocery players already lead with farmer identity as their entire value proposition. What most of them stop short of is a single, computed trust metric a shopper can see change per product — FarmFresh's Freshness Score fills that gap.</p>
+        <p><b>Marketplace observations.</b> Instamart's own navigation already segments Grocery, Dairy, and Snacks as distinct rails — the v2 concept adds FarmFresh as a peer, not a sub-menu, matching how Instamart's own home screen already treats categories.</p>
+        <p><b>User behaviours.</b> <span class="assumption">Assumption</span> — most grocery sessions are re-order autopilot; a smaller, higher-intent subset is active discovery. Splitting trust content across a Farmer Profile, a Farm Journey, and a Trust &amp; Verification screen serves that second mode without adding a single tap to the first.</p>
+        <p><b>Customer expectations.</b> Once a shopper reaches the point of paying, trust claims need to survive contact with the receipt. A "Farmer Support Fee" that's named and priced at checkout is a stronger claim than "supports local farmers" in ad copy, because it's falsifiable — a shopper can see exactly what they paid and to what.</p>
+        <p><b>Pain points.</b> A single PDP accordion can't carry a quality inspector's name, a KYC status, and a computed score without becoming unreadable. That's the direct reason Trust &amp; Verification became its own screen rather than a sixth accordion.</p>
+        <p><b>Farmer ecosystem.</b> <span class="assumption">Assumption, requires legal and ops validation</span> — farm partners are KYC-verified, willing to be named, and can be paid an itemized per-order fee distinct from the produce price.</p>
+        <p><b>Existing Instamart strengths to inherit.</b> The bottom navigation, sticky cart bar, and category-chip pattern are all proven and familiar — FarmFresh reuses every one of them rather than replacing them, and even sits as a fourth category chip (alongside Grocery, Dairy, Snacks) on the Instamart entry screen itself.</p>
+        <p><b>Existing gaps closed in this revision.</b> v1 of this concept ended trust at the PDP. It had no checkout, no system states, and no documented component set — meaning it could be admired but not built. All three are addressed here.</p>
+      </div>
+
+      <h3 style="margin-top:2.2rem;">Design insights</h3>
+      <div>
+        <div class="insight">
+          <div class="idx">01</div>
+          <div>
+            <h4>A claim needs a source, not just a badge.</h4>
+            <p>"Chemical Free" as a label is unverifiable on its own.</p>
+            <div class="then">→ <b>Decision:</b> every trust claim on the Trust &amp; Verification screen is attributed — to a farm, an inspector by name, or a certification body.</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="idx">02</div>
+          <div>
+            <h4>Trust needs one number a shopper can compare across products.</h4>
+            <p>Adjectives don't rank; scores do.</p>
+            <div class="then">→ <b>Decision:</b> a Freshness Score (96/100), computed from harvest-to-delivery time, cold-chain adherence and inspection results, closes the Trust screen as its single takeaway.</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="idx">03</div>
+          <div>
+            <h4>Five accordions on one PDP is where trust content goes to be ignored.</h4>
+            <p>Harvest Date, Farmer, Growing Practices, Soil, and Certifications together are dense.</p>
+            <div class="then">→ <b>Decision:</b> the PDP keeps quick-scan accordions; two full-width links — "See the Full Journey" and "Why You Can Trust This Produce" — route deeper only for shoppers who want it.</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="idx">04</div>
+          <div>
+            <h4>Order tracking answers "where." Produce shoppers are also asking "how fresh, right now."</h4>
+            <p>A generic delivery ETA doesn't address the thing that's actually perishable.</p>
+            <div class="then">→ <b>Decision:</b> Freshness Tracking names the delivery partner and states explicitly that the order was "packed within 30 minutes of harvest, cold-chain maintained throughout."</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="idx">05</div>
+          <div>
+            <h4>A delivery slot is also a freshness promise, and today it's presented as neither.</h4>
+            <p>"Today, 6–8 PM" alone tells a shopper nothing about the produce inside.</p>
+            <div class="then">→ <b>Decision:</b> each delivery slot in Cart &amp; Checkout is paired with what it means for freshness — "Harvested this morning" vs. "Harvested at dawn" — turning a logistics choice into a quality choice.</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="idx">06</div>
+          <div>
+            <h4>"Supports local farmers" is marketing. A priced line item is a receipt.</h4>
+            <p>Impact claims that aren't costed are easy to make and easy to doubt.</p>
+            <div class="then">→ <b>Decision:</b> checkout itemizes a Farmer Support Fee, labeled "goes directly to farmers," alongside item total and delivery fee — the same rigor as any other cost on the receipt.</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="idx">07</div>
+          <div>
+            <h4>A trust product needs a no-questions-asked failure mode, or the trust is conditional.</h4>
+            <p>Promising freshness without a remedy for when it fails undercuts the promise.</p>
+            <div class="then">→ <b>Decision:</b> a Freshness Guarantee — free replacement or refund, no questions asked — sits directly in the cart, before payment, not buried in a post-purchase support flow.</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="idx">08</div>
+          <div>
+            <h4>Order tracking that runs backward from "Delivered" reads as an afterthought. The crop's story should run forward, like the crop did.</h4>
+            <p>Seed to door is a beginning-to-end story, not a status log.</p>
+            <div class="then">→ <b>Decision:</b> Farm Journey is sequenced forward — Seed Planted through Delivered — under the heading "From Seed to Your Door."</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="idx">09</div>
+          <div>
+            <h4>A concept without empty, loading, and error states isn't a concept engineering can estimate.</h4>
+            <p>The happy path is the easy 80%; the states around it are the other 20% that actually determines the timeline.</p>
+            <div class="then">→ <b>Decision:</b> System States and a Component Library ship as first-class screens, not appendices — documenting empty cart, loading skeletons, and a failed-orders error with retry.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 04 STRATEGY ================= -->
+    <section id="strategy" class="wide">
+      <div class="eyebrow">04 · Design strategy</div>
+      <h2>Trust is the differentiator. A checkout receipt is where it either survives or doesn't.</h2>
+      <p class="lede">Speed and price get matched by every competitor within a quarter. A verified farm relationship, a named quality inspector, and a Freshness Score formula are much harder to fast-follow — but only if they hold up all the way through payment, not just on the PDP.</p>
+
+      <div class="grid grid-2" style="margin-top:1.5rem;">
+        <div class="bento">
+          <h4 style="margin:0 0 0.4rem;font-size:0.95rem;">Trust-first, all the way to the receipt</h4>
+          <p style="font-size:13.5px;margin:0;">Every screen, including checkout, answers "how do you know?" before it asks for money.</p>
+        </div>
+        <div class="bento">
+          <h4 style="margin:0 0 0.4rem;font-size:0.95rem;">Progressive disclosure</h4>
+          <p style="font-size:13.5px;margin:0;">Headline signals are instant — a score, a fee line, a badge. Full audit trails (Farm Journey, Trust &amp; Verification) are one tap away, never forced.</p>
+        </div>
+        <div class="bento">
+          <h4 style="margin:0 0 0.4rem;font-size:0.95rem;">Minimal cognitive load</h4>
+          <p style="font-size:13.5px;margin:0;">Reuses Instamart's existing interaction vocabulary — category chips, sticky cart bar, bottom nav — so the only new thing to learn is the content, not the UI.</p>
+        </div>
+        <div class="bento">
+          <h4 style="margin:0 0 0.4rem;font-size:0.95rem;">Built to be estimated, not just admired</h4>
+          <p style="font-size:13.5px;margin:0;">A documented component library and system states mean this concept can go straight into an engineering estimate, not just a design review.</p>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top:1.75rem;">
+        <p><b>Feature prioritization and trade-offs.</b> A farmer-to-consumer messaging feature stays out of scope — real-time chat is heavy to moderate and adds a support-queue liability with little added trust per message. The Farmer Profile's static bio and attribution deliver most of that trust value at a fraction of the operational cost. The Freshness Score is a genuine trade-off in the other direction: it requires a defensible formula and cross-team buy-in (ops, quality, legal) before it can ship as a hard number — flagged again in Validation.</p>
+        <p><b>Why every screen exists.</b> The fourteen screens below are one path, in order: a shopper is intercepted inside Instamart's own home screen, browses and filters, opens a product, and can go as deep as they want — meeting the farmer, walking the crop's timeline, or auditing the exact evidence behind the listing — before checkout closes the loop with a priced commitment to the farmer and a no-questions-asked guarantee. Fulfillment keeps naming names. Subscription turns one convinced purchase into a habit. And the system states plus component library prove the whole thing is buildable, not just presentable.</p>
+      </div>
+
+      <div class="journey">
+        <div class="act"><div class="roman">Act I</div><h5>Discovery</h5><p>Enter the vertical, browse today's harvest</p></div>
+        <div class="act"><div class="roman">Act II</div><h5>Selection</h5><p>Filter, evaluate, open a product</p></div>
+        <div class="act"><div class="roman">Act III</div><h5>Trust layer</h5><p>Meet the farmer, walk the journey, audit the score</p></div>
+        <div class="act"><div class="roman">Act IV</div><h5>Commitment</h5><p>Checkout as a priced promise, not just a transaction</p></div>
+        <div class="act"><div class="roman">Act V</div><h5>Fulfillment</h5><p>Confirm, then track freshness in real time</p></div>
+        <div class="act"><div class="roman">Act VI</div><h5>Retention</h5><p>Turn one order into a weekly habit</p></div>
+        <div class="act"><div class="roman">Act VII</div><h5>System rigor</h5><p>Edge cases and tokens, documented</p></div>
+      </div>
+    </section>
+
+    <!-- ================= 05 SOLUTION ================= -->
+    <section id="solution" class="wide">
+      <div class="eyebrow">05 · Solution</div>
+      <h2>Fourteen screens, one continuous story</h2>
+      <p class="lede">Each screen picks up exactly where the last one left off — from a banner inside Instamart's own home screen to a documented component library that makes the whole system buildable.</p>
+
+      <!-- ACT I -->
+      <div class="act-block">
+        <div class="act-head"><span class="roman">Act I — Discovery</span></div>
+        <p class="act-intro">FarmFresh has to earn attention inside a home screen that already has Grocery, Dairy, and Snacks on it — then convert that attention into a browsing session that feels genuinely different.</p>
+
+        <div class="screen-row">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:14px 20px 10px;display:flex;align-items:center;gap:10px;">
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;gap:4px;"><span style="color:var(--p-orange);font-size:11px;">📍</span><span style="font-size:11.5px;font-weight:700;color:var(--p-faint);">Deliver to</span></div>
+                  <div style="font-size:15px;font-weight:800;color:var(--p-ink);">Home — Indiranagar, Blr</div>
+                </div>
+                <div style="width:38px;height:38px;border-radius:12px;background:var(--p-surface);"></div>
+              </div>
+              <div style="padding:6px 20px 18px;">
+                <div style="display:flex;align-items:center;gap:10px;background:var(--p-surface);border:1px solid var(--p-line);border-radius:12px;padding:12px 14px;">
+                  <span style="color:var(--p-faint);">⌕</span><span style="flex:1;font-size:14px;color:var(--p-faint);">Search 'paneer'</span><span style="color:var(--p-orange);">🎤</span>
+                </div>
+              </div>
+              <div style="padding:0 20px 20px;">
+                <div style="position:relative;width:100%;height:200px;border-radius:20px;overflow:hidden;" class="ph">Hero: farm produce + farmer</div>
+                <div style="margin-top:-64px;padding:0 18px 18px;position:relative;pointer-events:none;">
+                  <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.94);border-radius:7px;padding:4px 9px;margin-bottom:8px;">
+                    <span style="font-size:10.5px;font-weight:800;letter-spacing:.03em;color:var(--p-green);">NEW · VERIFIED FARMS</span>
+                  </div>
+                  <div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.01em;line-height:1.1;text-shadow:0 2px 10px rgba(0,0,0,.35);">FarmFresh</div>
+                  <div style="font-size:13px;font-weight:600;color:#fff;margin:4px 0 12px;text-shadow:0 1px 6px rgba(0,0,0,.4);">Produce with a visible journey, farm to your door.</div>
+                  <span style="pointer-events:auto;display:inline-block;background:var(--p-orange);color:#fff;border-radius:11px;padding:10px 16px;font-size:13.5px;font-weight:800;">Explore FarmFresh</span>
+                </div>
+              </div>
+              <div style="padding:0 20px 22px;">
+                <div style="font-size:15px;font-weight:800;color:var(--p-ink);margin-bottom:12px;">Shop by category</div>
+                <div style="display:flex;gap:16px;">
+                  <div style="text-align:center;"><div style="width:48px;height:48px;border-radius:14px;background:var(--p-surface);margin:0 auto 6px;"></div><span style="font-size:10.5px;font-weight:600;color:var(--p-soft);">Grocery</span></div>
+                  <div style="text-align:center;"><div style="width:48px;height:48px;border-radius:14px;background:var(--p-surface);margin:0 auto 6px;"></div><span style="font-size:10.5px;font-weight:600;color:var(--p-soft);">Dairy</span></div>
+                  <div style="text-align:center;"><div style="width:48px;height:48px;border-radius:14px;background:var(--p-surface);margin:0 auto 6px;"></div><span style="font-size:10.5px;font-weight:600;color:var(--p-soft);">Snacks</span></div>
+                  <div style="text-align:center;"><div style="width:48px;height:48px;border-radius:14px;background:var(--p-sage);margin:0 auto 6px;"></div><span style="font-size:10.5px;font-weight:700;color:var(--p-green);">FarmFresh</span></div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-around;padding:10px 8px 14px;border-top:1px solid var(--p-line);">
+                <div style="text-align:center;"><div style="font-size:16px;">⌂</div><span style="font-size:9.5px;font-weight:700;color:var(--p-orange);">Home</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">▦</div><span style="font-size:9.5px;font-weight:600;">Categories</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">🛒</div><span style="font-size:9.5px;font-weight:600;">Cart</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">▤</div><span style="font-size:9.5px;font-weight:600;">Orders</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">◍</div><span style="font-size:9.5px;font-weight:600;">Account</span></div>
+              </div>
+            </div>
+            <div class="cap"><span>Instamart entry</span><span>01 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 01</div>
+            <h3>Instamart entry</h3>
+            <div class="role">The front door, placed inside the house shoppers already live in</div>
+            <p>FarmFresh's hero banner sits inside Instamart's actual home screen, and its category chip — Grocery, Dairy, Snacks, FarmFresh — is styled as a fourth peer category, not a promotional callout, from the first frame.</p>
+            <div class="field"><div class="flabel">Why it exists</div><p>Most shoppers never seek out a new vertical; they have to be intercepted where they already are, using the exact chip pattern they already trust.</p></div>
+            <div class="field"><div class="flabel">Design rationale</div><p>Making FarmFresh a category chip rather than a banner-only entry signals permanence — it reads as a section of Instamart, not a limited-time campaign.</p></div>
+            <div class="field"><div class="flabel">Business value</div><p>Converts passive scroll into a qualified visit to a higher-margin vertical, with zero incremental navigation cost to Instamart's existing IA.</p></div>
+          </div>
+        </div>
+
+        <div class="screen-row reverse">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:14px 20px 8px;display:flex;align-items:center;gap:12px;">
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);flex-shrink:0;"></div>
+                <div style="flex:1;display:flex;align-items:center;gap:6px;"><span style="color:var(--p-green);">✓</span><span style="font-size:18px;font-weight:800;color:var(--p-ink);">FarmFresh</span></div>
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div>
+              </div>
+              <div style="padding:0 20px 14px;display:flex;align-items:center;gap:6px;">
+                <span style="font-size:12.5px;font-weight:700;color:var(--p-green);">✓ Verified farms</span><span style="color:var(--p-line);">·</span><span style="font-size:12.5px;font-weight:600;color:var(--p-faint);">Harvested within 24h</span>
+              </div>
+              <div style="padding:0 20px 16px;display:flex;gap:8px;">
+                <span style="background:var(--p-ink);color:#fff;border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:700;">All</span>
+                <span style="background:var(--p-surface);color:var(--p-soft);border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:700;">Vegetables</span>
+                <span style="background:var(--p-surface);color:var(--p-soft);border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:700;">Fruits</span>
+              </div>
+              <div style="padding:0 20px 8px;display:flex;justify-content:space-between;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Today's Harvest</span><span style="font-size:12px;font-weight:700;color:var(--p-orange);">View All ›</span></div>
+              <div style="padding:0 0 20px 20px;display:flex;gap:10px;overflow-x:hidden;">
+                <div style="flex-shrink:0;width:130px;background:#fff;border:1px solid var(--p-line);border-radius:14px;overflow:hidden;">
+                  <div class="ph" style="height:90px;font-size:10px;">produce photo</div>
+                  <div style="padding:9px 10px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Heirloom Tomatoes</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);margin-bottom:6px;">₹85 <span style="font-size:10px;color:var(--p-faint);font-weight:600;">/500g</span></div><span style="display:block;text-align:center;border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:5px;font-size:11px;font-weight:800;">ADD</span></div>
+                </div>
+                <div style="flex-shrink:0;width:130px;background:#fff;border:1px solid var(--p-line);border-radius:14px;overflow:hidden;">
+                  <div class="ph" style="height:90px;font-size:10px;">produce photo</div>
+                  <div style="padding:9px 10px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Organic Spinach</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);margin-bottom:6px;">₹45 <span style="font-size:10px;color:var(--p-faint);font-weight:600;">/250g</span></div><span style="display:block;text-align:center;border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:5px;font-size:11px;font-weight:800;">ADD</span></div>
+                </div>
+              </div>
+              <div style="padding:0 20px 10px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Meet the Farmers</span></div>
+              <div style="padding:0 0 22px 20px;display:flex;gap:14px;">
+                <div style="text-align:center;width:80px;"><div class="ph" style="width:72px;height:72px;border-radius:50%;margin:0 auto 6px;font-size:9px;">photo</div><div style="font-size:12px;font-weight:700;color:var(--p-ink);">Lakshmi Devi</div><div style="font-size:10px;color:var(--p-faint);">Green Valley</div></div>
+                <div style="text-align:center;width:80px;"><div class="ph" style="width:72px;height:72px;border-radius:50%;margin:0 auto 6px;font-size:9px;">photo</div><div style="font-size:12px;font-weight:700;color:var(--p-ink);">Ravi Shankar</div><div style="font-size:10px;color:var(--p-faint);">Sunrise Organics</div></div>
+              </div>
+              <div style="padding:0 20px 22px;">
+                <div style="background:var(--p-sage);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;">
+                  <div style="flex:1;"><div style="font-size:13.5px;font-weight:800;color:var(--p-green);margin-bottom:3px;">Subscribe &amp; Save</div><div style="font-size:11.5px;color:var(--p-soft);line-height:1.4;">Weekly baskets, straight from the farm.</div></div>
+                  <span style="background:var(--p-green);color:#fff;border-radius:9px;padding:8px 12px;font-size:11.5px;font-weight:800;white-space:nowrap;">View Plans</span>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-around;padding:10px 8px 14px;border-top:1px solid var(--p-line);">
+                <div style="text-align:center;"><div style="font-size:16px;">⌂</div><span style="font-size:9.5px;font-weight:700;color:var(--p-orange);">Home</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">▦</div><span style="font-size:9.5px;font-weight:600;">Categories</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">🛒</div><span style="font-size:9.5px;font-weight:600;">Cart</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">▤</div><span style="font-size:9.5px;font-weight:600;">Orders</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">◍</div><span style="font-size:9.5px;font-weight:600;">Account</span></div>
+              </div>
+            </div>
+            <div class="cap"><span>FarmFresh home</span><span>02 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 02</div>
+            <h3>FarmFresh home</h3>
+            <div class="role">Today's Harvest, and the people behind it, above the fold</div>
+            <p>A "Verified farms · Harvested within 24h" strapline sits under the header, ahead of any product. "Today's Harvest" and a new "Meet the Farmers" rail — circular portraits, tap-through to full profiles — both load before a shopper has scrolled once.</p>
+            <div class="field"><div class="flabel">Why it exists</div><p>This is the first proof that the entry banner's promise is real, and the farmer rail specifically exists so a shopper can start from a person they trust, not just a product they want.</p></div>
+            <div class="field"><div class="flabel">Interaction decisions</div><p>The Subscribe &amp; Save module is placed after discovery, not before — it's offered once a shopper has already seen the harvest and the farmers, not as a cold pitch.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT II -->
+      <div class="act-block">
+        <div class="act-head"><span class="roman">Act II — Selection</span></div>
+        <p class="act-intro">Browsing, filtering, and the product page are where "premium" gets tested against real behavior — and where the PDP now has to carry five distinct kinds of evidence without becoming unreadable.</p>
+
+        <div class="screen-row">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:14px 20px 10px;display:flex;align-items:center;gap:12px;">
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);flex-shrink:0;"></div>
+                <span style="flex:1;font-size:16px;font-weight:800;color:var(--p-ink);">All Produce</span>
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div>
+              </div>
+              <div style="padding:0 20px 14px;display:flex;gap:8px;">
+                <span style="background:var(--p-ink);color:#fff;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;">All</span>
+                <span style="background:var(--p-surface);color:var(--p-soft);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;">Vegetables</span>
+                <span style="background:var(--p-surface);color:var(--p-soft);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;">Fruits</span>
+              </div>
+              <div style="padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="background:#fff;border:1px solid var(--p-line);border-radius:16px;overflow:hidden;">
+                  <div class="ph" style="height:96px;font-size:9px;">produce photo</div>
+                  <div style="padding:10px 11px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Alphonso Mangoes</div><div style="font-size:10.5px;color:var(--p-faint);margin-bottom:6px;">✓ 9 km away</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13.5px;font-weight:800;color:var(--p-ink);">₹220<span style="font-size:9.5px;font-weight:600;color:var(--p-faint);">/kg</span></span><span style="border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:4px 8px;font-size:10.5px;font-weight:800;">ADD</span></div></div>
+                </div>
+                <div style="background:#fff;border:1px solid var(--p-line);border-radius:16px;overflow:hidden;">
+                  <div class="ph" style="height:96px;font-size:9px;">produce photo</div>
+                  <div style="padding:10px 11px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Baby Carrots</div><div style="font-size:10.5px;color:var(--p-faint);margin-bottom:6px;">✓ 14 km away</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13.5px;font-weight:800;color:var(--p-ink);">₹60<span style="font-size:9.5px;font-weight:600;color:var(--p-faint);">/500g</span></span><span style="border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:4px 8px;font-size:10.5px;font-weight:800;">ADD</span></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="cap"><span>Category listing</span><span>03 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 03</div>
+            <h3>Category listing</h3>
+            <div class="role">Every card carries a farm distance, not just a price</div>
+            <p>A two-column grid where each card shows a harvested-time badge over the photo and a verified-farm distance line under the name, ahead of price and the familiar outlined ADD button.</p>
+            <div class="field"><div class="flabel">Design rationale</div><p>Distance uses the same green check used everywhere else for verification — one visual vocabulary for "this is confirmed," reused consistently rather than invented per screen.</p></div>
+          </div>
+        </div>
+
+        <div class="screen-row reverse">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:14px 20px 12px;display:flex;align-items:center;gap:10px;">
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);flex-shrink:0;"></div>
+                <div style="flex:1;background:var(--p-surface);border:1px solid var(--p-line);border-radius:12px;padding:10px 13px;font-size:13px;font-weight:600;color:var(--p-ink);">Tomatoes</div>
+              </div>
+              <div style="padding:0 20px 14px;"><div style="font-size:11px;font-weight:700;color:var(--p-faint);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Recent Searches</div>
+                <div style="display:flex;gap:7px;flex-wrap:wrap;"><span style="background:var(--p-surface);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:600;color:var(--p-soft);">Spinach</span><span style="background:var(--p-surface);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:600;color:var(--p-soft);">Mangoes</span></div>
+              </div>
+              <div style="position:relative;">
+                <div style="position:absolute;inset:0;background:rgba(20,16,12,0.42);border-radius:0;"></div>
+                <div style="position:relative;background:#fff;border-radius:20px 20px 0 0;padding:18px 20px 22px;margin-top:180px;box-shadow:0 -8px 30px rgba(0,0,0,0.15);">
+                  <div style="display:flex;justify-content:space-between;margin-bottom:16px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Filters</span><span style="width:26px;height:26px;border-radius:8px;background:var(--p-surface);display:inline-block;"></span></div>
+                  <div style="font-size:11.5px;font-weight:700;color:var(--p-faint);margin-bottom:8px;">Distance</div>
+                  <div style="display:flex;gap:7px;margin-bottom:16px;"><span style="background:var(--p-salt);color:var(--p-orange);border:1.5px solid var(--p-orange);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;">Within 10 km</span><span style="background:var(--p-surface);border:1.5px solid var(--p-line);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;color:var(--p-soft);">Any</span></div>
+                  <div style="font-size:11.5px;font-weight:700;color:var(--p-faint);margin-bottom:8px;">Harvest Window</div>
+                  <div style="display:flex;gap:7px;margin-bottom:16px;"><span style="background:var(--p-salt);color:var(--p-orange);border:1.5px solid var(--p-orange);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;">Today</span><span style="background:var(--p-surface);border:1.5px solid var(--p-line);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;color:var(--p-soft);">This week</span></div>
+                  <div style="font-size:11.5px;font-weight:700;color:var(--p-faint);margin-bottom:8px;">Certifications</div>
+                  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+                    <div style="display:flex;align-items:center;gap:9px;"><span style="width:17px;height:17px;border-radius:5px;background:var(--p-green);color:#fff;font-size:11px;text-align:center;line-height:17px;">✓</span><span style="font-size:12.5px;font-weight:600;color:var(--p-ink);">Certified Organic</span></div>
+                    <div style="display:flex;align-items:center;gap:9px;"><span style="width:17px;height:17px;border-radius:5px;border:1.5px solid var(--p-line);"></span><span style="font-size:12.5px;font-weight:600;color:var(--p-ink);">Pesticide-Free Tested</span></div>
+                  </div>
+                  <span style="display:block;text-align:center;background:var(--p-orange);color:#fff;border-radius:12px;padding:12px;font-size:14px;font-weight:800;">Apply Filters</span>
+                </div>
+              </div>
+            </div>
+            <div class="cap"><span>Search &amp; filters</span><span>04 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 04</div>
+            <h3>Search &amp; filters</h3>
+            <div class="role">Filtering as a bottom sheet, not a buried settings page</div>
+            <p>A search bar with recent searches sits above the results grid; a "Filters" chip opens a bottom sheet with Distance, Harvest Window, and Certifications as the three facets — no price filter competing for top position.</p>
+            <div class="field"><div class="flabel">Design rationale</div><p>Distance and Harvest Window as pill-selectors (not sliders or dropdowns) keep the decision fast — a shopper picks a distance the way they'd pick a delivery ETA, not the way they'd configure a spreadsheet.</p></div>
+            <div class="field"><div class="flabel">Business value</div><p>Certification checkboxes surfaced as a primary filter, not an afterthought, make "Certified Organic" a searchable, comparable attribute across the whole catalog — not just a claim on one PDP.</p></div>
+          </div>
+        </div>
+
+        <div class="screen-row">
+          <div class="frame">
+            <div class="phone">
+              <div class="ph" style="height:210px;font-size:11px;">product photo</div>
+              <div style="padding:16px 20px 0;">
+                <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(28,28,28,0.82);color:#fff;font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:8px;margin-bottom:10px;">✓ Harvested 3 hours ago</span>
+                <h4 style="font-size:19px;font-weight:800;color:var(--p-ink);margin:0 0 4px;">Heirloom Tomatoes</h4>
+                <p style="font-size:12.5px;color:var(--p-faint);margin:0 0 12px;">Vine-ripened, hand-picked this morning.</p>
+                <div style="display:flex;align-items:center;gap:8px;background:var(--p-surface);border-radius:12px;padding:10px 12px;margin-bottom:14px;">
+                  <div style="width:26px;height:26px;border-radius:50%;background:var(--p-sage);flex-shrink:0;"></div>
+                  <span style="flex:1;font-size:12.5px;font-weight:700;color:var(--p-ink);">Lakshmi Devi</span>
+                  <span style="font-size:11px;color:var(--p-faint);">12 km ›</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                  <span style="font-size:22px;font-weight:800;color:var(--p-ink);">₹85 <span style="font-size:12px;font-weight:600;color:var(--p-faint);">/500g</span></span>
+                  <div style="display:flex;align-items:center;gap:10px;background:var(--p-surface);border-radius:20px;padding:6px 12px;"><span>−</span><span style="font-weight:700;">1</span><span>+</span></div>
+                </div>
+                <div style="border-top:1px solid var(--p-line);padding:11px 0;display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--p-ink);">Harvest Date <span>⌄</span></div>
+                <div style="border-top:1px solid var(--p-line);padding:11px 0;display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--p-ink);">The Farmer <span>⌄</span></div>
+                <div style="border-top:1px solid var(--p-line);padding:11px 0;display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--p-ink);">Growing Practices <span>⌄</span></div>
+                <div style="border-top:1px solid var(--p-line);border-bottom:1px solid var(--p-line);padding:11px 0;display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--p-ink);">Certifications <span>⌄</span></div>
+                <div style="display:flex;flex-direction:column;gap:9px;margin:14px 0;">
+                  <span style="border:1px solid var(--p-line);border-radius:12px;padding:12px;font-size:12.5px;font-weight:700;color:var(--p-ink);">🌱 See the Full Journey — Seed to Delivery ›</span>
+                  <span style="border:1px solid var(--p-line);border-radius:12px;padding:12px;font-size:12.5px;font-weight:700;color:var(--p-ink);">✓ Why You Can Trust This Produce ›</span>
+                </div>
+              </div>
+              <div style="padding:12px 20px 16px;border-top:1px solid var(--p-line);"><span style="display:block;text-align:center;background:var(--p-orange);color:#fff;border-radius:12px;padding:14px;font-size:14.5px;font-weight:800;">Add 1 to Cart · ₹85</span></div>
+            </div>
+            <div class="cap"><span>Product detail</span><span>05 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 05</div>
+            <h3>Product detail</h3>
+            <div class="role">Five accordions of evidence, two doors to go deeper</div>
+            <p>Harvest Date, The Farmer, Growing Practices, Soil Information, and Certifications sit as collapsed accordions below price — quick-scan, not forced reading. Below them, two full-width links break away from the accordion pattern entirely: "See the Full Journey" and "Why You Can Trust This Produce."</p>
+            <div class="field"><div class="flabel">Problem solved</div><p>This is the direct answer to a produce PDP with no provenance above a "Show more" tap — the same category of information, restructured so a glance gets the headline and a tap gets the full case.</p></div>
+            <div class="field"><div class="flabel">Design rationale</div><p>The Farmer accordion previews a photo and one line of bio, then hands off to "View Full Profile" — enough to build interest, not enough to duplicate Screen 06 entirely.</p></div>
+            <div class="field"><div class="flabel">Business value</div><p>Two dedicated exit points (Journey, Trust) let the PDP measure which kind of evidence actually moves a purchase decision — crop story or audit trail — instead of guessing.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT III -->
+      <div class="act-block">
+        <div class="act-head"><span class="roman">Act III — Trust layer</span></div>
+        <p class="act-intro">Three screens, three different kinds of evidence: a person, a timeline, and a number. Together they're the reason a shopper would ever choose FarmFresh over a cheaper, unverified alternative.</p>
+
+        <div class="screen-row">
+          <div class="frame">
+            <div class="phone">
+              <div class="ph" style="height:180px;font-size:10px;">farmer portrait</div>
+              <div style="padding:16px 20px 20px;">
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:2px;"><h4 style="font-size:19px;font-weight:800;color:var(--p-ink);margin:0;">Lakshmi Devi</h4><span style="color:var(--p-green);">✓</span></div>
+                <div style="font-size:12.5px;font-weight:600;color:var(--p-faint);margin-bottom:14px;">Green Valley Farms · Devanahalli</div>
+                <div style="display:flex;background:var(--p-surface);border-radius:14px;padding:14px 6px;margin-bottom:16px;">
+                  <div style="flex:1;text-align:center;border-right:1px solid var(--p-line);"><div style="font-size:14px;font-weight:800;color:var(--p-ink);">14 yrs</div><div style="font-size:9.5px;color:var(--p-faint);">Farming</div></div>
+                  <div style="flex:1.3;text-align:center;border-right:1px solid var(--p-line);"><div style="font-size:11.5px;font-weight:800;color:var(--p-ink);">Tomatoes &amp; greens</div><div style="font-size:9.5px;color:var(--p-faint);">Specialty</div></div>
+                  <div style="flex:1;text-align:center;"><div style="font-size:14px;font-weight:800;color:var(--p-green);">Verified</div><div style="font-size:9.5px;color:var(--p-faint);">KYC Status</div></div>
+                </div>
+                <div style="font-size:13.5px;font-weight:800;color:var(--p-ink);margin-bottom:6px;">Our Story</div>
+                <p style="font-size:12px;line-height:1.6;color:var(--p-soft);margin:0 0 14px;">Third-generation farmer growing heirloom tomatoes and leafy greens on 6 acres, using drip irrigation to cut water use by half.</p>
+                <div style="font-size:13.5px;font-weight:800;color:var(--p-ink);margin-bottom:8px;">Farming Methods</div>
+                <div style="display:flex;gap:6px;margin-bottom:16px;"><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;">Organic</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;">No Pesticides</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;">Drip Irrigation</span></div>
+                <div style="display:flex;gap:8px;margin-bottom:16px;"><div class="ph" style="flex:1;height:80px;border-radius:12px;font-size:9px;">farm photo</div><div class="ph" style="flex:1;height:80px;border-radius:12px;font-size:9px;">farm photo</div></div>
+                <span style="display:block;text-align:center;background:var(--p-ink);color:#fff;border-radius:12px;padding:12px;font-size:13px;font-weight:800;">View This Farm's Journey</span>
+              </div>
+            </div>
+            <div class="cap"><span>Farmer profile</span><span>06 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 06</div>
+            <h3>Farmer profile</h3>
+            <div class="role">A named supplier, with a KYC status where a seller GST number used to be</div>
+            <p>A stat strip — years farming, specialty, KYC status — sits above a written story and a farming-methods tag row, closing with a "View This Farm's Journey" handoff to Screen 07.</p>
+            <div class="field"><div class="flabel">Why it exists</div><p>Naming, photographing, and verifying the person behind a product is the highest-trust move available in this category — "Verified" as a KYC status is doing real work here, not decorative.</p></div>
+            <div class="field"><div class="flabel">Business value</div><p>"Other Produce from this Farm" (below the fold) cross-sells within a single trusted relationship, at a lower acquisition cost than a discount would achieve.</p></div>
+          </div>
+        </div>
+
+        <div class="screen-row reverse">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:16px 20px 6px;display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div><span style="font-size:16px;font-weight:800;color:var(--p-ink);">From Seed to Your Door</span></div>
+              <div style="padding:2px 20px 6px;"><span style="font-size:12px;color:var(--p-faint);">Heirloom Tomatoes · Green Valley Farms</span></div>
+              <div style="padding:16px 20px 24px;">
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Seed Planted</div><div style="font-size:11.5px;color:var(--p-soft);">Heirloom seed stock sown, Feb 12</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Sprouted</div><div style="font-size:11.5px;color:var(--p-soft);">Feb 22, 10 days to germination</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Growing</div><div style="font-size:11.5px;color:var(--p-soft);">Drip-irrigated, hand-weeded, no pesticides</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Flowering</div><div style="font-size:11.5px;color:var(--p-soft);">First blossoms, late April</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Harvested</div><div style="font-size:11.5px;color:var(--p-soft);">Hand-picked at peak ripeness, this morning</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div></div><div><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Delivered</div><div style="font-size:11.5px;color:var(--p-soft);">To your door, cold-chain maintained</div></div></div>
+              </div>
+            </div>
+            <div class="cap"><span>Farm journey</span><span>07 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 07</div>
+            <h3>Farm journey</h3>
+            <div class="role">Seed to door, told in the order it happened</div>
+            <p>Six stages — Seed Planted, Sprouted, Growing, Flowering, Harvested, Delivered — run forward down the screen, each with a one-line detail, under the heading "From Seed to Your Door."</p>
+            <div class="field"><div class="flabel">Design rationale</div><p>Running the timeline forward, not backward from "Delivered," is a small but deliberate choice: it reads as the crop's story, not a status log a shopper has to mentally reverse.</p></div>
+            <div class="field"><div class="flabel">Business value</div><p>This is the single hardest screen for a competitor to fake credibly — it requires an actual data feed from an actual farm, not a copywriter.</p></div>
+          </div>
+        </div>
+
+        <div class="screen-row">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:16px 20px 6px;display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Why You Can Trust This</span></div>
+              <div style="padding:4px 20px 16px;"><span style="font-size:12px;color:var(--p-faint);">Every claim about Heirloom Tomatoes is backed by evidence, not marketing.</span></div>
+              <div style="padding:0 20px 16px;display:flex;flex-direction:column;gap:10px;">
+                <div style="background:var(--p-surface);border-radius:14px;padding:12px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="color:var(--p-green);font-size:13px;">✓</span><span style="font-size:12.5px;font-weight:800;color:var(--p-ink);">Farm Verification</span></div><p style="font-size:11px;line-height:1.5;color:var(--p-soft);margin:0;">Green Valley Farms verified in-person by FarmFresh's Quality Team. FSSAI registration confirmed and renewed annually.</p></div>
+                <div style="background:var(--p-surface);border-radius:14px;padding:12px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="color:var(--p-green);font-size:13px;">✓</span><span style="font-size:12.5px;font-weight:800;color:var(--p-ink);">Harvest Date</span></div><p style="font-size:11px;line-height:1.5;color:var(--p-soft);margin:0;">Harvested 3 hours ago. FarmFresh never lists produce more than 24 hours past harvest.</p></div>
+                <div style="background:var(--p-surface);border-radius:14px;padding:12px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="color:var(--p-green);font-size:13px;">✓</span><span style="font-size:12.5px;font-weight:800;color:var(--p-ink);">Quality Inspection</span></div><p style="font-size:11px;line-height:1.5;color:var(--p-soft);margin:0;">Passed a 12-point freshness check by FarmFresh Field Officer, Priya R., before dispatch.</p></div>
+                <div style="background:var(--p-surface);border-radius:14px;padding:12px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="color:var(--p-green);font-size:13px;">✓</span><span style="font-size:12.5px;font-weight:800;color:var(--p-ink);">Farmer Verification</span></div><p style="font-size:11px;line-height:1.5;color:var(--p-soft);margin:0;">Lakshmi Devi is KYC-verified and paid directly — no middlemen. 14 years of farming experience.</p></div>
+              </div>
+              <div style="padding:0 20px 22px;"><div style="background:var(--p-ink);border-radius:16px;padding:18px;text-align:center;"><div style="font-size:32px;font-weight:800;color:#fff;">96<span style="font-size:15px;color:rgba(255,255,255,0.5);">/100</span></div><div style="font-size:12px;font-weight:700;color:#fff;margin:4px 0 8px;">Freshness Score</div><div style="width:100%;height:5px;background:rgba(255,255,255,0.18);border-radius:4px;overflow:hidden;"><div style="width:96%;height:100%;background:var(--p-orange);"></div></div><p style="font-size:10.5px;color:rgba(255,255,255,0.6);margin:10px 0 0;line-height:1.5;">Calculated from harvest-to-delivery time, cold-chain adherence, and inspection results.</p></div></div>
+            </div>
+            <div class="cap"><span>Trust &amp; verification</span><span>08 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 08</div>
+            <h3>Trust &amp; verification</h3>
+            <div class="role">Every claim, attributed — closing with one computed number</div>
+            <p>Five attributed cards — Farm Verification, Harvest Date, Growing Practices, Quality Inspection (naming the field officer), Farmer Verification — lead into a dark, high-contrast Freshness Score card: 96/100, with its formula stated in one line underneath.</p>
+            <div class="field"><div class="flabel">Why it exists</div><p>This is the concept's newest and most load-bearing screen — the place where "premium" stops being a vibe and becomes a number a shopper can hold the platform to.</p></div>
+            <div class="field"><div class="flabel">Design rationale</div><p>Naming the inspector — "Priya R." — is a deliberate escalation past anonymous "Quality Checked" copy. It's a real person taking responsibility for the score, the same move the Farmer Profile makes for the produce itself.</p></div>
+            <div class="callout"><span><b>Dependency:</b> the Freshness Score formula needs to be genuinely defensible — harvest-to-delivery time, cold-chain adherence, inspection results — before this number ships anywhere. Flagged again in Validation &amp; Iteration.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT IV -->
+      <div class="act-block">
+        <div class="act-head"><span class="roman">Act IV — Commitment</span></div>
+        <p class="act-intro">Checkout is where every promise made so far gets tested against a payment. This screen is new in this revision, and it's the one that decides whether the trust layer was marketing or a real commitment.</p>
+
+        <div class="screen-row">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:16px 20px 10px;display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Your Cart</span></div>
+              <div style="padding:6px 20px 0;">
+                <div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line);"><div class="ph" style="width:48px;height:48px;border-radius:10px;font-size:8px;flex-shrink:0;">photo</div><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Heirloom Tomatoes</div><div style="font-size:10.5px;color:var(--p-faint);">Lakshmi Devi</div></div><div style="text-align:right;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">₹170</div><div style="font-size:10px;color:var(--p-faint);">Qty 2</div></div></div>
+                <div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line);"><div class="ph" style="width:48px;height:48px;border-radius:10px;font-size:8px;flex-shrink:0;">photo</div><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Organic Spinach</div><div style="font-size:10.5px;color:var(--p-faint);">Ravi Shankar</div></div><div style="text-align:right;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">₹45</div><div style="font-size:10px;color:var(--p-faint);">Qty 1</div></div></div>
+                <div style="display:flex;align-items:center;gap:9px;background:var(--p-sage);border-radius:14px;padding:12px 13px;margin:14px 0;"><span style="color:var(--p-green);">🛡</span><span style="font-size:11px;line-height:1.4;color:var(--p-green);font-weight:600;">Freshness Guarantee — not fresh? Free replacement or refund, no questions asked.</span></div>
+                <div style="font-size:12.5px;font-weight:700;color:var(--p-ink);margin-bottom:8px;">Delivery Slot</div>
+                <div style="display:flex;gap:8px;margin-bottom:16px;">
+                  <div style="flex:1;background:var(--p-ink);color:#fff;border-radius:12px;padding:10px;"><div style="font-size:11.5px;font-weight:800;">Today, 6–8 PM</div><div style="font-size:9.5px;opacity:0.75;">Harvested this morning</div></div>
+                  <div style="flex:1;background:var(--p-surface);color:var(--p-ink);border-radius:12px;padding:10px;"><div style="font-size:11.5px;font-weight:800;">Tomorrow, 8–10 AM</div><div style="font-size:9.5px;opacity:0.7;">Harvested at dawn</div></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--p-soft);margin-bottom:7px;"><span>Item Total</span><span>₹215</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--p-soft);margin-bottom:7px;"><span>Farmer Support Fee <span style="color:var(--p-faint);">(direct to farmers)</span></span><span>₹10</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--p-soft);margin-bottom:12px;"><span>Delivery Fee</span><span>₹25</span></div>
+                <div style="border-top:1px solid var(--p-line);padding-top:10px;display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:var(--p-ink);margin-bottom:14px;"><span>Total</span><span>₹250</span></div>
+              </div>
+              <div style="padding:10px 20px 16px;border-top:1px solid var(--p-line);"><span style="display:block;text-align:center;background:var(--p-orange);color:#fff;border-radius:12px;padding:14px;font-size:14px;font-weight:800;">Proceed to Pay · ₹250</span></div>
+            </div>
+            <div class="cap"><span>Cart &amp; checkout</span><span>09 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 09</div>
+            <h3>Cart &amp; checkout</h3>
+            <div class="role">The receipt where "supports local farmers" gets a price</div>
+            <p>Line items and delivery slots both carry the farm's timing forward — "Harvested this morning" and "Harvested at dawn" sit under the two slot options — and the price breakdown itemizes a Farmer Support Fee separately from delivery fee, labeled plainly as going direct to farmers.</p>
+            <div class="field"><div class="flabel">Why it exists</div><p>Trust that disappears at checkout was never trust, just marketing copy. This screen is the concept's answer to that risk.</p></div>
+            <div class="field"><div class="flabel">Design rationale</div><p>The Freshness Guarantee sits above the delivery slot, not after payment — a shopper commits knowing the failure mode before they need it, not after.</p></div>
+            <div class="field"><div class="flabel">Business value</div><p>A named, priced Farmer Support Fee is a real, auditable unit-economics lever — visible to finance as a line item, not folded invisibly into margin.</p></div>
+            <div class="callout"><span><b>Open question:</b> is the Farmer Support Fee opt-in or fixed? Fixed is the stronger trust signal; opt-in is the safer initial rollout. Flagged in Validation &amp; Iteration.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT V -->
+      <div class="act-block">
+        <div class="act-head"><span class="roman">Act V — Fulfillment</span></div>
+        <p class="act-intro">Confirmation and tracking carry the same evidence through delivery — a real name, a real vehicle, and a cold-chain claim stated plainly, not just an ETA.</p>
+
+        <div class="screen-row">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:50px 20px 30px;text-align:center;">
+                <div style="width:56px;height:56px;border-radius:50%;background:var(--p-sage);color:var(--p-green);font-size:26px;line-height:56px;margin:0 auto 16px;">✓</div>
+                <h4 style="font-size:19px;font-weight:800;color:var(--p-ink);margin:0 0 6px;">Order Confirmed</h4>
+                <div style="font-size:12px;color:var(--p-faint);margin-bottom:18px;">Order #FF-10482</div>
+                <p style="font-size:12.5px;line-height:1.6;color:var(--p-soft);margin:0 0 20px;">Your produce was harvested this morning. It's being packed fresh and will reach you today.</p>
+                <div style="background:var(--p-surface);border-radius:14px;padding:14px;display:flex;justify-content:space-between;margin-bottom:20px;text-align:left;">
+                  <div><div style="font-size:10.5px;color:var(--p-faint);">Total</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);">₹250</div></div>
+                  <div style="text-align:right;"><div style="font-size:10.5px;color:var(--p-faint);">Arriving</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);">Today, 6–8 PM</div></div>
+                </div>
+                <span style="display:block;text-align:center;background:var(--p-orange);color:#fff;border-radius:12px;padding:13px;font-size:13.5px;font-weight:800;margin-bottom:10px;">Track Freshness</span>
+                <span style="font-size:12.5px;font-weight:700;color:var(--p-faint);">Continue Shopping</span>
+              </div>
+            </div>
+            <div class="cap"><span>Order confirmation</span><span>10 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 10</div>
+            <h3>Order confirmation</h3>
+            <div class="role">A confirmation that restates freshness, not just success</div>
+            <p>"Your produce was harvested this morning. It's being packed fresh and will reach you today" replaces a generic success message, with the CTA labeled "Track Freshness" rather than a plain "Track Order."</p>
+            <div class="field"><div class="flabel">Business value</div><p>Naming the tracking CTA around freshness, specifically, primes the next screen and keeps the vocabulary of the whole funnel consistent.</p></div>
+          </div>
+        </div>
+
+        <div class="screen-row reverse">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:16px 20px 10px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Track Your Order</span><div style="font-size:11.5px;color:var(--p-faint);margin-top:2px;">Order #FF-10482</div></div>
+              <div class="ph" style="height:150px;font-size:10px;">live map view</div>
+              <div style="padding:14px 20px 20px;">
+                <div style="display:flex;align-items:center;gap:10px;background:var(--p-surface);border-radius:14px;padding:12px 14px;margin-bottom:14px;"><div class="ph" style="width:42px;height:42px;border-radius:50%;font-size:8px;flex-shrink:0;">photo</div><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Manjunath K.</div><div style="font-size:10.5px;color:var(--p-faint);">Bike · KA-05 AB 1234</div></div><div style="font-size:13px;font-weight:800;color:var(--p-ink);">6:45 PM</div></div>
+                <div style="display:flex;align-items:center;gap:9px;background:var(--p-sage);border-radius:14px;padding:12px 13px;"><span style="color:var(--p-green);">❄</span><span style="font-size:11px;line-height:1.4;color:var(--p-green);font-weight:600;">Packed within 30 minutes of harvest — cold-chain maintained throughout.</span></div>
+              </div>
+            </div>
+            <div class="cap"><span>Freshness tracking</span><span>11 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 11</div>
+            <h3>Freshness tracking</h3>
+            <div class="role">A live map, a named rider, and a cold-chain claim in one glance</div>
+            <p>Delivery partner Manjunath K. is shown by name, vehicle, and plate — the same attribution vocabulary used for farmers, extended to the last mile — above a stated cold-chain claim rather than a generic "on the way" status.</p>
+            <div class="field"><div class="flabel">Why it exists</div><p>Standard order tracking answers "where is my package." This answers "is it still fresh, right now" — the actual question for produce.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT VI -->
+      <div class="act-block">
+        <div class="act-head"><span class="roman">Act VI — Retention</span></div>
+        <p class="act-intro">A trust layer this expensive to build only pays back if a shopper comes back to use it.</p>
+
+        <div class="screen-row">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:16px 20px 4px;"><span style="font-size:17px;font-weight:800;color:var(--p-ink);">Weekly Subscriptions</span></div>
+              <div style="padding:2px 20px 16px;"><span style="font-size:12px;color:var(--p-faint);">Recurring farm-fresh baskets, delivered on your schedule. Skip or cancel anytime.</span></div>
+              <div style="padding:0 20px 14px;display:flex;gap:6px;"><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Skip anytime</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Farmer-direct pricing</span></div>
+              <div style="padding:0 20px 16px;">
+                <div style="border:2px solid var(--p-orange);border-radius:16px;padding:14px;margin-bottom:12px;">
+                  <span style="background:var(--p-salt);color:var(--p-orange);font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:6px;">MOST POPULAR</span>
+                  <div style="font-size:14.5px;font-weight:800;color:var(--p-ink);margin:8px 0 2px;">Family Box</div>
+                  <div style="font-size:16px;font-weight:800;color:var(--p-ink);margin-bottom:8px;">₹599 <span style="font-size:11px;font-weight:600;color:var(--p-faint);">/week</span></div>
+                  <div style="font-size:11px;color:var(--p-faint);margin-bottom:8px;">Delivery Day</div>
+                  <div style="display:flex;gap:6px;"><span style="background:var(--p-ink);color:#fff;border-radius:8px;padding:5px 10px;font-size:10.5px;font-weight:700;">Mon</span><span style="background:var(--p-surface);border-radius:8px;padding:5px 10px;font-size:10.5px;font-weight:700;">Wed</span><span style="background:var(--p-surface);border-radius:8px;padding:5px 10px;font-size:10.5px;font-weight:700;">Fri</span></div>
+                </div>
+                <div style="border:1px solid var(--p-line);border-radius:16px;padding:14px;">
+                  <div style="font-size:14.5px;font-weight:800;color:var(--p-ink);margin-bottom:2px;">Solo Basket</div>
+                  <div style="font-size:16px;font-weight:800;color:var(--p-ink);">₹299 <span style="font-size:11px;font-weight:600;color:var(--p-faint);">/week</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="cap"><span>Weekly subscriptions</span><span>12 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 12</div>
+            <h3>Weekly subscriptions</h3>
+            <div class="role">Farmer-direct pricing and a delivery-day picker, not just a discount</div>
+            <p>Plan cards lead with "Skip anytime" and "Farmer-direct pricing" as trust chips before price. A per-plan Delivery Day picker (Monday, Wednesday, Friday) is new in this revision, tying the subscription to the same harvest-window logic used in checkout.</p>
+            <div class="field"><div class="flabel">Business value</div><p>Delivery-day selection lets FarmFresh batch harvest requests to farm partners on a predictable cadence — an operational win disguised as a shopper convenience.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT VII -->
+      <div class="act-block">
+        <div class="act-head"><span class="roman">Act VII — System rigor</span></div>
+        <p class="act-intro">The two screens below don't sell anything. They're what makes the other twelve buildable — the parts a design review skips and an engineering estimate can't.</p>
+
+        <div class="screen-row">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:18px 20px 14px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">System States</span></div>
+              <div style="padding:0 20px 16px;display:flex;flex-direction:column;gap:12px;">
+                <div style="border:1px solid var(--p-line);border-radius:14px;padding:16px;text-align:center;">
+                  <div style="font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--p-faint);margin-bottom:8px;">Empty</div>
+                  <div style="font-size:13px;font-weight:800;color:var(--p-ink);margin-bottom:4px;">Your cart is empty</div>
+                  <div style="font-size:11px;color:var(--p-faint);margin-bottom:10px;">Browse today's harvest to get started.</div>
+                  <span style="display:inline-block;background:var(--p-orange);color:#fff;border-radius:10px;padding:8px 14px;font-size:11.5px;font-weight:800;">Browse FarmFresh</span>
+                </div>
+                <div style="border:1px solid var(--p-line);border-radius:14px;padding:16px;">
+                  <div style="font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--p-faint);margin-bottom:8px;">Loading</div>
+                  <div style="height:12px;border-radius:6px;background:linear-gradient(90deg,#EDEBE7,#F7F5F1,#EDEBE7);margin-bottom:7px;width:70%;"></div>
+                  <div style="height:12px;border-radius:6px;background:linear-gradient(90deg,#EDEBE7,#F7F5F1,#EDEBE7);width:45%;"></div>
+                </div>
+                <div style="border:1px solid var(--p-line);border-radius:14px;padding:16px;text-align:center;">
+                  <div style="font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--p-faint);margin-bottom:8px;">Error</div>
+                  <div style="font-size:13px;font-weight:800;color:var(--p-ink);margin-bottom:4px;">Couldn't load your orders</div>
+                  <div style="font-size:11px;color:var(--p-faint);margin-bottom:10px;">Check your connection and try again.</div>
+                  <span style="display:inline-block;border:1.5px solid var(--p-ink);color:var(--p-ink);border-radius:10px;padding:8px 14px;font-size:11.5px;font-weight:800;">Retry</span>
+                </div>
+              </div>
+            </div>
+            <div class="cap"><span>Empty / loading / error</span><span>13 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 13</div>
+            <h3>Empty, loading &amp; error states</h3>
+            <div class="role">The unglamorous 20% that determines the actual timeline</div>
+            <p>Three documented states — empty cart, a shimmering loading skeleton, and a failed-orders error with a plain-language retry — presented as first-class screens, with a direct link through to the Component Library.</p>
+            <div class="field"><div class="flabel">Why it exists</div><p>A concept that only shows the happy path can't be estimated by engineering. Documenting these three states here is what turns a pitch into a spec.</p></div>
+          </div>
+        </div>
+
+        <div class="screen-row reverse">
+          <div class="frame">
+            <div class="phone">
+              <div style="padding:18px 20px 4px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">FarmFresh Components</span></div>
+              <div style="padding:0 20px 14px;"><span style="font-size:11px;color:var(--p-faint);">Design system extension — internal reference</span></div>
+              <div style="padding:0 20px 14px;">
+                <div style="font-size:10.5px;font-weight:800;color:var(--p-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Colors</div>
+                <div style="display:flex;gap:8px;">
+                  <div style="text-align:center;"><div style="width:34px;height:34px;border-radius:8px;background:#FC8019;"></div><div style="font-size:8.5px;color:var(--p-faint);margin-top:4px;">Orange</div></div>
+                  <div style="text-align:center;"><div style="width:34px;height:34px;border-radius:8px;background:#1D7A46;"></div><div style="font-size:8.5px;color:var(--p-faint);margin-top:4px;">Farm Green</div></div>
+                  <div style="text-align:center;"><div style="width:34px;height:34px;border-radius:8px;background:#1C1C1C;"></div><div style="font-size:8.5px;color:var(--p-faint);margin-top:4px;">Ink</div></div>
+                  <div style="text-align:center;"><div style="width:34px;height:34px;border-radius:8px;background:#F7F7F5;border:1px solid var(--p-line);"></div><div style="font-size:8.5px;color:var(--p-faint);margin-top:4px;">Surface</div></div>
+                </div>
+              </div>
+              <div style="padding:0 20px 14px;">
+                <div style="font-size:10.5px;font-weight:800;color:var(--p-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Typography</div>
+                <div style="font-size:19px;font-weight:800;color:var(--p-ink);">Display 23/800</div>
+                <div style="font-size:15px;font-weight:800;color:var(--p-ink);">Title 17/800</div>
+                <div style="font-size:12.5px;font-weight:400;color:var(--p-soft);">Body 14/400 — regular text</div>
+                <div style="font-size:11px;font-weight:700;color:var(--p-faint);">Label 12/700</div>
+              </div>
+              <div style="padding:0 20px 16px;">
+                <div style="font-size:10.5px;font-weight:800;color:var(--p-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Chips &amp; badges</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Verified Farmer</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Organic</span><span style="background:rgba(28,28,28,0.85);color:#fff;border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Harvested 4h ago</span></div>
+              </div>
+            </div>
+            <div class="cap"><span>Component library</span><span>14 / 14</span></div>
+          </div>
+          <div class="screen-copy">
+            <div class="screen-no">Screen 14</div>
+            <h3>Component library</h3>
+            <div class="role">The design system, documented as its own reusable extension</div>
+            <p>Colors, type scale, buttons, chips, a product card, and an input field are documented on one reference screen — Swiggy Orange and Farm Green stated as literal hex values, not just used implicitly across mockups.</p>
+            <div class="field"><div class="flabel">Why it exists</div><p>This is the screen that lets the trust-layer components (Freshness Score card, farm-verification card, harvest badge) get reused for Meat, Milk, and Dairy without redesigning them from scratch.</p></div>
+            <div class="field"><div class="flabel">Design rationale</div><p>Documenting Swiggy Orange as #FC8019 here — Instamart's actual product orange — rather than the brand book's #FF5200 marketing spec is deliberate: this system inherits the color shoppers already see in the live app, not the brochure.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 06 VALIDATION ================= -->
+    <section id="validation">
+      <div class="eyebrow">06 · Validation &amp; iteration</div>
+      <h2>What would actually get tested before this ships</h2>
+      <p class="lede">No usability testing has been run against this concept. Below is the plan that should happen next, updated for the two riskiest new additions: the Freshness Score and the Farmer Support Fee.</p>
+
+      <div class="prose">
+        <p><b>Approach.</b> <span class="assumption">Assumption</span> — moderated task-based testing with 8–10 premium grocery shoppers, mixing existing Instamart users and non-users, across the full journey from entry banner to checkout.</p>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:1rem;">
+        <div class="hyp">
+          <div class="tag">H1 · Freshness Score</div>
+          <h4>A single computed score increases add-to-cart confidence versus badges alone.</h4>
+          <p>Measured by time-to-add and PDP-to-Trust-screen click-through rate.</p>
+        </div>
+        <div class="hyp">
+          <div class="tag">H2 · Farmer Support Fee</div>
+          <h4>A named, priced fee at checkout increases perceived trust without meaningfully increasing cart abandonment.</h4>
+          <p>Measured via A/B against an unnamed "platform fee" of equal value.</p>
+        </div>
+        <div class="hyp">
+          <div class="tag">H3 · Farm Journey</div>
+          <h4>The forward-running seed-to-door timeline gets read further than a standard reverse order-status tracker.</h4>
+          <p>Measured by scroll depth and time-on-screen.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:2rem;">Expected feedback</h3>
+      <p><span class="assumption">Assumption</span> — early sessions will likely surface two recurring reactions: skepticism toward the Freshness Score specifically ("who decided 96") unless the formula is shown, not just stated; and a fairness question about the Farmer Support Fee if it's fixed rather than optional — "am I paying twice for the same promise."</p>
+
+      <h3 style="margin-top:1.75rem;">Iteration opportunity</h3>
+      <div class="bento tint-sage">
+        <p style="margin:0;">Make the Freshness Score tappable to a one-line formula breakdown (e.g. "40% harvest time · 35% cold chain · 25% inspection") directly on the Trust screen, rather than only in the caption below it — the number needs to survive a skeptical shopper tapping on it, not just stating its inputs in small print.</p>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:1.75rem;">
+        <div>
+          <h3>A/B testing ideas</h3>
+          <ul class="plain">
+            <li><b>Farmer fee framing</b>Named "Farmer Support Fee" vs. folded silently into item price</li>
+            <li><b>Trust screen entry</b>PDP link labeled "Why You Can Trust This" vs. "View Certifications"</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Risks</h3>
+          <ul class="plain">
+            <li><b>Score credibility</b>An unexplained 96/100 can read as marketing theater if the formula isn't defensible under scrutiny</li>
+            <li><b>Fee perception</b>A mandatory Farmer Support Fee needs pricing and legal review — it may need to be framed as inclusive, not additive</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top:1.75rem;">Limitations</h3>
+      <p>This concept has not been tested against a real farm-partner data pipeline, quality-inspection workflow, or KYC system. The Freshness Score formula shown is illustrative, not calibrated against real cold-chain and inspection data.</p>
+
+      <h3 style="margin-top:1.75rem;">Future improvements</h3>
+      <p>Extend the componentized trust layer (documented in Screen 14) to Meat, Milk, and Dairy. Prototype a QR-on-package bridge from a delivered order back to its own Farm Journey screen.</p>
+    </section>
+
+    <!-- ================= 07 IMPACT ================= -->
+    <section id="impact">
+      <div class="eyebrow">07 · Impact</div>
+      <h2>Why this is an extension of Instamart, not a new category to maintain</h2>
+
+      <div class="grid grid-2" style="margin-top:1.5rem;">
+        <div class="impact-card">
+          <h4>Business</h4>
+          <p>A differentiator competitors can't fast-follow on price alone, a defensible premium AOV lever, and a subscription mechanism that turns a low-margin category into predictable recurring revenue.</p>
+        </div>
+        <div class="impact-card">
+          <h4>User</h4>
+          <p>An answerable "why should I trust this," backed by a number and a named inspector, carried all the way through to a priced checkout commitment.</p>
+        </div>
+        <div class="impact-card">
+          <h4>Farmer</h4>
+          <p>Named, verified, and paid a visible, itemized fee directly — farm partners gain a storefront and a receipt line, not just anonymous SKU status.</p>
+        </div>
+        <div class="impact-card">
+          <h4>Platform</h4>
+          <p>A documented, reusable component library and system states — proof this can be estimated and built, not just reviewed as a concept.</p>
+        </div>
+        <div class="impact-card">
+          <h4>Brand</h4>
+          <p>Reinforces Swiggy's customer-obsession positioning in the one category where trust, not speed, is the actual product.</p>
+        </div>
+        <div class="impact-card">
+          <h4>Long-term</h4>
+          <p>A Freshness Score methodology, once calibrated and defensible, becomes a platform-level trust primitive extensible well beyond produce.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:2.2rem;">Key learnings</h3>
+      <p>The gap between a trust-first concept and a shippable one is checkout, edge cases, and a design system — not more badges. Adding Cart &amp; Checkout, System States, and a Component Library to this revision did more for its credibility than any single new trust screen would have.</p>
+
+      <h3 style="margin-top:1.5rem;">Future roadmap</h3>
+      <table class="simple">
+        <tr><th>Phase</th><th>Focus</th></tr>
+        <tr><td>Pilot</td><td>Produce-only launch in 1–2 cities to validate the harvest-data pipeline and calibrate the Freshness Score formula before any further UI investment.</td></tr>
+        <tr><td>Expand</td><td>Extend the documented component library (Screen 14) to Meat, Milk, and Dairy.</td></tr>
+        <tr><td>Bridge</td><td>Prototype QR-on-package traceability, connecting a delivered order back to its own Farm Journey screen.</td></tr>
+      </table>
+
+      <div class="closing" style="margin-top:2.5rem;">
+        <div class="pull" style="margin:0;">
+          FarmFresh isn't a new app bolted onto Instamart, or an organic skin over the same catalog. It's the same catalog, the same orange button — with a farmer's name, a computed score, and a priced promise added all the way through to the receipt.
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Swiggy FarmFresh — internal concept pitch · v2</span>
+      <span>Instamart · Fresh Commerce</span>
+    </footer>
+
+  </main>
+</div>
