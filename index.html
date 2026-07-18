@@ -69,6 +69,7 @@
 
   /* HERO */
   .hero{padding:100px 0 70px;position:relative;}
+  .hero-grid{display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:center;}
   .hero .tag{
     display:inline-flex;align-items:center;gap:8px;
     border:1px solid var(--border);border-radius:100px;
@@ -98,6 +99,52 @@
   .btn-primary{background:var(--accent);color:#100603;}
   .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--text);}
   .btn:hover{transform:translateY(-2px);opacity:.92;}
+
+  /* 3D HERO ICON */
+  .icon3d-stage{
+    perspective:900px;height:280px;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .icon3d-glow{
+    position:absolute;width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,90,46,0.45),rgba(124,156,255,0.25) 55%,transparent 72%);
+    filter:blur(30px);
+    animation:glowPulse 4s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .icon3d-tilt{
+    transform-style:preserve-3d;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1);
+    animation:cubeEnter 1s cubic-bezier(.16,1,.3,1) both;
+  }
+  .icon3d-cube{
+    position:relative;width:120px;height:120px;
+    transform-style:preserve-3d;
+    animation:cubeSpin 9s linear infinite, cubeFloat 3.4s ease-in-out infinite;
+  }
+  .icon3d-cube .face{
+    position:absolute;width:120px;height:120px;
+    border:1px solid rgba(255,255,255,0.14);
+    backdrop-filter:blur(2px);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon3d-cube .face svg{width:44px;height:44px;opacity:.92;}
+  .face-front { background:linear-gradient(135deg,#ff6a3d,#ff5a2e); transform:translateZ(60px); }
+  .face-back  { background:linear-gradient(135deg,#c23f16,#8a2a0d); transform:rotateY(180deg) translateZ(60px); }
+  .face-right { background:linear-gradient(135deg,#8f9fff,#7c9cff); transform:rotateY(90deg) translateZ(60px); }
+  .face-left  { background:linear-gradient(135deg,#5468cf,#3d4fa8); transform:rotateY(-90deg) translateZ(60px); }
+  .face-top   { background:linear-gradient(135deg,#ffd39b,#ff9a5a); transform:rotateX(90deg) translateZ(60px); }
+  .face-bottom{ background:linear-gradient(135deg,#3a1c10,#20100a); transform:rotateX(-90deg) translateZ(60px); }
+
+  @keyframes cubeSpin{ from{ transform:rotateY(0deg) rotateX(-16deg);} to{ transform:rotateY(360deg) rotateX(-16deg);} }
+  @keyframes cubeFloat{ 0%,100%{ margin-top:0px;} 50%{ margin-top:-16px;} }
+  @keyframes cubeEnter{ 0%{ opacity:0; transform:scale(.4) rotateX(40deg);} 100%{ opacity:1; transform:scale(1) rotateX(0deg);} }
+  @keyframes glowPulse{ 0%,100%{ opacity:.6; transform:scale(1);} 50%{ opacity:1; transform:scale(1.12);} }
+  @media (prefers-reduced-motion: reduce){
+    .icon3d-cube{animation:none;}
+    .icon3d-glow{animation:none;}
+  }
 
   /* STATS */
   .stats{
@@ -201,6 +248,16 @@
     .ach-grid{grid-template-columns:1fr;}
     .nav-links{display:none;}
     .contact{padding:44px 24px;}
+    .hero-grid{grid-template-columns:1fr;}
+    .icon3d-stage{height:200px;order:-1;}
+    .icon3d-cube, .face{width:90px;height:90px;}
+    .face-front,.face-back,.face-right,.face-left,.face-top,.face-bottom{transform:none;}
+    .face-front { transform:translateZ(45px); }
+    .face-back  { transform:rotateY(180deg) translateZ(45px); }
+    .face-right { transform:rotateY(90deg) translateZ(45px); }
+    .face-left  { transform:rotateY(-90deg) translateZ(45px); }
+    .face-top   { transform:rotateX(90deg) translateZ(45px); }
+    .face-bottom{ transform:rotateX(-90deg) translateZ(45px); }
   }
 </style>
 </head>
@@ -223,12 +280,30 @@
 
 <section class="hero">
   <div class="wrap">
-    <div class="tag"><span class="dot"></span> Open to new opportunities · Bengaluru, IN</div>
-    <h1>Product design that turns <em>complex systems</em> into products people trust.</h1>
-    <p class="sub">AI-native Product Designer bridging business objectives with user-centric systems architecture — from 0-to-1 product design to unified design systems and AI-led DesignOps.</p>
-    <div class="actions">
-      <a class="btn btn-primary" href="#work">View Work →</a>
-      <a class="btn btn-secondary" href="mailto:dnyaneshwari.mandape.ft21@nsut.ac.in">Get in touch</a>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="tag"><span class="dot"></span> Open to new opportunities · Bengaluru, IN</div>
+        <h1>Product design that turns <em>complex systems</em> into products people trust.</h1>
+        <p class="sub">AI-native Product Designer bridging business objectives with user-centric systems architecture — from 0-to-1 product design to unified design systems and AI-led DesignOps.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#work">View Work →</a>
+          <a class="btn btn-secondary" href="mailto:dnyaneshwari.mandape.ft21@nsut.ac.in">Get in touch</a>
+        </div>
+      </div>
+
+      <div class="icon3d-stage" id="icon3dStage" aria-hidden="true">
+        <div class="icon3d-glow"></div>
+        <div class="icon3d-tilt" id="icon3dTilt">
+          <div class="icon3d-cube">
+            <div class="face face-front"><svg viewBox="0 0 24 24" fill="none" stroke="#100603" stroke-width="1.8"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
+            <div class="face face-back"></div>
+            <div class="face face-right"></div>
+            <div class="face face-left"></div>
+            <div class="face face-top"></div>
+            <div class="face face-bottom"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="stats reveal-group">
@@ -418,6 +493,20 @@
 </footer>
 
 <script>
+  const stage = document.getElementById('icon3dStage');
+  const tilt = document.getElementById('icon3dTilt');
+  if (stage && tilt && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    stage.addEventListener('mousemove', (e) => {
+      const r = stage.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      tilt.style.transform = `rotateY(${px * 40}deg) rotateX(${-py * 40}deg)`;
+    });
+    stage.addEventListener('mouseleave', () => {
+      tilt.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  }
+
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
