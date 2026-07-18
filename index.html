@@ -87,6 +87,14 @@
     font-style:italic;font-weight:500;
     color:var(--accent);
   }
+  .rotator{
+    display:inline-block;
+    transition:opacity .35s ease, transform .35s ease, filter .35s ease;
+  }
+  .rotator.swap{opacity:0;transform:translateY(10px);filter:blur(4px);}
+  @media (prefers-reduced-motion: reduce){
+    .rotator{transition:none;}
+  }
   .hero p.sub{
     margin-top:26px;font-size:1.15rem;color:var(--muted);
     max-width:640px;
@@ -283,7 +291,7 @@
     <div class="hero-grid">
       <div class="hero-content">
         <div class="tag"><span class="dot"></span> Open to new opportunities · Bengaluru, IN</div>
-        <h1>Hi, I'm Dnyaneshwari — a product designer who turns messy, <em>complex systems</em> into products people actually trust.</h1>
+        <h1>Hi, I'm Dnyaneshwari — a product designer who turns messy, <em class="rotator" id="rotatorWord">complex systems</em> into products that people actually trust.</h1>
         <p class="sub">Currently shaping AI-native experiences at Digit Insurance — bridging business goals with user-centric systems, one semiotic detail at a time.</p>
         <div class="actions">
           <a class="btn btn-primary" href="#work">View Work →</a>
@@ -493,6 +501,20 @@
 </footer>
 
 <script>
+  const rotatorEl = document.getElementById('rotatorWord');
+  if (rotatorEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const words = ['complex systems', 'insurance flows', 'AI chatbots', '0-to-1 products', 'design systems'];
+    let wi = 0;
+    setInterval(() => {
+      rotatorEl.classList.add('swap');
+      setTimeout(() => {
+        wi = (wi + 1) % words.length;
+        rotatorEl.textContent = words[wi];
+        rotatorEl.classList.remove('swap');
+      }, 350);
+    }, 2400);
+  }
+
   const stage = document.getElementById('icon3dStage');
   const tilt = document.getElementById('icon3dTilt');
   if (stage && tilt && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
