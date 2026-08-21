@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-08-21T12:08:01.089Z",
+        "reason": "Same as above, lowercase match variant (Google Fonts URL)"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "case-study-farmfresh.html"
+        ],
+        "createdAt": "2026-08-21T15:07:54.887Z",
+        "reason": "Claude: .pull is an editorial blockquote pull-quote (italic quote + cite), not a card — left border is standard pull-quote convention, not the card-side-tab AI tell the rule targets"
+      }
+    ]
+  }
+}

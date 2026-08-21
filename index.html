@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dnyaneshwari Mandape — Product Designer</title>
-<meta name="description" content="Dnyaneshwari Mandape — Product Designer focused on systems thinking, AI-assisted experiences, and human-centered design. Portfolio, case studies, resume.">
+<title>Dnyaneshwari Mandape — Senior Associate Designer</title>
+<meta name="description" content="Dnyaneshwari Mandape — Senior Associate Designer focused on systems thinking, AI-assisted experiences, and human-centered design. Portfolio, case studies, resume.">
 
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Dnyaneshwari Mandape — Product Designer">
-<meta property="og:description" content="Product Designer focused on systems thinking, AI-assisted experiences, and human-centered design.">
+<meta property="og:title" content="Dnyaneshwari Mandape — Senior Associate Designer">
+<meta property="og:description" content="Senior Associate Designer focused on systems thinking, AI-assisted experiences, and human-centered design.">
 <meta property="og:image" content="https://dnyaneshwari-mandape.github.io/assets/og-image.png">
 <meta property="og:url" content="https://dnyaneshwari-mandape.github.io/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Dnyaneshwari Mandape — Product Designer">
-<meta name="twitter:description" content="Product Designer focused on systems thinking, AI-assisted experiences, and human-centered design.">
+<meta name="twitter:title" content="Dnyaneshwari Mandape — Senior Associate Designer">
+<meta name="twitter:description" content="Senior Associate Designer focused on systems thinking, AI-assisted experiences, and human-centered design.">
 <meta name="twitter:image" content="https://dnyaneshwari-mandape.github.io/assets/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,44 +57,71 @@
   .editorial{font-family:'IBM Plex Sans',system-ui,sans-serif;}
   .mono{font-family:'JetBrains Mono',monospace;}
 
-  /* NAV */
+  /* NAV — floating pill dock */
   header{
-    position:sticky;top:0;z-index:50;
-    background:rgba(250,250,248,0.86);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
+    position:sticky;top:14px;z-index:50;
+    padding:0 32px;
   }
   nav{
     display:flex;align-items:center;justify-content:space-between;
-    padding:18px 0;
+    max-width:1180px;margin:0 auto;
+    padding:12px 12px 12px 22px;
+    background:rgba(250,250,248,0.86);
+    backdrop-filter:blur(10px);
+    border:1px solid var(--border);
+    border-radius:100px;
+    box-shadow:0 10px 30px rgba(23,23,23,0.06);
   }
-  .logo{font-family:'General Sans',sans-serif;font-weight:600;font-size:1.05rem;letter-spacing:-0.01em;}
-  .nav-links{display:flex;gap:32px;align-items:center;}
-  .nav-links a{font-size:0.92rem;color:var(--muted);transition:color .2s ease;}
+  .logo{font-family:'General Sans',sans-serif;font-weight:600;font-size:1.02rem;letter-spacing:-0.01em;}
+  .nav-links{display:flex;gap:28px;align-items:center;}
+  .nav-links a{font-size:0.9rem;color:var(--muted);transition:color .2s ease;}
   .nav-links a:hover{color:var(--text);}
   .nav-cta{
     background:var(--text);color:var(--bg);
-    padding:9px 18px;border-radius:var(--radius-sm);
+    padding:10px 20px;border-radius:100px;
     font-size:0.88rem;font-weight:600;
     transition:opacity .2s ease;
   }
   .nav-cta:hover{opacity:.82;}
 
-  /* HERO */
-  .hero{padding:80px 0 60px;position:relative;}
+  /* HERO — graph-paper texture, editorial not photographic */
+  .hero{
+    padding:72px 0 60px;position:relative;
+    background-image:
+      repeating-linear-gradient(0deg, var(--border) 0px, transparent 1px, transparent 42px),
+      repeating-linear-gradient(90deg, var(--border) 0px, transparent 1px, transparent 42px);
+    background-position:center top;
+    -webkit-mask-image:linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+    mask-image:linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+  }
   .hero-grid{display:grid;grid-template-columns:1fr 300px;gap:48px;align-items:center;}
+  .confetti{position:absolute;border-radius:50%;pointer-events:none;}
   .hero .tag{
     display:inline-flex;align-items:center;gap:8px;
     border:1px solid var(--border);border-radius:100px;
     padding:6px 14px;font-size:0.82rem;color:var(--muted);
-    margin-bottom:28px;background:var(--card);
+    margin-bottom:22px;background:var(--card);
   }
   .tag .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);}
+
+  /* sticker chips — playful accents, borrowed energy, brand-calm color */
+  .stickers{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+  .sticker{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:600;
+    letter-spacing:0.02em;padding:6px 12px;border-radius:8px;
+    background:var(--card);border:1px dashed var(--line, var(--border));
+    box-shadow:0 4px 12px rgba(23,23,23,0.05);
+  }
+  .sticker:nth-child(1){transform:rotate(-3deg);border-color:color-mix(in srgb, var(--blue) 45%, var(--border));color:var(--blue);}
+  .sticker:nth-child(2){transform:rotate(2deg);border-color:color-mix(in srgb, var(--teal) 45%, var(--border));color:var(--teal);}
+  .sticker i{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+
   .hero h1{
     font-family:'General Sans',sans-serif;
-    font-size:clamp(2rem,4.6vw,3.4rem);
-    font-weight:600;letter-spacing:-0.02em;line-height:1.15;
-    max-width:640px;
+    font-size:clamp(2.4rem,6vw,4.2rem);
+    font-weight:700;letter-spacing:-0.03em;line-height:1.04;
+    max-width:660px;
   }
   .accent-word{
     display:inline-block;color:var(--blue);
@@ -106,25 +133,35 @@
   }
   .hero p.sub{
     font-family:'IBM Plex Sans',sans-serif;
-    margin-top:16px;font-size:1.05rem;color:var(--muted);
+    margin-top:20px;font-size:1.12rem;color:var(--muted);
     max-width:520px;
   }
-  .hero .actions{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;}
+  .hero .actions{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap;}
   .btn{
-    padding:13px 24px;border-radius:var(--radius-sm);font-weight:600;font-size:0.94rem;
+    padding:15px 28px;border-radius:100px;font-weight:600;font-size:0.96rem;
     display:inline-flex;align-items:center;gap:8px;transition:transform .2s ease, opacity .2s ease, background .2s ease;
   }
-  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary{background:var(--text);color:var(--bg);}
   .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--text);}
   .btn:hover{transform:translateY(-2px);opacity:.92;}
 
-  /* HERO VISUAL: design tokens card */
+  /* HERO VISUAL: design tokens card — folded corner, like a pinned reference card */
   .tokens-card{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);
     padding:22px 22px 24px;box-shadow:0 10px 30px rgba(23,23,23,0.05);
     transition:transform .3s ease, box-shadow .3s ease;
+    position:relative;transform:rotate(1.2deg);overflow:hidden;
   }
-  .tokens-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(23,23,23,0.08);}
+  .tokens-card:hover{transform:rotate(1.2deg) translateY(-4px);box-shadow:0 16px 36px rgba(23,23,23,0.08);}
+  .tokens-card::after{
+    content:'';position:absolute;top:0;right:0;width:34px;height:34px;
+    background:linear-gradient(135deg, var(--surface) 50%, var(--card) 50%);
+    border-bottom:1px solid var(--border);border-left:1px solid var(--border);
+  }
+  .tokens-card::before{
+    content:'';position:absolute;top:12px;right:12px;width:9px;height:9px;
+    border-radius:50%;background:var(--coral);z-index:1;
+  }
   .tokens-head{
     display:flex;align-items:center;gap:8px;
     font-size:0.76rem;color:var(--muted);
@@ -158,40 +195,98 @@
     border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;
     margin-top:64px;
   }
-  .stat{background:var(--card);padding:26px 22px;}
-  .stat .num{font-family:'JetBrains Mono',monospace;font-size:1.7rem;font-weight:600;color:var(--amber);letter-spacing:-0.01em;}
+  .stat{background:var(--card);padding:28px 22px;border-top:3px solid var(--stat-color, var(--amber));}
+  .stat .num{font-family:'JetBrains Mono',monospace;font-size:2.1rem;font-weight:700;color:var(--stat-color, var(--amber));letter-spacing:-0.02em;}
   .stat .label{font-size:0.8rem;color:var(--muted);margin-top:6px;}
 
   /* SECTION HEADS */
   .section{padding:100px 0;}
   .section-head{margin-bottom:48px;}
-  .kicker{font-family:'JetBrains Mono',monospace;color:var(--blue);font-size:0.78rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;}
-  .section-head h2{font-family:'General Sans',sans-serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:600;letter-spacing:-0.02em;}
-  .section-head p{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);margin-top:12px;max-width:560px;font-size:1rem;}
+  .kicker{font-family:'JetBrains Mono',monospace;color:var(--blue);font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;}
+  .section-head h2{font-family:'General Sans',sans-serif;font-size:clamp(2.1rem,5vw,3rem);font-weight:700;letter-spacing:-0.03em;line-height:1.08;}
+  .section-head p{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);margin-top:14px;max-width:560px;font-size:1.02rem;}
 
-  /* PROJECTS */
-  .projects{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  /* FEATURED PROJECTS — real coded UI mockups, caption always visible */
+  .featured-projects{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px;}
   .project-card{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);
     overflow:hidden;transition:transform .25s ease, box-shadow .25s ease;
     display:flex;flex-direction:column;
   }
   .project-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(23,23,23,0.07);}
-  .thumb{
-    height:160px;position:relative;display:flex;align-items:center;justify-content:center;
+  .project-card:hover .mockup{transform:scale(1.03);}
+  .mockup-wrap{
+    height:220px;position:relative;overflow:hidden;
     background:var(--surface);border-bottom:1px solid var(--border);
   }
-  .thumb svg{width:44px;height:44px;}
-  .thumb .badge{
-    position:absolute;top:14px;left:14px;
+  .mockup{
+    position:absolute;inset:0;transition:transform .4s cubic-bezier(.2,.6,.2,1);
+    display:flex;align-items:center;justify-content:center;padding:18px;
+  }
+  .mockup .badge{
+    position:absolute;top:14px;left:14px;z-index:2;
     background:var(--card);border:1px solid var(--border);
     padding:5px 12px;border-radius:100px;font-size:0.72rem;font-weight:600;color:var(--muted);
   }
+  /* Element Store mock: header + product grid */
+  .mock-store{width:100%;max-width:230px;background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 20px rgba(23,23,23,.06);overflow:hidden;}
+  .mock-store .msbar{display:flex;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--border);}
+  .mock-store .msbar i{width:6px;height:6px;border-radius:50%;background:var(--border);}
+  .mock-store .msbar span{margin-left:auto;width:60px;height:8px;border-radius:4px;background:var(--surface);}
+  .mock-store .msgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px;}
+  .mock-store .mstile{background:var(--surface);border-radius:6px;padding:6px;}
+  .mock-store .mstile i{display:block;height:26px;border-radius:4px;background:var(--blue);opacity:.15;margin-bottom:5px;}
+  .mock-store .mstile span{display:block;height:5px;width:70%;border-radius:3px;background:var(--border);}
+  /* FarmFresh mock: phone header + hero + chips */
+  .mock-farm{width:150px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 20px rgba(23,23,23,.06);overflow:hidden;padding-bottom:8px;}
+  .mock-farm .mfbar{display:flex;justify-content:space-between;align-items:center;padding:9px 12px 6px;}
+  .mock-farm .mfbar i{width:20px;height:6px;border-radius:3px;background:var(--border);}
+  .mock-farm .mfbar i:last-child{width:16px;height:16px;border-radius:5px;background:var(--surface);}
+  .mock-farm .mfhero{margin:0 10px 8px;height:56px;border-radius:10px;background:linear-gradient(160deg,var(--teal),color-mix(in srgb, var(--teal) 60%, var(--card)));position:relative;}
+  .mock-farm .mfhero span{position:absolute;bottom:6px;left:8px;color:#fff;font-size:9px;font-weight:700;}
+  .mock-farm .mfchips{display:flex;gap:5px;padding:0 10px;}
+  .mock-farm .mfchips i{flex:1;height:18px;border-radius:5px;background:var(--surface);}
+  .mock-farm .mfchips i:last-child{background:var(--teal);opacity:.25;}
   .project-body{padding:22px;flex:1;display:flex;flex-direction:column;}
+  .project-body .ptitle-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
   .project-body .ptitle{font-family:'General Sans',sans-serif;font-size:1.1rem;font-weight:600;letter-spacing:-0.01em;}
+  .project-body .pyear{font-family:'JetBrains Mono',monospace;font-size:0.76rem;color:var(--muted);flex-shrink:0;}
   .project-body .prole{font-size:0.8rem;font-weight:600;margin-top:4px;}
   .project-body .pdesc{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.9rem;margin-top:10px;flex:1;}
   .project-body .plink{margin-top:16px;font-size:0.86rem;font-weight:600;color:var(--blue);display:inline-flex;align-items:center;gap:6px;}
+
+  /* MORE WORK — lighter-weight list, not competing with featured case studies */
+  .more-work{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--card);}
+  .mw-head{padding:16px 22px;border-bottom:1px solid var(--border);font-size:0.8rem;font-weight:600;color:var(--muted);letter-spacing:0.02em;}
+  .mw-row{
+    display:flex;align-items:center;gap:16px;padding:18px 22px;
+    border-bottom:1px solid var(--border);transition:background .2s ease;
+  }
+  .mw-row:last-child{border-bottom:none;}
+  .mw-row:hover{background:var(--surface);}
+  .mw-row .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .mw-row .mw-title{font-family:'General Sans',sans-serif;font-weight:600;font-size:0.96rem;width:230px;flex-shrink:0;}
+  .mw-row .mw-role{font-size:0.78rem;font-weight:600;width:170px;flex-shrink:0;}
+  .mw-row .mw-desc{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.86rem;}
+  @media (max-width:760px){
+    .mw-row{flex-wrap:wrap;}
+    .mw-row .mw-title,.mw-row .mw-role{width:auto;}
+  }
+
+  /* HOW I WORK */
+  .how-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .how-card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);
+    padding:26px;display:flex;flex-direction:column;transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .how-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(23,23,23,0.06);}
+  .how-card .how-num{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--muted);}
+  .how-card h3{font-family:'General Sans',sans-serif;font-size:1.08rem;font-weight:600;margin-top:10px;letter-spacing:-0.01em;}
+  .how-card p{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.92rem;margin-top:10px;flex:1;}
+  .how-card .how-proof{
+    margin-top:16px;padding-top:16px;border-top:1px solid var(--border);
+    font-size:0.86rem;font-weight:600;display:flex;align-items:center;gap:6px;
+  }
 
   /* EXPERIENCE */
   .timeline{border-left:1px solid var(--border);padding-left:36px;display:flex;flex-direction:column;gap:44px;}
@@ -222,6 +317,18 @@
   .ach-card h3{font-family:'General Sans',sans-serif;font-size:0.98rem;font-weight:600;margin-top:14px;}
   .ach-card p{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.86rem;margin-top:8px;}
 
+  /* FAQ */
+  .faq{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .faq details{background:var(--card);padding:20px 24px;}
+  .faq summary{
+    font-family:'General Sans',sans-serif;font-weight:600;font-size:1rem;
+    cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .faq summary::-webkit-details-marker{display:none;}
+  .faq summary::after{content:'+';font-family:'JetBrains Mono',monospace;font-size:1.2rem;color:var(--muted);transition:transform .2s ease;flex-shrink:0;}
+  .faq details[open] summary::after{transform:rotate(45deg);}
+  .faq p{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.92rem;margin-top:14px;max-width:640px;}
+
   /* CONTACT */
   .contact{
     background:var(--surface);
@@ -251,7 +358,8 @@
 
   @media (max-width:760px){
     .stats{grid-template-columns:1fr 1fr;}
-    .projects{grid-template-columns:1fr;}
+    .featured-projects{grid-template-columns:1fr;}
+    .how-grid{grid-template-columns:1fr;}
     .ach-grid{grid-template-columns:1fr;}
     .nav-links{display:none;}
     .contact{padding:44px 24px;}
@@ -268,6 +376,7 @@
       <div class="logo">Dnyaneshwari Mandape</div>
       <div class="nav-links">
         <a href="#work">Work</a>
+        <a href="#how-i-work">How I work</a>
         <a href="#experience">Experience</a>
         <a href="#achievements">Achievements</a>
         <a href="#contact">Contact</a>
@@ -282,8 +391,12 @@
     <div class="hero-grid">
       <div class="hero-content">
         <div class="tag"><span class="dot"></span> Open to new opportunities · Bengaluru, IN</div>
+        <div class="stickers" aria-hidden="true">
+          <span class="sticker"><i></i>Product Design</span>
+          <span class="sticker"><i></i>Design Systems</span>
+        </div>
         <h1>Hi, I'm Dnyaneshwari. I turn messy <span class="accent-word" id="rotatorWord">complex systems</span> into products people trust.</h1>
-        <p class="sub">Product Designer at Digit Insurance, Bengaluru — designing systems, not just screens.</p>
+        <p class="sub">Senior Associate Designer at Digit Insurance, Bengaluru — designing systems, not just screens.</p>
         <div class="actions">
           <a class="btn btn-primary" href="#work">View Work →</a>
           <a class="btn btn-secondary" href="mailto:sydnyaneshwari@gmail.com">Get in touch</a>
@@ -318,10 +431,10 @@
     </div>
 
     <div class="stats reveal-group">
-      <div class="stat reveal"><div class="num">6.5%</div><div class="label">Offer redemption uplift</div></div>
-      <div class="stat reveal"><div class="num">600%</div><div class="label">3D asset production scaled</div></div>
-      <div class="stat reveal"><div class="num">85/100</div><div class="label">System Usability Score</div></div>
-      <div class="stat reveal"><div class="num">60%</div><div class="label">Reduction in click paths</div></div>
+      <div class="stat reveal" style="--stat-color:var(--blue);"><div class="num">6.5%</div><div class="label">Offer redemption uplift</div></div>
+      <div class="stat reveal" style="--stat-color:var(--coral);"><div class="num">600%</div><div class="label">3D asset production scaled</div></div>
+      <div class="stat reveal" style="--stat-color:var(--lavender);"><div class="num">85/100</div><div class="label">System Usability Score</div></div>
+      <div class="stat reveal" style="--stat-color:var(--teal);"><div class="num">60%</div><div class="label">Reduction in click paths</div></div>
     </div>
   </div>
 </section>
@@ -333,14 +446,27 @@
       <h2>Case studies & projects</h2>
       <p>0-to-1 products, design systems, and AI-led UX across insurance, e-commerce, and social platforms.</p>
     </div>
-    <div class="projects reveal-group">
+    <div class="featured-projects reveal-group">
 
       <a class="project-card reveal" href="case-study-element-store.html">
-        <div class="thumb"><span class="badge">Case Study</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <div class="mockup-wrap">
+          <span class="badge">Case Study</span>
+          <div class="mockup">
+            <div class="mock-store">
+              <div class="msbar"><i></i><i></i><i></i><span></span></div>
+              <div class="msgrid">
+                <div class="mstile"><i></i><span></span></div>
+                <div class="mstile"><i></i><span></span></div>
+                <div class="mstile"><i></i><span></span></div>
+                <div class="mstile"><i></i><span></span></div>
+                <div class="mstile"><i></i><span></span></div>
+                <div class="mstile"><i></i><span></span></div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="project-body">
-          <div class="ptitle">Element Store</div>
+          <div class="ptitle-row"><div class="ptitle">Element Store</div><span class="pyear">Figma · 2026</span></div>
           <div class="prole" style="color:var(--blue);">E-commerce · UX/UI Design</div>
           <p class="pdesc">Full case study walkthrough of the Element Store platform — research, flows, and final UI.</p>
           <span class="plink">Read case study →</span>
@@ -348,71 +474,103 @@
       </a>
 
       <a class="project-card reveal" href="case-study-farmfresh.html">
-        <div class="thumb"><span class="badge">Concept · Swiggy Instamart</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.6"><path d="M12 3c4 3 6 6 6 9a6 6 0 1 1-12 0c0-3 2-6 6-9z"/></svg>
+        <div class="mockup-wrap">
+          <span class="badge">Concept · Swiggy Instamart</span>
+          <div class="mockup">
+            <div class="mock-farm">
+              <div class="mfbar"><i></i><i></i></div>
+              <div class="mfhero"><span>FarmFresh</span></div>
+              <div class="mfchips"><i></i><i></i><i></i><i></i></div>
+            </div>
+          </div>
         </div>
         <div class="project-body">
-          <div class="ptitle">Swiggy FarmFresh</div>
+          <div class="ptitle-row"><div class="ptitle">Swiggy FarmFresh</div><span class="pyear">Figma · 2026</span></div>
           <div class="prole" style="color:var(--teal);">0→1 Concept · Product Design</div>
           <p class="pdesc">A trust-first premium produce vertical for Instamart — 14 screens spanning discovery, a verified farmer and farm journey, a computed Freshness Score, and checkout.</p>
           <span class="plink">Read case study →</span>
         </div>
       </a>
 
-      <div class="project-card reveal">
-        <div class="thumb"><span class="badge">Digit Insurance</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.6"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>
-        </div>
-        <div class="project-body">
-          <div class="ptitle">Gamified "Get Rewards" FAB</div>
-          <div class="prole" style="color:var(--amber);">Product Design · Motion</div>
-          <p class="pdesc">Interactive unboxing animation flow for premium discounts, lifting offer redemption rate by 6.5%.</p>
-        </div>
+    </div>
+
+    <div class="more-work reveal">
+      <div class="mw-head">More work — full write-ups coming soon</div>
+
+      <div class="mw-row">
+        <span class="dot" style="background:var(--amber);"></span>
+        <span class="mw-title">Gamified "Get Rewards" FAB</span>
+        <span class="mw-role" style="color:var(--amber);">Digit Insurance · Motion</span>
+        <span class="mw-desc">Interactive unboxing animation for premium discounts — lifted offer redemption 6.5%.</span>
       </div>
 
-      <div class="project-card reveal">
-        <div class="thumb"><span class="badge">Digit Insurance</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--lavender)" stroke-width="1.6"><path d="M12 2l9 5v10l-9 5-9-5V7l9-5z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/></svg>
-        </div>
-        <div class="project-body">
-          <div class="ptitle">3D Visual Language for Insurance</div>
-          <div class="prole" style="color:var(--lavender);">Design System · 3D</div>
-          <p class="pdesc">Owned UI modernization across 5 core touchpoints — 60+ 3D assets, driving a 3.6% lift in widget CTR.</p>
-        </div>
+      <div class="mw-row">
+        <span class="dot" style="background:var(--lavender);"></span>
+        <span class="mw-title">3D Visual Language for Insurance</span>
+        <span class="mw-role" style="color:var(--lavender);">Digit Insurance · Design System</span>
+        <span class="mw-desc">UI modernization across 5 touchpoints, 60+ 3D assets — 3.6% lift in widget CTR.</span>
       </div>
 
-      <div class="project-card reveal">
-        <div class="thumb"><span class="badge">Personal Project</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
-        </div>
-        <div class="project-body">
-          <div class="ptitle">Parametric 3D Iconology Engine</div>
-          <div class="prole" style="color:var(--coral);">Design Engineering</div>
-          <p class="pdesc">JSON-driven parametric 3D agent adapting spatial UIs across layouts — scaled 3D production by 600%.</p>
-        </div>
+      <div class="mw-row">
+        <span class="dot" style="background:var(--coral);"></span>
+        <span class="mw-title">Parametric 3D Iconology Engine</span>
+        <span class="mw-role" style="color:var(--coral);">Design Engineering</span>
+        <span class="mw-desc">JSON-driven parametric 3D agent adapting spatial UIs — scaled 3D production 600%.</span>
       </div>
 
-      <div class="project-card reveal">
-        <div class="thumb"><span class="badge">Concept</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.6"><path d="M4 4h16v12H8l-4 4V4z"/></svg>
-        </div>
-        <div class="project-body">
-          <div class="ptitle">AI Shopping Assistant</div>
-          <div class="prole" style="color:var(--blue);">Conversational UX</div>
-          <p class="pdesc">End-to-end AI chatbot journey cutting click paths by 60%, scoring 85/100 on System Usability Scale.</p>
-        </div>
+      <div class="mw-row">
+        <span class="dot" style="background:var(--blue);"></span>
+        <span class="mw-title">AI Shopping Assistant</span>
+        <span class="mw-role" style="color:var(--blue);">Conversational UX</span>
+        <span class="mw-desc">End-to-end AI chatbot journey cutting click paths 60%, scoring 85/100 SUS.</span>
       </div>
 
-      <div class="project-card reveal">
-        <div class="thumb"><span class="badge">UX Redesign</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></svg>
-        </div>
-        <div class="project-body">
-          <div class="ptitle">LinkedIn Semiotics</div>
-          <div class="prole" style="color:var(--teal);">Information Architecture</div>
-          <p class="pdesc">Semiotic analysis & IA restructure improving task discoverability by up to 11%.</p>
-        </div>
+      <div class="mw-row">
+        <span class="dot" style="background:var(--teal);"></span>
+        <span class="mw-title">LinkedIn Semiotics</span>
+        <span class="mw-role" style="color:var(--teal);">Information Architecture</span>
+        <span class="mw-desc">Semiotic analysis & IA restructure — task discoverability up to 11%.</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how-i-work" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">Approach</div>
+      <h2>How I work</h2>
+      <p>Four capabilities, each backed by a shipped result — not a tool list.</p>
+    </div>
+    <div class="how-grid reveal-group">
+
+      <a class="how-card reveal" href="case-study-element-store.html" style="text-decoration:none;">
+        <div class="how-num">01 · Systems thinking</div>
+        <h3>Turn scattered UI into one design system</h3>
+        <p>Rebuilt Element Store's fragmented UI into a consistent, reusable component library — research through final UI.</p>
+        <div class="how-proof" style="color:var(--blue);">Element Store →</div>
+      </a>
+
+      <a class="how-card reveal" href="case-study-farmfresh.html" style="text-decoration:none;">
+        <div class="how-num">02 · 0→1 product design</div>
+        <h3>Take a concept from research to shippable flow</h3>
+        <p>Designed a trust-first produce vertical for Swiggy Instamart end-to-end — 14 screens, discovery to checkout.</p>
+        <div class="how-proof" style="color:var(--teal);">Swiggy FarmFresh →</div>
+      </a>
+
+      <a class="how-card reveal" href="#work" style="text-decoration:none;">
+        <div class="how-num">03 · Motion & interaction</div>
+        <h3>Use motion to drive a measurable outcome</h3>
+        <p>Designed an unboxing-style reward animation for Digit Insurance that lifted offer redemption by 6.5%.</p>
+        <div class="how-proof" style="color:var(--amber);">Get Rewards FAB →</div>
+      </a>
+
+      <a class="how-card reveal" href="#work" style="text-decoration:none;">
+        <div class="how-num">04 · AI-accelerated production</div>
+        <h3>Use AI tooling to scale craft, not replace it</h3>
+        <p>Built a JSON-driven parametric 3D engine that scaled Digit's icon and asset production by 600%.</p>
+        <div class="how-proof" style="color:var(--coral);">3D Iconology Engine →</div>
+      </a>
 
     </div>
   </div>
@@ -426,7 +584,7 @@
     </div>
     <div class="timeline reveal-group">
       <div class="tl-item reveal">
-        <div class="role">Design Trainee, Digit Insurance</div>
+        <div class="role">Senior Associate Designer, Digit Insurance</div>
         <div class="meta">Bengaluru, KA · July 2025 – Current</div>
         <ul>
           <li>Designed a gamified "Get Rewards" FAB with unboxing animation, lifting offer redemption 6.5%.</li>
@@ -503,6 +661,33 @@
         <h3>Gold Medalist — NSUT Women Kabaddi</h3>
         <p>IIT BHU (Oct 2023), DTU (Apr 2023), IIT Kanpur (Apr 2022).</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">FAQ</div>
+      <h2>Before you reach out</h2>
+    </div>
+    <div class="faq reveal-group">
+      <details class="reveal">
+        <summary>What kind of roles are you looking for?</summary>
+        <p>Product design or senior graphic/brand design roles — 0→1 product work, design systems, or brand identity. Open to full-time and select freelance/contract work.</p>
+      </details>
+      <details class="reveal">
+        <summary>Are you open to relocation or remote work?</summary>
+        <p>Based in Bengaluru, open to remote-first teams and relocation for the right role.</p>
+      </details>
+      <details class="reveal">
+        <summary>What's your notice period?</summary>
+        <p>Currently employed at Digit Insurance — notice period applies. Happy to discuss timelines directly.</p>
+      </details>
+      <details class="reveal">
+        <summary>Do you design end-to-end, or hand off to engineering?</summary>
+        <p>Both. I take work from research through final UI and design systems, and I'm comfortable handing off with detailed specs, or working closely with engineering through build.</p>
+      </details>
     </div>
   </div>
 </section>
