@@ -1325,7 +1325,7 @@
     });
 
     const clock = new THREE.Clock();
-    let mixer = null; // set once the real model's baked animation loads
+    let mixer = null; // set once assets/avatar.glb's baked clip loads
 
     function animate() {
       requestAnimationFrame(animate);
@@ -1335,8 +1335,8 @@
       if (mixer) {
         if (!reduceMotion) mixer.update(delta);
       } else if (!reduceMotion) {
-        // Placeholder-only idle motion; the real model's own animation clip
-        // handles this once it loads, so this branch stops applying then.
+        // Placeholder-only idle motion; once the real clip is playing it's
+        // driving the whole figure, so this branch stops applying then.
         armL.rotation.set(0.1, 0, 0.15);
         armR.rotation.set(0.1, 0, -0.15);
         figure.rotation.y = Math.sin(t * 0.4) * 0.1;
@@ -1380,12 +1380,12 @@
       scene.add(model);
       applyHoloMaterial(model);
 
-      // Play the file's own baked animation instead of hand-posing bones
+      // Play the file's own baked animation — the full clip, looping.
       if (gltf.animations && gltf.animations.length) {
         mixer = new THREE.AnimationMixer(model);
         const clip = gltf.animations.find((a) => /idle/i.test(a.name)) || gltf.animations[0];
         mixer.clipAction(clip).play();
-        if (reduceMotion) mixer.update(0); // paint the first frame, then stay still
+        if (reduceMotion) mixer.update(0); // paint the first frame only, then stay still
       }
     }, undefined, () => { /* no avatar.glb yet — placeholder figure stays */ });
   }
