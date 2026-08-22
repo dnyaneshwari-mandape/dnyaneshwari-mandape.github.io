@@ -1,0 +1,466 @@
+<title>Element Library — Product Design Case Study</title>
+<style>
+  :root {
+    --paper: #ffffff;
+    --paper-soft: #f5eefb;
+    --panel: #ffffff;
+    --ink: #241736;
+    --ink-soft: #6d5f82;
+    --line: #e6dbf0;
+    --line-strong: #c7aee0;
+    --blue: #6a1b9a;
+    --blue-soft: #e1bee7;
+    --redline: #c2185b;
+    --redline-soft: #fbe3ee;
+    --shadow: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #140c22;
+      --paper-soft: #1c1330;
+      --panel: #19102b;
+      --ink: #f1e9fb;
+      --ink-soft: #a998c2;
+      --line: #362548;
+      --line-strong: #4d3868;
+      --blue: #c398e8;
+      --blue-soft: #2c1a45;
+      --redline: #ff6fa8;
+      --redline-soft: #3a1626;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #140c22; --paper-soft: #1c1330; --panel: #19102b;
+    --ink: #f1e9fb; --ink-soft: #a998c2; --line: #362548; --line-strong: #4d3868;
+    --blue: #c398e8; --blue-soft: #2c1a45; --redline: #ff6fa8; --redline-soft: #3a1626;
+  }
+  :root[data-theme="light"] {
+    --paper: #ffffff; --paper-soft: #f5eefb; --panel: #ffffff;
+    --ink: #241736; --ink-soft: #6d5f82; --line: #e6dbf0; --line-strong: #c7aee0;
+    --blue: #6a1b9a; --blue-soft: #e1bee7; --redline: #c2185b; --redline-soft: #fbe3ee;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(1100px 620px at 50% -140px, color-mix(in srgb, var(--blue-soft) 65%, transparent), transparent 70%),
+      linear-gradient(var(--paper), var(--paper)),
+      repeating-linear-gradient(0deg, color-mix(in srgb, var(--line) 55%, transparent) 0px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(90deg, color-mix(in srgb, var(--line) 55%, transparent) 0px, transparent 1px, transparent 40px);
+    background-blend-mode: normal;
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .disp {
+    font-family: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, Menlo, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+  .mono { font-family: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, Menlo, monospace; }
+  .tag {
+    font-family: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  a { color: var(--blue); }
+
+  .frame { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .col { display: grid; grid-template-columns: 84px 1fr; }
+  @media (max-width: 760px) { .col { grid-template-columns: 1fr; } }
+
+  /* ---------- ruler rail ---------- */
+  .rail {
+    position: sticky; top: 0; align-self: start; height: 100vh;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 20px 0;
+  }
+  @media (max-width: 760px) { .rail { display: none; } }
+  .rail .tick { display: flex; align-items: center; gap: 6px; padding-left: 14px; }
+  .rail .tick::before { content: ""; width: 10px; height: 1px; background: var(--line-strong); }
+  .rail .tick span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 10px; letter-spacing: 0.1em; color: var(--ink-soft); font-family: ui-monospace, monospace; }
+
+  /* ---------- top strip ---------- */
+  .strip {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 24px; border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  /* ---------- hero / title block ---------- */
+  .hero { padding: 64px 0 40px; position: relative; }
+  .hero::before {
+    content: "";
+    position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+    width: 900px; max-width: 140vw; height: 420px;
+    background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--blue) 22%, transparent), transparent 72%);
+    pointer-events: none; z-index: -1;
+  }
+  .grad-strip { display: flex; gap: 6px; margin-top: 30px; max-width: 420px; }
+  .grad-strip span { flex: 1; height: 10px; border-radius: 3px; }
+  .hero-grid { display: grid; grid-template-columns: 1.3fr 0.9fr; gap: 40px; align-items: end; }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+  .eyebrow { color: var(--blue); font-size: 12px; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+  .eyebrow::before { content: "+"; }
+  .hero h1 { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.02; }
+  .hero .pitch { margin-top: 20px; max-width: 560px; font-size: 19px; color: var(--ink-soft); }
+
+  .titleblock {
+    border: 1px solid var(--line-strong);
+    background: var(--panel);
+  }
+  .titleblock .tb-head { padding: 10px 14px; border-bottom: 1px solid var(--line-strong); }
+  .titleblock .tb-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); }
+  .titleblock .tb-row:last-child { border-bottom: none; }
+  .titleblock .tb-cell { padding: 12px 14px; border-right: 1px solid var(--line); }
+  .titleblock .tb-cell:last-child { border-right: none; }
+  .titleblock .tb-val { font-size: 14.5px; margin-top: 5px; }
+
+  /* ---------- sheet frame w/ crosshair registration marks ---------- */
+  .sheet { position: relative; border: 1px solid var(--line); background: var(--panel); }
+  .sheet::before, .sheet::after {
+    content: ""; position: absolute; width: 9px; height: 9px;
+    background:
+      linear-gradient(var(--blue), var(--blue)) center / 1px 9px no-repeat,
+      linear-gradient(var(--blue), var(--blue)) center / 9px 1px no-repeat;
+  }
+  .sheet::before { top: -5px; left: -5px; }
+  .sheet::after { bottom: -5px; right: -5px; }
+
+  /* ---------- sections ---------- */
+  section.block { padding: 60px 24px 60px 40px; border-bottom: 1px solid var(--line); }
+  @media (max-width: 760px) { section.block { padding-left: 24px; } }
+  section.block:last-of-type { border-bottom: none; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 30px; }
+  .sec-head .sheetno {
+    font-family: ui-monospace, monospace; font-size: 12px; color: var(--blue);
+    border: 1px solid var(--blue); padding: 3px 8px;
+  }
+  .sec-head h2 { font-family: ui-monospace, monospace; font-size: 24px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .lede { font-size: 19px; max-width: 660px; }
+  .sub { color: var(--ink-soft); max-width: 620px; }
+
+  ul.punch { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 4px; max-width: 680px; }
+  ul.punch li { padding: 12px 0 12px 20px; border-top: 1px dashed var(--line); position: relative; }
+  ul.punch li::before { content: "›"; position: absolute; left: 0; color: var(--blue); font-family: ui-monospace, monospace; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .chip { border: 1px solid var(--line-strong); padding: 7px 12px; font-family: ui-monospace, monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); }
+
+  .stat-grid { margin-top: 34px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+  .stat { padding: 18px 18px 20px; border-top: 2px solid var(--blue); }
+  .stat .num { font-family: ui-monospace, monospace; font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stat .cap { margin-top: 8px; font-size: 13px; color: var(--ink-soft); }
+
+  /* ---------- schematic chain ---------- */
+  .chain { margin-top: 40px; display: flex; align-items: center; overflow-x: auto; padding-bottom: 8px; }
+  .chain .node { flex: 1 0 155px; border: 1px solid var(--line-strong); background: var(--panel); padding: 16px 14px; position: relative; }
+  .chain .node.final { background: linear-gradient(135deg, var(--blue), color-mix(in srgb, var(--blue) 55%, #2d0a45)); border-color: var(--blue); color: #fff; }
+  .chain .node.final .tag, .chain .node.final .d { color: color-mix(in srgb, #fff 78%, transparent); }
+  .chain .node .t { font-family: ui-monospace, monospace; font-weight: 700; font-size: 14px; text-transform: uppercase; margin-top: 6px; }
+  .chain .node .d { font-size: 12.5px; color: var(--ink-soft); margin-top: 6px; }
+  .chain .trace { flex: 0 0 26px; height: 1px; background: var(--line-strong); position: relative; }
+  .chain .trace::after { content: ""; position: absolute; right: 0; top: -3px; width: 6px; height: 6px; border-top: 1px solid var(--line-strong); border-right: 1px solid var(--line-strong); transform: rotate(45deg); }
+
+  /* ---------- flow ---------- */
+  .flow-step { margin-top: 56px; }
+  .flow-step:first-child { margin-top: 36px; }
+  .flow-head { display: flex; align-items: center; gap: 12px; }
+  .flow-num { font-family: ui-monospace, monospace; font-size: 12px; color: var(--blue); border: 1px solid var(--blue); width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+  .flow-head h3 { font-family: ui-monospace, monospace; font-size: 20px; text-transform: uppercase; }
+  .flow-desc { margin-top: 10px; max-width: 660px; color: var(--ink-soft); }
+
+  .exhibit { margin-top: 40px; margin-left: 6px; margin-right: 6px; }
+  .exhibit-cap { display: flex; justify-content: space-between; padding: 10px 16px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--ink-soft); }
+  .exhibit-cap .mono { color: var(--blue); }
+
+  .screen { padding: 20px; }
+  .screen-bar { display: flex; gap: 14px; padding-bottom: 14px; margin-bottom: 18px; border-bottom: 1px solid var(--line); font-family: ui-monospace, monospace; font-size: 10.5px; color: var(--ink-soft); }
+
+  .cfg-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 22px; }
+  @media (max-width: 640px) { .cfg-grid { grid-template-columns: 1fr; } }
+  .field { margin-bottom: 16px; }
+  .field .tag { display: block; margin-bottom: 6px; }
+  .fake-select { border: 1px solid var(--line-strong); background: var(--paper-soft); padding: 9px 12px; font-size: 13.5px; }
+  .slider-track { height: 4px; background: var(--line); position: relative; margin-top: 12px; }
+  .slider-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--blue); }
+  .slider-fill::after { content: ""; position: absolute; right: -4px; top: -4px; width: 12px; height: 12px; border: 2px solid var(--blue); background: var(--panel); border-radius: 50%; }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--ink-soft); margin-top: 8px; font-family: ui-monospace, monospace; }
+  .lock-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .lock-chip { font-size: 11.5px; padding: 5px 10px; border: 1px solid var(--blue); color: var(--blue); font-family: ui-monospace, monospace; }
+  .prompt-panel { background: var(--paper-soft); border: 1px solid var(--line); padding: 16px; font-size: 12px; line-height: 1.8; height: 100%; }
+  .prompt-panel .plabel { color: var(--ink-soft); margin-bottom: 10px; }
+  .prompt-panel .k { color: var(--blue); }
+
+  .curate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  @media (max-width: 640px) { .curate-grid { grid-template-columns: repeat(2, 1fr); } }
+  .var-card { background: var(--panel); }
+  .var-thumb { aspect-ratio: 4/3; position: relative; }
+  .var-thumb::after { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(45deg, color-mix(in srgb, #000 6%, transparent) 0 1px, transparent 1px 7px); }
+  .var-meta { padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; font-family: ui-monospace, monospace; }
+  .badge { font-size: 10px; padding: 3px 7px; letter-spacing: 0.04em; text-transform: uppercase; border: 1px solid; }
+  .badge.ok { color: var(--blue); border-color: var(--blue); }
+  .badge.bad { color: var(--redline); border-color: var(--redline); }
+  .reason { font-size: 10.5px; color: var(--redline); padding: 0 10px 8px; font-family: ui-monospace, monospace; }
+
+  .export-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 640px) { .export-grid { grid-template-columns: 1fr; } }
+  .meta-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+  .meta-row .k { color: var(--ink-soft); }
+  .fmt-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .fmt-chip { border: 1px solid var(--line-strong); padding: 6px 12px; font-size: 12px; font-family: ui-monospace, monospace; }
+  .fmt-chip.on { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .export-btn { margin-top: 18px; background: linear-gradient(135deg, var(--blue), color-mix(in srgb, var(--blue) 55%, #2d0a45)); color: #fff; border: none; padding: 12px 20px; font-family: ui-monospace, monospace; text-transform: uppercase; font-size: 12px; letter-spacing: 0.08em; }
+
+  /* ---------- gauge bars ---------- */
+  .bar-block { margin-top: 20px; }
+  .bar-label { display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 8px; margin-top: 26px; }
+  .bar-label .v { font-variant-numeric: tabular-nums; color: var(--blue); font-family: ui-monospace, monospace; }
+  .bar-pair { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .bar-track { flex: 1; height: 18px; background-image: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 12px); border: 1px solid var(--line); position: relative; }
+  .bar-fill { height: 100%; background: var(--line-strong); }
+  .bar-fill.after { background: var(--blue); }
+  .bar-tag { font-size: 10.5px; width: 46px; color: var(--ink-soft); font-family: ui-monospace, monospace; }
+
+  .pull { font-family: ui-monospace, monospace; font-size: 21px; line-height: 1.55; text-transform: none; letter-spacing: 0; max-width: 740px; }
+  .next-list { margin-top: 30px; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .next-item { display: flex; gap: 16px; align-items: baseline; padding: 16px; background: var(--panel); }
+  .next-item .nn { font-family: ui-monospace, monospace; color: var(--blue); font-size: 12px; flex: 0 0 30px; }
+
+  footer { padding: 36px 24px 60px; text-align: center; }
+</style>
+
+<div class="strip">
+  <span class="tag">Element Library</span>
+  <span class="tag mono" style="color:var(--blue);">SHEET INDEX 01–06</span>
+</div>
+
+<div class="col">
+  <div class="rail">
+    <div class="tick"><span>EL — CASE STUDY</span></div>
+    <div class="tick"><span>SCALE — NOT TO SCALE</span></div>
+  </div>
+
+  <div>
+    <header class="hero frame">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow tag">Product Design · Enterprise SaaS · Generative AI</div>
+          <h1 class="disp">Element Library</h1>
+          <p class="pitch">A taxonomy-driven design system that stands between brand teams and the AI generator — forcing every asset to inherit from approved elements before it's allowed to exist.</p>
+          <div class="grad-strip">
+            <span style="background:color-mix(in srgb, var(--blue-soft) 60%, var(--paper));"></span>
+            <span style="background:color-mix(in srgb, var(--blue-soft) 85%, var(--blue) 15%);"></span>
+            <span style="background:color-mix(in srgb, var(--blue-soft) 40%, var(--blue) 60%);"></span>
+            <span style="background:color-mix(in srgb, var(--blue) 75%, var(--blue-soft) 25%);"></span>
+            <span style="background:var(--blue);"></span>
+            <span style="background:color-mix(in srgb, var(--blue) 80%, #000 20%);"></span>
+          </div>
+        </div>
+        <div class="titleblock">
+          <div class="tb-head tag">Project Record</div>
+          <div class="tb-row">
+            <div class="tb-cell"><span class="tag">Role</span><div class="tb-val">Senior Associate Designer<br>0 → 1, solo design</div></div>
+            <div class="tb-cell"><span class="tag">Timeline</span><div class="tb-val">Jan – May 2026<br>5 months</div></div>
+          </div>
+          <div class="tb-row">
+            <div class="tb-cell"><span class="tag">Platform</span><div class="tb-val">Web · Desktop<br>B2B SaaS, enterprise</div></div>
+            <div class="tb-cell"><span class="tag">Team</span><div class="tb-val">1 PM · 4 Eng<br>1 ML engineer</div></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="frame">
+
+      <section class="block" id="problem">
+        <div class="sec-head"><span class="sheetno">01</span><h2>The Problem</h2></div>
+        <p class="lede">Every enterprise marketing team was pointing generic image models at their brand — and getting brand-shaped noise back.</p>
+        <p class="sub">Generation was fast. Compliance wasn't. Nothing stopped the model from inventing a logo mark, blending two competitors' color palettes, or rendering a mascot with the wrong proportions. Brand teams weren't creating with AI — they were <em>policing</em> it, one re-roll at a time.</p>
+        <ul class="punch">
+          <li><strong>No shared vocabulary</strong> between what "on-brand" meant to a designer and what a prompt string meant to a model.</li>
+          <li><strong>No memory.</strong> Every generation started from zero — the model had no concept of "approved," only what it inferred from text.</li>
+          <li><strong>No accountability trail.</strong> When a flagged asset shipped anyway, no one could trace which prompt, seed, or seed of a seed caused it.</li>
+        </ul>
+      </section>
+
+      <section class="block" id="discovery">
+        <div class="sec-head"><span class="sheetno">02</span><h2>Discovery &amp; Research</h2></div>
+        <p class="lede">Five weeks embedded with brand and marketing ops teams before a single screen was drawn.</p>
+        <div class="chip-row">
+          <span class="chip">34 stakeholder interviews · 6 brand teams</span>
+          <span class="chip">Journey mapping · asset request pipeline</span>
+          <span class="chip">API cost &amp; usage audit · 90 days of logs</span>
+          <span class="chip">Comparative brand-compliance audit</span>
+        </div>
+        <div class="stat-grid">
+          <div class="stat"><div class="num mono">6.2×</div><div class="cap">average "re-roll" count before a marketer got one usable asset</div></div>
+          <div class="stat"><div class="num mono">61%</div><div class="cap">of AI-generated assets rejected at brand review, most often for palette or logo drift</div></div>
+          <div class="stat"><div class="num mono">$17.36</div><div class="cap">true compute cost per <em>approved</em> asset, once re-rolls were counted</div></div>
+          <div class="stat"><div class="num mono">3.4 days</div><div class="cap">average cycle time from request to a brand-approved file</div></div>
+        </div>
+        <p class="sub" style="margin-top:30px;">The API cost audit was the turning point: engineering saw generation as cheap per-call, but finance saw the <em>re-roll tax</em> — compute spent regenerating what a constraint system could have gotten right the first time. That reframed the project from "an image tool" to "a compliance layer."</p>
+      </section>
+
+      <section class="block" id="strategy">
+        <div class="sec-head"><span class="sheetno">03</span><h2>Design Strategy &amp; System Logic</h2></div>
+        <p class="lede">Treat every brand asset like a component, not a picture — and treat the prompt as its build target.</p>
+        <p class="sub">Graphic design gave me the eye for what "on-brand" looks like. Product design meant translating that eye into a machine-readable hierarchy — the same instinct that shaped Atomic Design, applied to a prompt instead of a UI. Nothing generates until it can trace a lineage back to an approved primitive.</p>
+
+        <div class="chain">
+          <div class="node"><div class="tag">01</div><div class="t">Primitives</div><div class="d">Color tokens, logo lockups, type styles — the atoms. Locked by brand ops, not editable downstream.</div></div>
+          <div class="trace"></div>
+          <div class="node"><div class="tag">02</div><div class="t">Elements</div><div class="d">Approved components built from primitives — icon sets, textures, photographic treatments.</div></div>
+          <div class="trace"></div>
+          <div class="node"><div class="tag">03</div><div class="t">Constraints</div><div class="d">Style weights and exclusion rules — what the model is allowed to vary, and what it never touches.</div></div>
+          <div class="trace"></div>
+          <div class="node"><div class="tag">04</div><div class="t">Blueprint</div><div class="d">The assembled system prompt — every field above compiled into one generation contract.</div></div>
+          <div class="trace"></div>
+          <div class="node final"><div class="tag">05</div><div class="t">Generation</div><div class="d">The model runs inside the blueprint's walls — variation, not invention.</div></div>
+        </div>
+      </section>
+
+      <section class="block" id="solution">
+        <div class="sec-head"><span class="sheetno">04</span><h2>The Solution</h2></div>
+        <p class="lede">Three screens, one contract: Configure the blueprint, Curate what it produces, Export what passes.</p>
+
+        <div class="flow-step">
+          <div class="flow-head"><span class="flow-num">1</span><h3>Configure</h3></div>
+          <p class="flow-desc">The builder form is a UI skin over the blueprint. Every dropdown, slider, and locked chip writes directly into the prompt fields shown live on the right — so a marketer sees the machine contract they're actually creating.</p>
+          <div class="sheet exhibit">
+            <div class="screen">
+              <div class="screen-bar"><span>EL / CONFIGURE.V3</span></div>
+              <div class="cfg-grid">
+                <div>
+                  <div class="field"><span class="tag">Brand Entity</span><div class="fake-select">Northwind Financial — Retail Line ▾</div></div>
+                  <div class="field"><span class="tag">Asset Type</span><div class="fake-select">Paid Social · Static, 1080×1350 ▾</div></div>
+                  <div class="field"><span class="tag">Style Weight — Photographic ↔ Illustrated</span><div class="slider-track"><div class="slider-fill" style="width:32%;"></div></div><div class="slider-labels"><span>PHOTO</span><span>ILLUST</span></div></div>
+                  <div class="field"><span class="tag">Style Weight — Minimal ↔ Bold</span><div class="slider-track"><div class="slider-fill" style="width:68%;"></div></div><div class="slider-labels"><span>MINIMAL</span><span>BOLD</span></div></div>
+                  <div class="field"><span class="tag">Locked Elements (from taxonomy)</span>
+                    <div class="lock-chips">
+                      <span class="lock-chip">EL‑002 · logotype</span>
+                      <span class="lock-chip">EL‑014 · core palette</span>
+                      <span class="lock-chip">type.headline</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="prompt-panel mono">
+                  <div class="plabel">// compiled blueprint — live</div>
+                  <div><span class="k">entity:</span> northwind_financial.retail</div>
+                  <div><span class="k">canvas:</span> 1080x1350, paid_social</div>
+                  <div><span class="k">primitives.locked:</span> [EL‑002, EL‑014, type.headline]</div>
+                  <div><span class="k">style.photo_illust:</span> 0.32</div>
+                  <div><span class="k">style.minimal_bold:</span> 0.68</div>
+                  <div><span class="k">constraints.exclude:</span> [off_palette, logo_variant, mascot_drift]</div>
+                  <div><span class="k">variations:</span> 6</div>
+                </div>
+              </div>
+            </div>
+            <div class="exhibit-cap"><span>Fig. 01 — Builder form, mapped to backend prompt fields</span><span class="mono">01/03</span></div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-head"><span class="flow-num">2</span><h3>Curate</h3></div>
+          <p class="flow-desc">Every variation lands in staging pre-tagged by an automated compliance pass — palette distance, logo integrity, layout bounds — before a human ever looks. Marketers triage, they don't inspect from scratch.</p>
+          <div class="sheet exhibit">
+            <div class="screen">
+              <div class="screen-bar"><span>EL / CURATE.V3</span></div>
+              <div class="curate-grid">
+                <div class="var-card"><div class="var-thumb" style="background:#dfe6f5;"></div><div class="var-meta"><span>V‑01</span><span class="badge ok">Verified</span></div></div>
+                <div class="var-card"><div class="var-thumb" style="background:#d3ddf2;"></div><div class="var-meta"><span>V‑02</span><span class="badge ok">Verified</span></div></div>
+                <div class="var-card"><div class="var-thumb" style="background:#eadfce;"></div><div class="var-meta"><span>V‑03</span><span class="badge bad">Flagged</span></div><div class="reason">Off‑palette · #2E6D8F not in EL‑014</div></div>
+                <div class="var-card"><div class="var-thumb" style="background:#e2e8f6;"></div><div class="var-meta"><span>V‑04</span><span class="badge ok">Verified</span></div></div>
+                <div class="var-card"><div class="var-thumb" style="background:#ecdfd4;"></div><div class="var-meta"><span>V‑05</span><span class="badge bad">Flagged</span></div><div class="reason">Logo distortion · aspect drift 6.2%</div></div>
+                <div class="var-card"><div class="var-thumb" style="background:#dbe4f4;"></div><div class="var-meta"><span>V‑06</span><span class="badge ok">Verified</span></div></div>
+              </div>
+            </div>
+            <div class="exhibit-cap"><span>Fig. 02 — Staging grid, auto-tagged for brand compliance</span><span class="mono">02/03</span></div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-head"><span class="flow-num">3</span><h3>Export</h3></div>
+          <p class="flow-desc">Approved assets carry their lineage with them — taxonomy ID, prompt hash, and seed travel into the metadata, so a compliance question six months later has an answer, not a shrug.</p>
+          <div class="sheet exhibit">
+            <div class="screen">
+              <div class="screen-bar"><span>EL / EXPORT.V3</span></div>
+              <div class="export-grid">
+                <div>
+                  <div class="meta-row"><span class="k">Taxonomy ID</span><span class="mono">EL‑014.V02</span></div>
+                  <div class="meta-row"><span class="k">Brand Entity</span><span class="mono">northwind_financial.retail</span></div>
+                  <div class="meta-row"><span class="k">Prompt Hash</span><span class="mono">9f3a…c21e</span></div>
+                  <div class="meta-row"><span class="k">Seed</span><span class="mono">228841</span></div>
+                  <div class="meta-row"><span class="k">Usage Rights</span><span class="mono">Paid social, 12mo</span></div>
+                  <div class="meta-row"><span class="k">Compliance Score</span><span class="mono">98 / 100</span></div>
+                </div>
+                <div>
+                  <span class="tag">File Format</span>
+                  <div class="fmt-row"><span class="fmt-chip on">PNG</span><span class="fmt-chip">SVG</span><span class="fmt-chip">WebP</span><span class="fmt-chip">PDF</span></div>
+                  <span class="tag" style="display:block;margin-top:16px;">Crop Presets</span>
+                  <div class="fmt-row"><span class="fmt-chip on">IG Story</span><span class="fmt-chip">FB Feed</span><span class="fmt-chip">LinkedIn</span></div>
+                  <button class="export-btn">Export &amp; push to DAM</button>
+                </div>
+              </div>
+            </div>
+            <div class="exhibit-cap"><span>Fig. 03 — Asset detail, metadata + file conversion</span><span class="mono">03/03</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="impact">
+        <div class="sec-head"><span class="sheetno">05</span><h2>Validation &amp; Impact</h2></div>
+        <p class="lede">Piloted with 6 brand teams for 8 weeks, then rolled out org-wide.</p>
+
+        <div class="bar-block">
+          <div class="bar-label"><span>Re-roll rate (generations per approved asset)</span><span class="v">6.2 → 1.8</span></div>
+          <div class="bar-pair"><span class="bar-tag">BEFORE</span><div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div></div>
+          <div class="bar-pair"><span class="bar-tag">AFTER</span><div class="bar-track"><div class="bar-fill after" style="width:29%;"></div></div></div>
+
+          <div class="bar-label"><span>Brand-review rejection rate</span><span class="v">61% → 9%</span></div>
+          <div class="bar-pair"><span class="bar-tag">BEFORE</span><div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div></div>
+          <div class="bar-pair"><span class="bar-tag">AFTER</span><div class="bar-track"><div class="bar-fill after" style="width:15%;"></div></div></div>
+
+          <div class="bar-label"><span>Compute cost per approved asset</span><span class="v">$17.36 → $5.04</span></div>
+          <div class="bar-pair"><span class="bar-tag">BEFORE</span><div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div></div>
+          <div class="bar-pair"><span class="bar-tag">AFTER</span><div class="bar-track"><div class="bar-fill after" style="width:29%;"></div></div></div>
+
+          <div class="bar-label"><span>Cycle time, request to approved file</span><span class="v">3.4d → 6h</span></div>
+          <div class="bar-pair"><span class="bar-tag">BEFORE</span><div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div></div>
+          <div class="bar-pair"><span class="bar-tag">AFTER</span><div class="bar-track"><div class="bar-fill after" style="width:7%;"></div></div></div>
+        </div>
+
+        <div class="stat-grid" style="margin-top:12px;">
+          <div class="stat"><div class="num mono">42</div><div class="cap">teams on platform within 90 days of launch, up from 6 pilot teams</div></div>
+          <div class="stat"><div class="num mono">94/100</div><div class="cap">org-wide brand consistency audit score, up from a 58/100 baseline</div></div>
+          <div class="stat"><div class="num mono">71%</div><div class="cap">reduction in generation compute spend per approved asset</div></div>
+        </div>
+      </section>
+
+      <section class="block" id="reflection">
+        <div class="sec-head"><span class="sheetno">06</span><h2>Reflection</h2></div>
+        <p class="pull">As a graphic designer, I made the asset. As a product designer, I built the thing that decides which assets are allowed to exist — the shift was from authorship to governance.</p>
+        <p class="sub" style="margin-top:20px; max-width:680px;">The hardest habit to unlearn was reaching for taste as the final check. At this scale, taste has to be encoded — into a token, a constraint, a rejection rule — or it doesn't scale past the one file in front of me. The eye still matters; it just moves upstream, into deciding what belongs in the taxonomy in the first place.</p>
+
+        <div class="next-list">
+          <div class="next-item"><span class="nn">N.1</span><span>Extend the taxonomy to motion and video tokens — style weights currently only cover static generation.</span></div>
+          <div class="next-item"><span class="nn">N.2</span><span>Self-serve taxonomy authoring, so brand teams can propose new approved elements without an engineering ticket.</span></div>
+          <div class="next-item"><span class="nn">N.3</span><span>Role-based generation permissions — junior marketers scoped to a narrower blueprint than brand leads.</span></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer><span class="tag">Element Library — Product Design Case Study</span></footer>
+  </div>
+</div>
