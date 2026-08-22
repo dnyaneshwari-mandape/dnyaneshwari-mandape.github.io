@@ -1,0 +1,495 @@
+<title>Gamified "Get Rewards" FAB — Case Study</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#FCFAF6;
+    --paper-dim:#F4EFE6;
+    --card:#FFFFFF;
+    --salt:#FFF3DC;
+    --ink:#201C17;
+    --ink-soft:#5C5347;
+    --ink-faint:#948B7C;
+    --gold:#F4B942;
+    --gold-deep:#B4790E;
+    --gold-tint:#FFF6E3;
+    --coal:#1B1712;
+    --coal-soft:#39322A;
+    --sand:#F2ECDF;
+    --sand-line:#E6DCC3;
+    --line:#EAE2D4;
+    --shadow-1: 0 4px 20px rgba(28,24,17,0.07);
+    --shadow-2: 0 16px 44px rgba(28,24,17,0.13);
+    --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-voice: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  }
+  :root[data-theme="dark"]{
+    --paper:#17130E; --paper-dim:#201A13; --card:#231D15; --salt:#2C2313;
+    --ink:#F2EADC; --ink-soft:#D4C6AF; --ink-faint:#A4967E;
+    --gold:#FFCE6B; --gold-deep:#FFD98A; --gold-tint:#2E2410;
+    --coal:#0E0B08; --coal-soft:#2A241A; --sand:#221C13; --sand-line:#3A2F1B;
+    --line:#332A1B; --shadow-1: 0 4px 20px rgba(0,0,0,0.4); --shadow-2: 0 16px 44px rgba(0,0,0,0.6);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#17130E; --paper-dim:#201A13; --card:#231D15; --salt:#2C2313;
+      --ink:#F2EADC; --ink-soft:#D4C6AF; --ink-faint:#A4967E;
+      --gold:#FFCE6B; --gold-deep:#FFD98A; --gold-tint:#2E2410;
+      --coal:#0E0B08; --coal-soft:#2A241A; --sand:#221C13; --sand-line:#3A2F1B;
+      --line:#332A1B; --shadow-1: 0 4px 20px rgba(0,0,0,0.4); --shadow-2: 0 16px 44px rgba(0,0,0,0.6);
+    }
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--font-display);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img,video{max-width:100%;display:block;}
+  a{color:var(--gold-deep);}
+  a:focus-visible, button:focus-visible, summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+  .shell{display:grid;grid-template-columns:220px minmax(0,1fr);max-width:1280px;margin:0 auto;}
+  @media (max-width:920px){ .shell{grid-template-columns:1fr;} }
+
+  .rail{position:sticky;top:0;align-self:start;height:100vh;padding:2.5rem 1rem 2rem 1.75rem;display:flex;flex-direction:column;gap:1.75rem;}
+  @media (max-width:920px){
+    .rail{position:sticky;height:auto;padding:0.9rem 1rem;flex-direction:row;align-items:center;overflow-x:auto;background:var(--paper);border-bottom:0.5px solid var(--line);z-index:20;gap:1.25rem;}
+    .rail-brand{display:none;}
+  }
+  .rail-brand{font-weight:700;font-size:15px;letter-spacing:-0.01em;}
+  .rail-brand span{color:var(--gold-deep);}
+  .rail-nav{display:flex;flex-direction:column;gap:0.15rem;}
+  @media (max-width:920px){ .rail-nav{flex-direction:row;gap:1.25rem;white-space:nowrap;} }
+  .rail-nav a{text-decoration:none;color:var(--ink-faint);font-size:13px;font-weight:500;padding:0.4rem 0;border-left:2px solid transparent;padding-left:0.75rem;transition:color .15s ease, border-color .15s ease;}
+  @media (max-width:920px){ .rail-nav a{border-left:none;padding-left:0;border-bottom:2px solid transparent;} }
+  .rail-nav a:hover{color:var(--ink);}
+  .rail-nav a .n{color:var(--gold-deep);margin-right:0.5em;font-variant-numeric:tabular-nums;}
+  .rail-foot{margin-top:auto;font-size:11.5px;color:var(--ink-faint);line-height:1.6;}
+  @media (max-width:920px){ .rail-foot{display:none;} }
+  .rail-back{font-size:12px;color:var(--ink-faint);text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem;}
+  .rail-back:hover{color:var(--gold-deep);}
+
+  main{padding:3.5rem 3rem 6rem;min-width:0;}
+  @media (max-width:920px){ main{padding:2rem 1.25rem 4rem;} }
+
+  section{max-width:820px;margin:0 auto 5.5rem;scroll-margin-top:2rem;}
+  section.wide{max-width:1040px;}
+
+  .eyebrow{font-size:13px;color:var(--ink-faint);display:flex;align-items:baseline;gap:0.5rem;margin-bottom:0.9rem;}
+  .eyebrow b{color:var(--gold-deep);font-weight:600;font-variant-numeric:tabular-nums;}
+
+  h1{font-size:clamp(2.1rem,4.4vw,3.4rem);font-weight:700;letter-spacing:-0.025em;line-height:1.06;margin:0 0 0.9rem;text-wrap:balance;}
+  h2{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.18;margin:0 0 0.8rem;text-wrap:balance;}
+  h3{font-size:1.1rem;font-weight:600;letter-spacing:-0.005em;margin:0 0 0.5rem;}
+  p{margin:0 0 1rem;max-width:66ch;color:var(--ink);}
+  p.lede{font-size:1.1rem;color:var(--ink-soft);max-width:58ch;}
+  .prose p:last-child{margin-bottom:0;}
+
+  .pull{font-family:var(--font-voice);font-style:italic;font-size:1.4rem;line-height:1.42;color:var(--gold-deep);border-left:3px solid var(--gold);padding-left:1.3rem;margin:1.8rem 0;max-width:52ch;}
+  .pull cite{display:block;font-family:var(--font-display);font-style:normal;font-size:12px;color:var(--ink-faint);margin-top:0.8rem;}
+
+  .facts{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:0.5px solid var(--line);border-radius:14px;overflow:hidden;margin:2rem 0 0;}
+  @media (max-width:760px){ .facts{grid-template-columns:repeat(3,1fr);} }
+  .facts div{background:var(--card);padding:1rem 0.8rem;text-align:center;}
+  .facts .num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:1.4rem;font-weight:600;color:var(--gold-deep);line-height:1.1;}
+  .facts .lbl{font-size:11px;color:var(--ink-faint);margin-top:0.3rem;line-height:1.3;}
+
+  .tags-row{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.5rem;}
+  .tags-row span{font-size:12.5px;color:var(--ink-soft);background:var(--paper-dim);border:0.5px solid var(--line);border-radius:8px;padding:0.4rem 0.7rem;}
+  .tags-row span b{color:var(--ink);font-weight:600;}
+
+  .bento{background:var(--card);border:0.5px solid var(--line);border-radius:16px;padding:1.3rem 1.4rem;box-shadow:var(--shadow-1);}
+  .bento.tint-gold{background:var(--gold-tint);border-color:var(--salt);box-shadow:none;}
+
+  .grid{display:grid;gap:0.9rem;}
+  .grid-2{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .grid-3{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .grid-4{grid-template-columns:repeat(4,minmax(0,1fr));}
+  @media (max-width:720px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr;} }
+  @media (max-width:480px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} }
+
+  .stat{background:var(--paper-dim);border-radius:12px;padding:1rem 1.1rem;}
+  .stat .num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:1.35rem;font-weight:600;color:var(--gold-deep);line-height:1.1;}
+  .stat .lbl{font-size:12px;color:var(--ink-faint);margin-top:0.3rem;}
+
+  /* hero demo */
+  .demo-wrap{margin:2rem 0 0;display:grid;grid-template-columns:280px minmax(0,1fr);gap:2rem;align-items:center;}
+  @media (max-width:780px){ .demo-wrap{grid-template-columns:1fr;} }
+  .demo-frame{background:var(--coal);border-radius:28px;padding:10px;box-shadow:var(--shadow-2);}
+  .demo-frame video{border-radius:20px;width:100%;display:block;}
+  .demo-cap{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:0.7rem;}
+  .demo-copy .k{font-size:11px;font-weight:700;color:var(--gold-deep);text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.5rem;}
+
+  /* state gallery */
+  .stategrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.9rem;margin-top:1.6rem;}
+  @media (max-width:760px){ .stategrid{grid-template-columns:1fr 1fr;} }
+  .statecard{background:var(--coal);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-1);}
+  .statecard img{width:100%;display:block;}
+  .statecard .sc-label{padding:0.6rem 0.75rem;background:var(--card);}
+  .statecard .sc-no{font-family:var(--font-mono);font-size:10px;color:var(--gold-deep);}
+  .statecard .sc-name{font-size:12.5px;font-weight:600;color:var(--ink);margin-top:0.1rem;}
+
+  /* compare table */
+  .compare{width:100%;border-collapse:collapse;margin-top:1.5rem;font-size:13.5px;}
+  .compare th{text-align:left;font-weight:600;padding:0.6rem 0.9rem;background:var(--paper-dim);color:var(--ink-faint);font-size:11.5px;}
+  .compare th:first-child{border-radius:10px 0 0 0;}
+  .compare th:last-child{border-radius:0 10px 0 0;color:var(--gold-deep);}
+  .compare td{padding:0.7rem 0.9rem;border-bottom:0.5px solid var(--line);vertical-align:top;color:var(--ink-soft);}
+  .compare td:first-child{color:var(--ink-faint);font-weight:500;width:26%;}
+  .compare td:last-child{color:var(--ink);font-weight:500;}
+  .compare tr:last-child td{border-bottom:none;}
+
+  .chipgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-top:1.5rem;}
+  @media (max-width:760px){ .chipgrid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:520px){ .chipgrid{grid-template-columns:1fr;} }
+  .chip{background:var(--card);border:0.5px solid var(--line);border-radius:12px;padding:0.9rem 1rem;}
+  .chip .cn{font-family:var(--font-mono);font-size:11px;color:var(--gold-deep);}
+  .chip .ct{font-size:13.5px;font-weight:600;color:var(--ink);margin:0.35rem 0 0.5rem;line-height:1.35;}
+  .chip .cd{font-size:11.5px;color:var(--coal);background:var(--sand);border-radius:6px;padding:0.3rem 0.5rem;display:inline-block;}
+
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:0.4rem;margin:1.8rem 0;}
+  .flow .node{background:var(--card);border:0.5px solid var(--line);border-radius:12px;padding:0.8rem 1rem;box-shadow:var(--shadow-1);min-width:110px;}
+  .flow .node .roman{font-family:var(--font-mono);color:var(--gold-deep);font-size:10.5px;}
+  .flow .node h5{margin:0.25rem 0 0.15rem;font-size:13px;font-weight:600;}
+  .flow .node p{font-size:11px;color:var(--ink-faint);margin:0;}
+  .flow .arrow{color:var(--ink-faint);font-size:16px;flex-shrink:0;}
+  @media (max-width:760px){ .flow{flex-direction:column;align-items:stretch;} .flow .arrow{transform:rotate(90deg);align-self:center;} }
+
+  .insight{margin:2.2rem 0 0;padding:1.4rem 1.5rem;background:var(--card);border:0.5px solid var(--line);border-radius:16px;box-shadow:var(--shadow-1);}
+  .insight .in-no{font-family:var(--font-mono);font-size:11px;color:var(--gold-deep);}
+  .insight h4{margin:0.3rem 0 0.5rem;font-size:1.02rem;}
+  .insight .resp{margin-top:0.7rem;padding-top:0.7rem;border-top:0.5px solid var(--line);font-size:13px;color:var(--ink-soft);}
+  .insight .resp b{color:var(--ink);}
+
+  .act-block{margin:3rem 0 0;}
+  .act-head{display:flex;align-items:baseline;gap:0.9rem;margin-bottom:0.3rem;}
+  .act-head .roman{font-family:var(--font-mono);color:var(--gold-deep);font-size:12.5px;}
+  .act-intro{color:var(--ink-faint);max-width:60ch;margin-bottom:1.4rem;font-size:14px;}
+
+  .sysmap{margin:1.8rem 0 0;display:flex;flex-direction:column;gap:0.5rem;}
+  .sysmap .node{background:var(--card);border:0.5px solid var(--line);border-radius:10px;padding:0.7rem 0.9rem;box-shadow:var(--shadow-1);}
+  .sysmap .node .sn{font-family:var(--font-mono);font-size:10px;color:var(--gold-deep);}
+  .sysmap .node .sd{font-size:13px;font-weight:600;color:var(--ink);margin-top:0.15rem;}
+  .sysmap .node .se{font-size:11.5px;color:var(--ink-faint);margin-top:0.15rem;}
+  .sysmap .arrow-down{text-align:center;color:var(--ink-faint);font-size:13px;}
+
+  table.vtable{border-collapse:collapse;width:100%;font-size:13px;margin-top:1.3rem;}
+  table.vtable th{text-align:left;font-weight:600;font-size:11px;color:var(--ink-faint);padding:0.5rem 0.8rem 0.5rem 0;border-bottom:1px solid var(--line);}
+  table.vtable td{padding:0.7rem 0.8rem 0.7rem 0;border-bottom:0.5px solid var(--line);vertical-align:top;color:var(--ink-soft);}
+  table.vtable td:first-child{color:var(--ink);font-weight:500;}
+
+  .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-top:1.5rem;}
+  @media (max-width:760px){ .impact-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:480px){ .impact-grid{grid-template-columns:1fr;} }
+  .impact-card{border-radius:12px;padding:1rem 1.1rem;background:var(--sand);border:0.5px solid var(--sand-line);}
+  .impact-card .k{color:var(--gold-deep);font-size:11px;font-weight:600;margin-bottom:0.3rem;}
+  .impact-card p{font-size:13px;color:var(--ink-soft);margin:0;}
+
+  .checklist{display:flex;flex-direction:column;gap:0;margin-top:1.3rem;border-top:0.5px solid var(--line);}
+  .checklist div{display:flex;align-items:baseline;gap:0.7rem;padding:0.65rem 0;border-bottom:0.5px solid var(--line);font-size:13.5px;}
+  .checklist .ck{color:var(--gold-deep);font-weight:700;flex-shrink:0;}
+  .checklist b{color:var(--ink);font-weight:500;}
+  .checklist span.note{color:var(--ink-faint);font-size:12px;}
+
+  .baform{display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;margin-top:1.6rem;}
+  @media (max-width:760px){ .baform{grid-template-columns:1fr;} }
+  .baform .bacard{border-radius:14px;padding:1.1rem 1.2rem;border:0.5px solid var(--line);background:var(--card);}
+  .baform .bacard.mid{background:var(--paper-dim);}
+  .baform .bacard.after{background:var(--gold-tint);border-color:var(--salt);}
+  .baform .balabel{font-size:10.5px;font-weight:700;color:var(--gold-deep);text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.5rem;}
+  .baform p{font-size:13px;margin:0;color:var(--ink-soft);}
+
+  .closing{text-align:left;padding-top:1.8rem;border-top:0.5px solid var(--line);}
+  footer{max-width:820px;margin:0 auto;padding:2rem 0 0;font-size:12px;color:var(--ink-faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
+</style>
+
+<div class="shell">
+  <nav class="rail">
+    <div class="rail-brand">Get<span>Rewards</span></div>
+    <div class="rail-nav">
+      <a href="#overview"><span class="n">01</span>Overview</a>
+      <a href="#problem"><span class="n">02</span>Problem</a>
+      <a href="#entry"><span class="n">03</span>Entry Point</a>
+      <a href="#unboxing"><span class="n">04</span>Unboxing</a>
+      <a href="#prototyping"><span class="n">05</span>Prototyping</a>
+      <a href="#testing"><span class="n">06</span>Testing</a>
+      <a href="#wellness"><span class="n">07</span>Wellness Nav</a>
+      <a href="#impact"><span class="n">08</span>Impact</a>
+    </div>
+    <a class="rail-back" href="index.html#work">← Back to portfolio</a>
+    <div class="rail-foot">Digit Insurance<br>Product &amp; UI Design · Motion<br>Shipped · v1</div>
+  </nav>
+
+  <main>
+
+    <!-- ================= 01 OVERVIEW ================= -->
+    <section id="overview">
+      <div class="eyebrow"><b>01</b> Overview</div>
+      <h1>Designing Reward Discovery Through Interaction</h1>
+      <p class="lede">Turning a hidden benefit into a discoverable, gamified product experience — Digit already offered rewards and wellness benefits. The challenge was whether users could discover them at the right moment.</p>
+
+      <div class="facts">
+        <div><div class="num">+6.5%</div><div class="lbl">Offer redemption</div></div>
+        <div><div class="num">+2.3%</div><div class="lbl">Wellness opt-ins</div></div>
+        <div><div class="num">8</div><div class="lbl">Component states</div></div>
+        <div><div class="num">6</div><div class="lbl">Interaction principles</div></div>
+        <div><div class="num">2</div><div class="lbl">Discoverability problems solved</div></div>
+        <div><div class="num">Shipped</div><div class="lbl">Live in production</div></div>
+      </div>
+
+      <div class="tags-row">
+        <span><b>Role</b> Product &amp; UI Design, end to end</span>
+        <span><b>Scope</b> Entry point → unboxing interaction → offer redemption</span>
+        <span><b>Tools</b> Figma, prototyping, usability testing</span>
+        <span><b>Status</b> Shipped, measured post-launch</span>
+      </div>
+
+      <div class="demo-wrap">
+        <div>
+          <div class="demo-frame">
+            <video src="assets/rewards-fab/rewards-fab-demo.mp4" poster="assets/rewards-fab/rewards-fab-poster.jpg" autoplay loop muted playsinline></video>
+          </div>
+          <div class="demo-cap">Tap → Reveal → Explore → Redeem</div>
+        </div>
+        <div class="demo-copy">
+          <div class="k">Product in action</div>
+          <p>Screen capture of the shipped flow: the Get Rewards FAB, the gift-box unboxing sequence, the offer burst, and the redemption card — recorded straight from the live Digit app.</p>
+          <p class="pull" style="margin-top:1rem;">Reduce discovery friction by making important actions visually prominent, immediately understandable and rewarding to interact with.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 02 PROBLEM ================= -->
+    <section id="problem">
+      <div class="eyebrow"><b>02</b> Problem</div>
+      <h2>Rewards existed. Nothing pointed at them.</h2>
+      <p class="lede">The original rewards experience depended on users intentionally navigating toward offers — a weak position for a secondary feature competing with insurance actions, policy info, and renewals on the home screen.</p>
+
+      <div class="grid grid-2">
+        <div class="bento">
+          <h3 style="color:var(--gold-deep);">01 — No interaction cue</h3>
+          <p style="font-size:13.5px;margin:0;">Offers existed within the ecosystem, but there was no strong interaction cue encouraging users to explore them.</p>
+        </div>
+        <div class="bento">
+          <h3 style="color:var(--gold-deep);">02 — Wellness benefits missed</h3>
+          <p style="font-size:13.5px;margin:0;">The category navigation relied heavily on a horizontally scrollable pattern, making certain benefits easy to overlook.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:1.6rem;font-size:14px;">The UI needed to answer three questions almost instantly:</p>
+      <div class="tags-row">
+        <span><b>01</b> Is there something here for me?</span>
+        <span><b>02</b> Can I interact with it?</span>
+        <span><b>03</b> What happens if I tap it?</span>
+      </div>
+
+      <div class="pull">
+        If rewards were surfaced as a persistent but lightweight interactive element, users would be more likely to notice, engage with and redeem them.
+        <cite>Design hypothesis</cite>
+      </div>
+    </section>
+
+    <!-- ================= 03 ENTRY POINT ================= -->
+    <section id="entry">
+      <div class="eyebrow"><b>03</b> Entry Point</div>
+      <h2>From passive offer visibility to an interactive FAB</h2>
+      <p class="lede">A dedicated Get Rewards floating action button, placed within the app's persistent chrome — a high-salience entry point without restructuring the home screen's information architecture.</p>
+
+      <p style="font-size:14px;">Rather than jumping straight into another page, the interaction uses progressive disclosure:</p>
+      <div class="flow">
+        <div class="node"><div class="roman">i</div><h5>Idle</h5><p>FAB at rest</p></div>
+        <span class="arrow">→</span>
+        <div class="node"><div class="roman">ii</div><h5>Reward cue</h5><p>Visual pulse</p></div>
+        <span class="arrow">→</span>
+        <div class="node"><div class="roman">iii</div><h5>Tap</h5><p>Modal focus</p></div>
+        <span class="arrow">→</span>
+        <div class="node"><div class="roman">iv</div><h5>Unboxing</h5><p>Gift opens</p></div>
+        <span class="arrow">→</span>
+        <div class="node"><div class="roman">v</div><h5>Offer reveal</h5><p>Cards fan out</p></div>
+        <span class="arrow">→</span>
+        <div class="node"><div class="roman">vi</div><h5>Redeem</h5><p>Primary CTA</p></div>
+      </div>
+
+      <h3 style="margin-top:1rem;">UI principles used</h3>
+      <div class="chipgrid">
+        <div class="chip"><div class="cn">01</div><div class="ct">Visual salience</div><div class="cd">Discoverable entry point</div></div>
+        <div class="chip"><div class="cn">02</div><div class="ct">Clear affordance</div><div class="cd">Communicates tapability</div></div>
+        <div class="chip"><div class="cn">03</div><div class="ct">Progressive disclosure</div><div class="cd">Not all offers at once</div></div>
+        <div class="chip"><div class="cn">04</div><div class="ct">Context-preserving overlay</div><div class="cd">No page transition</div></div>
+        <div class="chip"><div class="cn">05</div><div class="ct">Motion hierarchy</div><div class="cd">Trigger → reward attention</div></div>
+        <div class="chip"><div class="cn">06</div><div class="ct">Strong CTA hierarchy</div><div class="cd">Redeem Now as the close</div></div>
+      </div>
+    </section>
+
+    <!-- ================= 04 UNBOXING ================= -->
+    <section id="unboxing" class="wide">
+      <div class="eyebrow"><b>04</b> Unboxing</div>
+      <h2>Making discovery feel rewarding before the reward itself</h2>
+      <p class="lede">A short sequence of functional UI states, not a decorative animation. On tap, the interface dims into a modal focus state while the reward object becomes the visual hero — each state prototyped and pressure-tested for timing, hierarchy, and exit behaviour.</p>
+
+      <div class="stategrid">
+        <div class="statecard">
+          <img src="assets/rewards-fab/state-idle.jpg" alt="Idle state — the Get Rewards gift icon sits in the app's top bar">
+          <div class="sc-label"><div class="sc-no">i · Idle</div><div class="sc-name">Gift icon, top bar</div></div>
+        </div>
+        <div class="statecard">
+          <img src="assets/rewards-fab/state-tap.jpg" alt="Tap to open state — a golden gift box with a Tap to Open CTA over a dimmed home screen">
+          <div class="sc-label"><div class="sc-no">ii · Tap</div><div class="sc-name">Closed gift, modal focus</div></div>
+        </div>
+        <div class="statecard">
+          <img src="assets/rewards-fab/state-reveal.jpg" alt="Reveal state — three offer cards fan out over a radiant gold burst with a Collect All CTA">
+          <div class="sc-label"><div class="sc-no">iii · Reveal</div><div class="sc-name">Offer burst, Collect All</div></div>
+        </div>
+        <div class="statecard">
+          <img src="assets/rewards-fab/state-redeem.jpg" alt="Redeem state — a single offer card styled as a discount ticket with a Redeem Now action">
+          <div class="sc-label"><div class="sc-no">iv · Redeem</div><div class="sc-name">Offer card, primary CTA</div></div>
+        </div>
+      </div>
+
+      <p style="margin-top:1.8rem;font-size:14px;color:var(--ink-soft);">Each state was prototyped in Figma to evaluate transition timing, component positioning, visual hierarchy, CTA visibility, perceived tap feedback, animation pacing, offer-card readability, exit behaviour, and continuity between states. The animation works as functional feedback — confirming the user's action triggered a new state — not motion added for visual appeal alone.</p>
+    </section>
+
+    <!-- ================= 05 PROTOTYPING ================= -->
+    <section id="prototyping">
+      <div class="eyebrow"><b>05</b> Prototyping</div>
+      <h2>Five questions the interaction model had to answer</h2>
+      <p class="lede">The experience went through multiple interaction explorations in Figma before arriving at the final flow.</p>
+
+      <table class="compare">
+        <tr><th>Question</th><th>Resolution</th></tr>
+        <tr><td>Trigger positioning</td><td>How visible could the reward affordance become without competing with core insurance actions?</td></tr>
+        <tr><td>Side-card behaviour</td><td>Could upcoming offers create curiosity without interrupting the user?</td></tr>
+        <tr><td>Overlay vs. page</td><td>Retain the homepage as contextual background, or open a new page?</td></tr>
+        <tr><td>Reveal sequencing</td><td>At what stage should users see the reward vs. the redemption action?</td></tr>
+        <tr><td>Offer browsing</td><td>How could multiple offers stay accessible without a dense overlay?</td></tr>
+      </table>
+
+      <div class="bento tint-gold" style="margin-top:1.6rem;">
+        <p style="margin:0;font-size:13.5px;"><b>Final approach:</b> retain the homepage underneath the interaction, use an overlay-based flow to minimise context switching — the reward experience reads as an extension of the app, not a disconnected promotional surface.</p>
+      </div>
+    </section>
+
+    <!-- ================= 06 TESTING ================= -->
+    <section id="testing">
+      <div class="eyebrow"><b>06</b> User Testing</div>
+      <h2>Testing behaviour, not visual preference</h2>
+      <p class="lede">Not "do users like the animation?" — but "do users notice the entry point, understand what it represents, and successfully reach an offer?"</p>
+
+      <div class="chipgrid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="chip"><div class="cn">Discoverability</div><div class="ct">Could users identify the rewards entry point from the homepage?</div></div>
+        <div class="chip"><div class="cn">Comprehension</div><div class="ct">Did the gift icon read as actionable, not decorative?</div></div>
+        <div class="chip"><div class="cn">Predictability</div><div class="ct">After tapping, did users understand what came next?</div></div>
+        <div class="chip"><div class="cn">Offer clarity</div><div class="ct">Could users tell reward reveal apart from the final redeem action?</div></div>
+        <div class="chip"><div class="cn">Recovery</div><div class="ct">Could users dismiss and return to the homepage without confusion?</div></div>
+        <div class="chip"><div class="cn">Efficiency</div><div class="ct">How many taps between discovering the feature and reaching the offer?</div></div>
+      </div>
+
+      <h3 style="margin-top:2.2rem;">What user behaviour revealed</h3>
+      <div class="insight">
+        <div class="in-no">Insight 01</div>
+        <h4>Rewards needed a stronger entry signal.</h4>
+        <p style="margin:0;font-size:13.5px;">Users opening the app for an insurance task rarely went looking for a rewards section on their own.</p>
+        <div class="resp"><b>Design response —</b> bring the entry point into the user's natural navigation path through a persistent floating action.</div>
+      </div>
+      <div class="insight">
+        <div class="in-no">Insight 02</div>
+        <h4>The interaction needed immediate feedback.</h4>
+        <p style="margin:0;font-size:13.5px;">A promotional icon alone could easily read as decorative content.</p>
+        <div class="resp"><b>Design response —</b> use state change, backdrop dimming, scale and motion feedback immediately after tap to signal an interactive reward flow.</div>
+      </div>
+      <div class="insight">
+        <div class="in-no">Insight 03</div>
+        <h4>The offer itself needed to appear quickly.</h4>
+        <p style="margin:0;font-size:13.5px;">Too much animation before showing value risked increasing perceived effort.</p>
+        <div class="resp"><b>Design response —</b> keep the sequence short; make the offer card the conclusion of the motion, not an extension after the reward is revealed.</div>
+      </div>
+    </section>
+
+    <!-- ================= 07 WELLNESS NAV ================= -->
+    <section id="wellness">
+      <div class="eyebrow"><b>07</b> A Second Discoverability Problem</div>
+      <h2>Improving Wellness navigation</h2>
+      <p class="lede">The rewards work exposed a broader pattern: valuable features lose value when the navigation model makes them hard to find. Wellness subscriptions relied on a horizontal category scroller — compact, but with several categories sitting outside the immediate viewport, creating weak information scent.</p>
+
+      <table class="compare">
+        <tr><th>Before</th><th>After</th></tr>
+        <tr><td>Category access</td><td>Horizontal scroller, hidden categories</td></tr>
+        <tr><td>Active state</td><td>Weak differentiation between selected and inactive</td></tr>
+        <tr><td>Discovery</td><td>Implicit swipe gesture required</td></tr>
+        <tr><td>Switching</td><td>Slower, multi-swipe to reach relevant category</td></tr>
+      </table>
+      <table class="compare" style="margin-top:-1px;">
+        <tr><td>Category access</td><td style="color:var(--gold-deep);">High-visibility explicit tab architecture</td></tr>
+        <tr><td>Active state</td><td style="color:var(--gold-deep);">Clear active vs. inactive feedback</td></tr>
+        <tr><td>Discovery</td><td style="color:var(--gold-deep);">Choices exposed, not hidden behind a gesture</td></tr>
+        <tr><td>Switching</td><td style="color:var(--gold-deep);">Direct tap between benefit categories</td></tr>
+      </table>
+
+      <div class="pull" style="margin-top:1.8rem;">
+        Make the system expose available choices instead of requiring users to discover that those choices exist.
+      </div>
+    </section>
+
+    <!-- ================= 08 IMPACT ================= -->
+    <section id="impact" class="wide">
+      <div class="eyebrow"><b>08</b> Impact &amp; System</div>
+      <h2>Before → Behaviour → After</h2>
+
+      <div class="baform">
+        <div class="bacard">
+          <div class="balabel">Before</div>
+          <p>Reward and wellness benefits existed, but discovery depended heavily on intentional navigation.</p>
+        </div>
+        <div class="bacard mid">
+          <div class="balabel">User behaviour</div>
+          <p>Users prioritised core insurance tasks and were less likely to explore secondary features without strong visual or navigational cues.</p>
+        </div>
+        <div class="bacard after">
+          <div class="balabel">After</div>
+          <p>Clearer entry points, stronger interaction feedback, and shorter pathways to high-value benefits.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:2.4rem;">The interaction, as a component system</h3>
+      <p style="font-size:13.5px;color:var(--ink-faint);max-width:60ch;">Defined at the component-state level to keep visual design, prototype behaviour, and the shipped product consistent.</p>
+      <div class="grid grid-4" style="margin-top:1rem;">
+        <div class="stat"><div class="num" style="font-size:1rem;">FAB / Idle</div><div class="lbl">Default discovery state</div></div>
+        <div class="stat"><div class="num" style="font-size:1rem;">FAB / Attention</div><div class="lbl">Cue for available rewards</div></div>
+        <div class="stat"><div class="num" style="font-size:1rem;">Overlay / Closed</div><div class="lbl">Interaction confirmation</div></div>
+        <div class="stat"><div class="num" style="font-size:1rem;">Overlay / Opening</div><div class="lbl">Transition state</div></div>
+        <div class="stat"><div class="num" style="font-size:1rem;">Overlay / Reveal</div><div class="lbl">Value communication</div></div>
+        <div class="stat"><div class="num" style="font-size:1rem;">Carousel / Active</div><div class="lbl">Browsing state</div></div>
+        <div class="stat"><div class="num" style="font-size:1rem;">CTA / Redeem Now</div><div class="lbl">Primary conversion</div></div>
+        <div class="stat"><div class="num" style="font-size:1rem;">Dismiss / Return</div><div class="lbl">Recovery state</div></div>
+      </div>
+
+      <h3 style="margin-top:2.4rem;">Measured outcome</h3>
+      <div class="impact-grid">
+        <div class="impact-card"><div class="k">Offer redemption</div><p><b style="color:var(--ink);font-size:1.1rem;">+6.5%</b><br>following the gamified reward discovery experience.</p></div>
+        <div class="impact-card"><div class="k">Wellness opt-ins</div><p><b style="color:var(--ink);font-size:1.1rem;">+2.3%</b><br>after replacing the low-visibility scroller with explicit tabs.</p></div>
+        <div class="impact-card"><div class="k">Principle validated</div><p>Engagement doesn't always need more content — sometimes the bigger opportunity is a better path to value that already exists.</p></div>
+      </div>
+
+      <h3 style="margin-top:2.2rem;">My contribution</h3>
+      <div class="checklist">
+        <div><span class="ck">✓</span><b>Product problem framing &amp; flow analysis</b><span class="note">rewards + wellness</span></div>
+        <div><span class="ck">✓</span><b>Interaction hypothesis &amp; information architecture</b></div>
+        <div><span class="ck">✓</span><b>UI exploration, interaction &amp; motion design</b></div>
+        <div><span class="ck">✓</span><b>Component and state design, Figma prototyping</b></div>
+        <div><span class="ck">✓</span><b>Usability validation &amp; iteration on user behaviour</b></div>
+        <div><span class="ck">✓</span><b>Developer handoff &amp; post-launch performance review</b></div>
+      </div>
+
+      <div class="closing" style="margin-top:2rem;">
+        <div class="pull" style="margin:0;">
+          This project shifted my approach from designing individual screens to thinking in behavioural systems — where attention was being lost, what interaction users expected, and how UI behaviour could influence product adoption.
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Gamified "Get Rewards" FAB — Digit Insurance · Motion, shipped</span>
+      <span><a href="index.html#work">Dnyaneshwari Mandape — Portfolio</a></span>
+    </footer>
+
+  </main>
+</div>
