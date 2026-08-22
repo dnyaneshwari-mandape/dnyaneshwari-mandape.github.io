@@ -35,6 +35,12 @@
         "value": "cubic-bezier(.34, 1.4, .64, 1)",
         "createdAt": "2026-08-22T06:23:28.710Z",
         "reason": "User explicitly asked for 'crazy ass motion' this session (spring-overshoot on achievement icon hover only) — disclosed to user as an intentional exception to the no-bounce rule, not user-confirmed verbatim"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "0 0 60px 12px color-mix(in srgb, var(--blue) 40%, transparent), inset -8px -8px 22px rgba(23,23,23,.25)",
+        "createdAt": "2026-08-22T06:41:28.522Z",
+        "reason": "User explicitly asked for a glowing 3D hologram/orb graphic this session — this is the deliberate core glow of that orb, not incidental AI-slop styling on a card"
       }
     ]
   }
