@@ -72,22 +72,14 @@
   .parallax-blob{position:absolute;border-radius:50%;filter:blur(50px);pointer-events:none;z-index:0;will-change:transform;}
   @media (prefers-reduced-motion: reduce){ .parallax-blob{transition:none;} }
 
-  /* AVATAR STAGE — holographic 3D companion, hero-only. Placeholder figure
-     until assets/avatar.glb exists; plays the file's own baked animation
-     once loaded rather than being hand-posed. */
+  /* AVATAR STAGE — hero-only 3D render of assets/avatar.glb, true colors, no
+     material or filter effects layered on top. Placeholder figure (plain
+     capsules) is the fallback if the file isn't there yet. */
   .avatar-stage{
     position:relative;width:100%;max-width:320px;height:420px;margin:0 auto;
     cursor:pointer;
   }
   .avatar-stage canvas{width:100%;height:100%;display:block;}
-  .avatar-stage::after{
-    content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
-    background-image:repeating-linear-gradient(0deg, color-mix(in srgb, var(--blue) 22%, transparent) 0px, transparent 1px, transparent 3px);
-    mix-blend-mode:screen;opacity:.5;
-    animation:avatarScan 4s linear infinite;
-  }
-  @keyframes avatarScan{from{background-position:0 0;}to{background-position:0 42px;}}
-  @media (prefers-reduced-motion: reduce){ .avatar-stage::after{animation:none;} }
   @media (max-width:900px){ .avatar-stage{max-width:260px;height:320px;} }
 
   /* SCROLL PROGRESS — thin gradient bar tracking read position */
@@ -214,8 +206,7 @@
   .btn:hover{transform:translateY(-2px);opacity:.92;}
   .btn:active{transform:scale(0.96);}
 
-  /* HERO VISUAL — see .avatar-stage below; the holographic companion replaces
-     the old orb widget and lives as a fixed, page-wide element, not inline here. */
+  /* HERO VISUAL — see .avatar-stage below, which sits in-flow in the hero grid. */
 
   /* STATS */
   .stats{
@@ -987,7 +978,7 @@
   </div>
 </footer>
 
-<!-- AI toolkit modal — opened by the hero design-tokens card -->
+<!-- AI toolkit modal — opened by clicking the hero avatar -->
 <div class="modal-overlay" id="skillsModal">
   <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="skillsModalTitle">
     <button class="modal-close" id="skillsModalClose" aria-label="Close">×</button>
@@ -1097,8 +1088,8 @@
   }
 
   // AI toolkit modal — the close button and Escape/backdrop handling live here;
-  // the open trigger is now the holographic avatar (see the module script below,
-  // which toggles the same #skillsModal element directly).
+  // the open trigger is the hero avatar (see the module script below, which
+  // toggles the same #skillsModal element directly).
   const skillsModal = wireOverlay('skillsModal', [], [document.getElementById('skillsModalClose')]);
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1238,11 +1229,12 @@
 </script>
 
 <!--
-  Holographic avatar, hero-only. Placeholder figure (primitive capsules, not a
-  likeness) until assets/avatar.glb exists — GLTFLoader below tries to load it
-  and silently keeps the placeholder if the file isn't there yet. The real
-  export has its own baked animation clip ("avaturn_animation"), so once it
-  loads this plays that clip via AnimationMixer instead of hand-posing bones.
+  3D avatar, hero-only. Renders assets/avatar.glb exactly as exported — no
+  material, color, or filter changes — with its own baked animation clip
+  ("avaturn_animation") playing on loop via AnimationMixer. Camera is
+  auto-framed to the model's real bounding box (verified against a plain
+  debug viewer first, not guessed). Placeholder figure (primitive capsules,
+  not a likeness) is the fallback if the file is ever missing.
 -->
 <script type="importmap">
 { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
@@ -1257,24 +1249,21 @@
   if (stage) {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, stage.clientWidth / stage.clientHeight, 0.1, 100);
-    camera.position.set(0, 1.3, 4.2);
+    camera.position.set(0, 0.9, 3.6); // placeholder framing; re-aimed at the real model's bounding box once it loads
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(stage.clientWidth, stage.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     stage.appendChild(renderer.domElement);
 
-    scene.add(new THREE.AmbientLight(0x88aaff, 0.6));
-    const key = new THREE.DirectionalLight(0xffffff, 1.1);
+    // Neutral lighting — true colors, no color-cast tinting the model
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x666666, 2.2));
+    const key = new THREE.DirectionalLight(0xffffff, 1.8);
     key.position.set(2, 3, 4);
     scene.add(key);
 
-    const HOLO_COLOR = 0x4F7CFF;
-    function holoMat(opacity) {
-      return new THREE.MeshPhysicalMaterial({
-        color: HOLO_COLOR, transparent: true, opacity, roughness: 0.25, metalness: 0.1,
-        emissive: HOLO_COLOR, emissiveIntensity: 0.3, transmission: 0.15, thickness: 0.4
-      });
+    function placeholderMat(opacity) {
+      return new THREE.MeshStandardMaterial({ color: 0xb8c4d9, transparent: true, opacity, roughness: 0.6 });
     }
     function wireMat() {
       return new THREE.MeshBasicMaterial({ color: 0x9fc0ff, wireframe: true, transparent: true, opacity: 0.3 });
@@ -1283,21 +1272,21 @@
     // Placeholder figure — primitive capsules standing in for the real avatar
     const figure = new THREE.Group();
 
-    const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.34, 0.75, 6, 12), holoMat(0.5));
+    const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.34, 0.75, 6, 12), placeholderMat(0.5));
     torso.position.y = 0.55; figure.add(torso);
     const torsoWire = new THREE.Mesh(torso.geometry, wireMat()); torsoWire.position.copy(torso.position); figure.add(torsoWire);
 
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.26, 20, 20), holoMat(0.6));
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.26, 20, 20), placeholderMat(0.6));
     head.position.y = 1.28; figure.add(head);
     const headWire = new THREE.Mesh(head.geometry, wireMat()); headWire.position.copy(head.position); figure.add(headWire);
 
-    const hips = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.3, 6, 12), holoMat(0.45));
+    const hips = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.3, 6, 12), placeholderMat(0.45));
     hips.position.y = 0.05; figure.add(hips);
 
     function makeArm(side) {
       const pivot = new THREE.Group();
       pivot.position.set(side * 0.4, 0.9, 0);
-      const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.09, 0.62, 4, 10), holoMat(0.5));
+      const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.09, 0.62, 4, 10), placeholderMat(0.5));
       arm.position.set(0, -0.34, 0);
       pivot.add(arm);
       const armWire = new THREE.Mesh(arm.geometry, wireMat()); armWire.position.copy(arm.position); pivot.add(armWire);
@@ -1308,8 +1297,8 @@
     const armR = makeArm(1);
 
     const legGeo = new THREE.CapsuleGeometry(0.12, 0.6, 4, 10);
-    const legL = new THREE.Mesh(legGeo, holoMat(0.4)); legL.position.set(-0.15, -0.55, 0); figure.add(legL);
-    const legR = new THREE.Mesh(legGeo, holoMat(0.4)); legR.position.set(0.15, -0.55, 0); figure.add(legR);
+    const legL = new THREE.Mesh(legGeo, placeholderMat(0.4)); legL.position.set(-0.15, -0.55, 0); figure.add(legL);
+    const legR = new THREE.Mesh(legGeo, placeholderMat(0.4)); legR.position.set(0.15, -0.55, 0); figure.add(legR);
 
     figure.scale.setScalar(1.15);
     scene.add(figure);
@@ -1353,32 +1342,22 @@
       renderer.setSize(stage.clientWidth, stage.clientHeight);
     });
 
-    // Gives every mesh a translucent, faintly blue-glowing look while keeping
-    // its real color/texture visible underneath — reads as holographic without
-    // making the figure vanish. Paired with the CSS scanline overlay on the stage.
-    function applyHoloMaterial(root) {
-      root.traverse((obj) => {
-        if (!obj.isMesh) return;
-        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-        mats.forEach((m) => {
-          if (!m) return;
-          m.transparent = true;
-          m.opacity = 0.85;
-          m.emissive = new THREE.Color(0x4F7CFF);
-          m.emissiveIntensity = 0.12;
-        });
-      });
-    }
-
     // Swap in the real avatar the moment it exists. Stays on the placeholder
-    // (silently) if assets/avatar.glb hasn't been added yet.
+    // (silently) if assets/avatar.glb hasn't been added yet. No material or
+    // color changes — this renders exactly what's in the file, at its own
+    // scale and position; only the camera moves, auto-framed to the model's
+    // real bounding box (same technique verified in _debug_avatar.html).
     new GLTFLoader().load('assets/avatar.glb', (gltf) => {
       scene.remove(figure);
       const model = gltf.scene;
-      model.scale.setScalar(1.55);
-      model.position.y = -1.55;
       scene.add(model);
-      applyHoloMaterial(model);
+
+      const box = new THREE.Box3().setFromObject(model);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      camera.position.set(center.x, center.y, center.z + maxDim * 1.8);
+      camera.lookAt(center);
 
       // Play the file's own baked animation — the full clip, looping.
       if (gltf.animations && gltf.animations.length) {
