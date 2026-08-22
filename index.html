@@ -170,13 +170,13 @@
     font-family:'General Sans',sans-serif;
     font-size:clamp(2.4rem,6vw,4.2rem);
     font-weight:700;letter-spacing:-0.03em;line-height:1.04;
-    max-width:660px;
+    max-width:660px;perspective:600px;
   }
   .accent-word{
-    display:inline-block;color:var(--blue);
-    transition:opacity .35s ease, transform .35s ease, filter .35s ease;
+    display:inline-block;color:var(--blue);transform-style:preserve-3d;
+    transition:opacity .4s cubic-bezier(.2,.6,.2,1), transform .4s cubic-bezier(.2,.6,.2,1);
   }
-  .accent-word.swap{opacity:0;transform:translateY(8px);filter:blur(4px);}
+  .accent-word.swap{opacity:0;transform:rotateX(-90deg) translateY(6px);}
   @media (prefers-reduced-motion: reduce){
     .accent-word{transition:none;}
   }
@@ -195,93 +195,47 @@
   .btn:hover{transform:translateY(-2px);opacity:.92;}
   .btn:active{transform:scale(0.96);}
 
-  /* HERO VISUAL: design tokens card — holographic, clickable, opens AI-toolkit popup */
-  .tokens-card-wrap{position:relative;}
-  .holo-glow{
-    position:absolute;inset:-28px;z-index:-1;border-radius:50%;
-    background:conic-gradient(from 0deg, var(--blue), var(--lavender), var(--coral), var(--amber), var(--teal), var(--blue));
-    filter:blur(34px);opacity:.45;
-    animation:holoSpin 7s linear infinite;
+  /* HERO VISUAL: AI orb — a gyroscope of tumbling 3D rings around a glowing core, clickable */
+  .orb-wrap{
+    position:relative;width:100%;max-width:260px;aspect-ratio:1/1;margin:0 auto;
+    display:flex;align-items:center;justify-content:center;
+    perspective:700px;cursor:pointer;transform-style:preserve-3d;
+    transition:transform .3s cubic-bezier(.2,.6,.2,1);
   }
-  .holo-glow-2{
-    position:absolute;inset:-46px;z-index:-1;border-radius:50%;
-    background:conic-gradient(from 180deg, var(--coral), var(--blue), var(--amber), var(--lavender), var(--teal), var(--coral));
-    filter:blur(48px);opacity:.28;
-    animation:holoSpinRev 13s linear infinite;
+  .orb-core{
+    position:absolute;width:38%;height:38%;border-radius:50%;
+    background:radial-gradient(circle at 34% 30%, #fff, var(--blue) 32%, var(--lavender) 68%, transparent 100%);
+    box-shadow:0 0 60px 12px color-mix(in srgb, var(--blue) 40%, transparent), inset -8px -8px 22px rgba(23,23,23,.25);
+    animation:orbFloat 6s ease-in-out infinite;
   }
-  @keyframes holoSpin{
-    0%{transform:rotate(0deg) scale(1);}
-    50%{transform:rotate(180deg) scale(1.18);}
-    100%{transform:rotate(360deg) scale(1);}
+  @keyframes orbFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-8px) scale(1.04);}}
+  .orb-ring{
+    position:absolute;top:50%;left:50%;border-radius:50%;
+    border:1.5px solid transparent;transform-style:preserve-3d;
   }
-  @keyframes holoSpinRev{to{transform:rotate(-360deg);}}
-  @media (prefers-reduced-motion: reduce){ .holo-glow,.holo-glow-2,.holo-particles i{animation:none;} }
-  .holo-particles{position:absolute;inset:0;z-index:-1;pointer-events:none;}
-  .holo-particles i{
+  .orb-ring-1{width:64%;height:64%;margin:-32% 0 0 -32%;border-color:color-mix(in srgb, var(--blue) 65%, transparent);animation:ringSpin1 8s linear infinite;}
+  .orb-ring-2{width:82%;height:82%;margin:-41% 0 0 -41%;border-color:color-mix(in srgb, var(--teal) 55%, transparent);animation:ringSpin2 12s linear infinite;}
+  .orb-ring-3{width:100%;height:100%;margin:-50% 0 0 -50%;border-color:color-mix(in srgb, var(--coral) 50%, transparent);animation:ringSpin3 16s linear infinite;}
+  @keyframes ringSpin1{from{transform:rotateX(72deg) rotateY(0deg);}to{transform:rotateX(72deg) rotateY(360deg);}}
+  @keyframes ringSpin2{from{transform:rotateX(70deg) rotateZ(40deg) rotateY(0deg);}to{transform:rotateX(70deg) rotateZ(40deg) rotateY(-360deg);}}
+  @keyframes ringSpin3{from{transform:rotateX(74deg) rotateZ(-30deg) rotateY(0deg);}to{transform:rotateX(74deg) rotateZ(-30deg) rotateY(360deg);}}
+  @media (prefers-reduced-motion: reduce){ .orb-core,.orb-ring,.orb-particles i{animation:none !important;} }
+  .orb-particles{position:absolute;inset:0;pointer-events:none;}
+  .orb-particles i{
     position:absolute;top:50%;left:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;
-    background:currentColor;box-shadow:0 0 9px 2px currentColor;
-    animation:holoOrbit linear infinite;
+    background:currentColor;box-shadow:0 0 9px 2px currentColor;animation:orbOrbit linear infinite;
   }
-  .holo-particles i:nth-child(1){--r:100px;color:var(--blue);animation-duration:7s;}
-  .holo-particles i:nth-child(2){--r:118px;color:var(--teal);animation-duration:9.5s;animation-direction:reverse;}
-  .holo-particles i:nth-child(3){--r:86px;color:var(--amber);animation-duration:5.5s;}
-  .holo-particles i:nth-child(4){--r:130px;color:var(--lavender);animation-duration:11s;animation-direction:reverse;}
-  .holo-particles i:nth-child(5){--r:94px;color:var(--coral);animation-duration:6.5s;}
-  @keyframes holoOrbit{
-    from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg);}
-    to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg);}
+  .orb-particles i:nth-child(1){--r:118px;color:var(--amber);animation-duration:7s;}
+  .orb-particles i:nth-child(2){--r:100px;color:var(--lavender);animation-duration:9.5s;animation-direction:reverse;}
+  .orb-particles i:nth-child(3){--r:130px;color:var(--teal);animation-duration:6s;}
+  @keyframes orbOrbit{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg);}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg);}}
+  .orb-wrap:focus-visible{outline:2px solid var(--blue);outline-offset:6px;border-radius:50%;}
+  .orb-label{
+    position:absolute;bottom:-8px;left:50%;transform:translate(-50%, 100%);
+    text-align:center;white-space:nowrap;
   }
-  .tokens-card{
-    background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);
-    padding:22px 22px 24px;box-shadow:0 10px 30px rgba(23,23,23,0.05);
-    transition:transform .3s ease, box-shadow .3s ease;
-    position:relative;transform:rotate(1.2deg);overflow:hidden;cursor:pointer;
-  }
-  .tokens-card:hover{transform:rotate(1.2deg) translateY(-4px);box-shadow:0 16px 36px rgba(23,23,23,0.08);}
-  .tokens-card:focus-visible{outline:2px solid var(--blue);outline-offset:3px;}
-  .holo-sheen{
-    position:absolute;top:0;left:-60%;width:40%;height:100%;z-index:2;
-    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
-    transform:skewX(-20deg);pointer-events:none;
-  }
-  .tokens-card:hover .holo-sheen{animation:sheenSweep .9s ease forwards;}
-  @keyframes sheenSweep{to{left:130%;}}
-  @media (prefers-reduced-motion: reduce){ .tokens-card:hover .holo-sheen{animation:none;} }
-  .tokens-hint{margin-top:14px;font-size:0.72rem;color:var(--blue);font-weight:600;text-align:right;position:relative;z-index:1;}
-  .tokens-card::after{
-    content:'';position:absolute;top:0;right:0;width:34px;height:34px;
-    background:linear-gradient(135deg, var(--surface) 50%, var(--card) 50%);
-    border-bottom:1px solid var(--border);border-left:1px solid var(--border);
-  }
-  .tokens-card::before{
-    content:'';position:absolute;top:12px;right:12px;width:9px;height:9px;
-    border-radius:50%;background:var(--coral);z-index:1;
-  }
-  .tokens-head{
-    display:flex;align-items:center;gap:8px;
-    font-size:0.76rem;color:var(--muted);
-    padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--border);
-  }
-  .tokens-head .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);}
-  .tokens-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;}
-  .tokens-row + .tokens-row{border-top:1px solid var(--border);}
-  .tokens-label{font-size:0.74rem;color:var(--muted);letter-spacing:0.02em;}
-  .swatches{display:flex;gap:6px;}
-  .swatches i{width:15px;height:15px;border-radius:50%;display:block;}
-  .type-sample{display:flex;align-items:baseline;gap:10px;}
-  .type-sample span:first-child{font-family:'General Sans',sans-serif;font-weight:600;font-size:1rem;}
-  .type-sample span:last-child{font-family:'IBM Plex Sans',sans-serif;font-size:0.85rem;color:var(--muted);}
-  .space-bars{display:flex;align-items:center;gap:5px;}
-  .space-bars i{display:block;height:5px;background:var(--border);border-radius:2px;}
-  .space-bars i:nth-child(1){width:14px;}
-  .space-bars i:nth-child(2){width:22px;}
-  .space-bars i:nth-child(3){width:32px;}
-  .space-bars i:nth-child(4){width:44px;}
-  .radii{display:flex;gap:8px;}
-  .radii i{display:block;width:16px;height:16px;background:var(--surface);border:1px solid var(--border);}
-  .radii i:nth-child(1){border-radius:2px;}
-  .radii i:nth-child(2){border-radius:6px;}
-  .radii i:nth-child(3){border-radius:50%;}
+  .orb-label strong{display:block;font-family:'General Sans',sans-serif;font-size:0.9rem;font-weight:600;}
+  .orb-label span{display:block;font-size:0.72rem;color:var(--blue);font-weight:600;margin-top:4px;}
 
   /* STATS */
   .stats{
@@ -295,10 +249,19 @@
   .stat .label{font-size:0.8rem;color:var(--muted);margin-top:6px;}
 
   /* SECTION BACKGROUNDS — same palette family, distinct texture per section, cohesive not chaotic */
-  #work{
-    background-image:radial-gradient(color-mix(in srgb, var(--border) 80%, transparent) 1.5px, transparent 1.5px);
-    background-size:24px 24px;
+  #work.dark-band{
+    background-color:var(--dark-bg);
+    background-image:
+      radial-gradient(560px 380px at 90% 8%, color-mix(in srgb, var(--blue) 30%, transparent), transparent 70%),
+      radial-gradient(520px 400px at 8% 18%, color-mix(in srgb, var(--coral) 26%, transparent), transparent 70%),
+      radial-gradient(500px 380px at 50% 96%, color-mix(in srgb, var(--teal) 22%, transparent), transparent 70%),
+      var(--grain-noise);
+    background-size:auto, auto, auto, 140px 140px;
+    background-repeat:no-repeat, no-repeat, no-repeat, repeat;
   }
+  #work.dark-band .project-card{color:var(--text);}
+  #work.dark-band .more-work{color:var(--text);}
+  #work.dark-band .pindex{color:rgba(255,255,255,0.06);}
   .mesh-bg{
     background-image:
       radial-gradient(440px 320px at 8% 15%, color-mix(in srgb, var(--blue) 9%, transparent), transparent 70%),
@@ -335,6 +298,7 @@
     50%{box-shadow:0 0 0 4px var(--dark-bg), 0 0 0 9px color-mix(in srgb, var(--blue) 40%, transparent);}
   }
   @media (prefers-reduced-motion: reduce){ #experience.dark-band .tl-item:first-child::before{animation:none;} }
+  /* Light section — soft gradient wash (illustration-ish blooms) behind the existing confetti dots */
   #achievements{
     background-image:
       radial-gradient(6px 6px at 8% 18%, color-mix(in srgb, var(--blue) 40%, transparent), transparent 72%),
@@ -342,17 +306,9 @@
       radial-gradient(5px 5px at 22% 85%, color-mix(in srgb, var(--amber) 40%, transparent), transparent 72%),
       radial-gradient(6px 6px at 92% 78%, color-mix(in srgb, var(--teal) 40%, transparent), transparent 72%),
       radial-gradient(4px 4px at 55% 8%, color-mix(in srgb, var(--lavender) 40%, transparent), transparent 72%),
-      radial-gradient(4px 4px at 60% 94%, color-mix(in srgb, var(--blue) 30%, transparent), transparent 72%);
-  }
-  #achievements.dark-band{
-    background-color:var(--dark-bg);
-    background-image:
-      radial-gradient(560px 380px at 85% 10%, color-mix(in srgb, var(--coral) 30%, transparent), transparent 70%),
-      radial-gradient(520px 400px at 12% 22%, color-mix(in srgb, var(--amber) 26%, transparent), transparent 70%),
-      radial-gradient(500px 380px at 88% 92%, color-mix(in srgb, var(--blue) 26%, transparent), transparent 70%),
-      var(--grain-noise);
-    background-size:auto, auto, auto, 140px 140px;
-    background-repeat:no-repeat, no-repeat, no-repeat, repeat;
+      radial-gradient(4px 4px at 60% 94%, color-mix(in srgb, var(--blue) 30%, transparent), transparent 72%),
+      radial-gradient(520px 380px at 88% 8%, color-mix(in srgb, var(--amber) 12%, transparent), transparent 70%),
+      radial-gradient(520px 380px at 10% 92%, color-mix(in srgb, var(--coral) 12%, transparent), transparent 70%);
   }
   #faq{
     background-image:
@@ -474,6 +430,12 @@
   .how-card:nth-child(3){background:color-mix(in srgb, var(--amber) 8%, var(--card));}
   .how-card:nth-child(4){background:color-mix(in srgb, var(--coral) 7%, var(--card));}
   .how-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(23,23,23,0.06);}
+  .how-card .how-icon{width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+  .how-card .how-icon svg{width:18px;height:18px;}
+  .how-card:nth-child(1) .how-icon{background:color-mix(in srgb, var(--blue) 15%, var(--card));color:var(--blue);}
+  .how-card:nth-child(2) .how-icon{background:color-mix(in srgb, var(--teal) 15%, var(--card));color:var(--teal);}
+  .how-card:nth-child(3) .how-icon{background:color-mix(in srgb, var(--amber) 16%, var(--card));color:var(--amber);}
+  .how-card:nth-child(4) .how-icon{background:color-mix(in srgb, var(--coral) 15%, var(--card));color:var(--coral);}
   .how-card .how-num{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--muted);}
   .how-card h3{font-family:'General Sans',sans-serif;font-size:1.08rem;font-weight:600;margin-top:10px;letter-spacing:-0.01em;}
   .how-card p{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.92rem;margin-top:10px;flex:1;}
@@ -535,8 +497,15 @@
   .faq details:nth-child(4){background:color-mix(in srgb, var(--coral) 5%, var(--card));}
   .faq summary{
     font-family:'General Sans',sans-serif;font-weight:600;font-size:1rem;
-    cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;
+    cursor:pointer;list-style:none;display:flex;align-items:center;gap:14px;
   }
+  .faq summary .faq-title{flex:1;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .faq-icon{width:30px;height:30px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .faq-icon svg{width:16px;height:16px;}
+  .faq details:nth-child(1) .faq-icon{background:color-mix(in srgb, var(--blue) 14%, var(--card));color:var(--blue);}
+  .faq details:nth-child(2) .faq-icon{background:color-mix(in srgb, var(--teal) 14%, var(--card));color:var(--teal);}
+  .faq details:nth-child(3) .faq-icon{background:color-mix(in srgb, var(--amber) 16%, var(--card));color:var(--amber);}
+  .faq details:nth-child(4) .faq-icon{background:color-mix(in srgb, var(--coral) 14%, var(--card));color:var(--coral);}
   .faq summary::-webkit-details-marker{display:none;}
   .faq summary::after{content:'+';font-family:'JetBrains Mono',monospace;font-size:1.2rem;color:var(--muted);transition:transform .2s ease;flex-shrink:0;}
   .faq details[open] summary::after{transform:rotate(45deg);}
@@ -645,7 +614,7 @@
     .nav-links{display:none;}
     .contact{padding:44px 24px;}
     .hero-grid{grid-template-columns:1fr;}
-    .tokens-card-wrap{max-width:320px;margin:36px auto 0;}
+    .orb-wrap{margin:36px auto 0;}
   }
 </style>
 </head>
@@ -712,36 +681,15 @@
         </div>
       </div>
 
-      <div class="tokens-card-wrap reveal">
-        <div class="holo-glow" aria-hidden="true"></div>
-        <div class="holo-glow-2" aria-hidden="true"></div>
-        <div class="holo-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="tokens-card" tabindex="0" role="button" aria-haspopup="dialog" aria-controls="skillsModal" aria-label="Open AI toolkit showcase">
-          <div class="holo-sheen" aria-hidden="true"></div>
-          <div class="tokens-head"><span class="dot"></span> design.tokens</div>
-          <div class="tokens-row">
-            <span class="tokens-label">Color</span>
-            <span class="swatches">
-              <i style="background:var(--blue)"></i>
-              <i style="background:var(--teal)"></i>
-              <i style="background:var(--amber)"></i>
-              <i style="background:var(--lavender)"></i>
-              <i style="background:var(--coral)"></i>
-            </span>
-          </div>
-          <div class="tokens-row">
-            <span class="tokens-label">Type</span>
-            <span class="type-sample"><span>Aa</span><span>Aa</span></span>
-          </div>
-          <div class="tokens-row">
-            <span class="tokens-label">Space</span>
-            <span class="space-bars"><i></i><i></i><i></i><i></i></span>
-          </div>
-          <div class="tokens-row">
-            <span class="tokens-label">Radius</span>
-            <span class="radii"><i></i><i></i><i></i></span>
-          </div>
-          <div class="tokens-hint">Tap to explore my AI toolkit →</div>
+      <div class="orb-wrap reveal" id="aiOrb" tabindex="0" role="button" aria-haspopup="dialog" aria-controls="skillsModal" aria-label="Open AI toolkit showcase">
+        <div class="orb-core" aria-hidden="true"></div>
+        <div class="orb-ring orb-ring-1" aria-hidden="true"></div>
+        <div class="orb-ring orb-ring-2" aria-hidden="true"></div>
+        <div class="orb-ring orb-ring-3" aria-hidden="true"></div>
+        <div class="orb-particles" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="orb-label" aria-hidden="true">
+          <strong>AI Toolkit</strong>
+          <span>Tap to explore →</span>
         </div>
       </div>
     </div>
@@ -755,7 +703,7 @@
   </div>
 </section>
 
-<section class="section" id="work">
+<section class="section dark-band" id="work">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="kicker">Selected Work</div>
@@ -865,6 +813,7 @@
     <div class="how-grid reveal-group">
 
       <a class="how-card reveal" href="case-study-element-store.html" style="text-decoration:none;">
+        <div class="how-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
         <div class="how-num">01 · Systems thinking</div>
         <h3>Turn scattered UI into one design system</h3>
         <p>Rebuilt Element Store's fragmented UI into a consistent, reusable component library — research through final UI.</p>
@@ -872,6 +821,7 @@
       </a>
 
       <a class="how-card reveal" href="case-study-farmfresh.html" style="text-decoration:none;">
+        <div class="how-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
         <div class="how-num">02 · 0→1 product design</div>
         <h3>Take a concept from research to shippable flow</h3>
         <p>Designed a trust-first produce vertical for Swiggy Instamart end-to-end — 14 screens, discovery to checkout.</p>
@@ -879,6 +829,7 @@
       </a>
 
       <a class="how-card reveal" href="#work" style="text-decoration:none;">
+        <div class="how-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
         <div class="how-num">03 · Motion & interaction</div>
         <h3>Use motion to drive a measurable outcome</h3>
         <p>Designed an unboxing-style reward animation for Digit Insurance that lifted offer redemption by 6.5%.</p>
@@ -886,6 +837,7 @@
       </a>
 
       <a class="how-card reveal" href="#work" style="text-decoration:none;">
+        <div class="how-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></div>
         <div class="how-num">04 · AI-accelerated production</div>
         <h3>Use AI tooling to scale craft, not replace it</h3>
         <p>Built a JSON-driven parametric 3D engine that scaled Digit's icon and asset production by 600%.</p>
@@ -934,6 +886,32 @@
   </div>
 </section>
 
+<section class="section" id="achievements">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">Recognition</div>
+      <h2>Achievements</h2>
+    </div>
+    <div class="ach-grid reveal-group">
+      <div class="ach-card reveal">
+        <div class="icon">🏆</div>
+        <h3>Wall of Awesomeness — Digit Insurance</h3>
+        <p>Top performer for bridging design and marketing with high-impact contributions. April 2026.</p>
+      </div>
+      <div class="ach-card reveal">
+        <div class="icon">🎓</div>
+        <h3>Award for Excellence — Placement Coordinator</h3>
+        <p>Managed 20+ recruiter drives, facilitating industry hiring for the 2024–25 batch.</p>
+      </div>
+      <div class="ach-card reveal">
+        <div class="icon">🥇</div>
+        <h3>Gold Medalist — NSUT Women Kabaddi</h3>
+        <p>IIT BHU (Oct 2023), DTU (Apr 2023), IIT Kanpur (Apr 2022).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section dark-band" id="toolkit">
   <div class="wrap">
     <div class="section-head reveal">
@@ -961,32 +939,6 @@
   </div>
 </section>
 
-<section class="section dark-band" id="achievements">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="kicker">Recognition</div>
-      <h2>Achievements</h2>
-    </div>
-    <div class="ach-grid reveal-group">
-      <div class="ach-card reveal">
-        <div class="icon">🏆</div>
-        <h3>Wall of Awesomeness — Digit Insurance</h3>
-        <p>Top performer for bridging design and marketing with high-impact contributions. April 2026.</p>
-      </div>
-      <div class="ach-card reveal">
-        <div class="icon">🎓</div>
-        <h3>Award for Excellence — Placement Coordinator</h3>
-        <p>Managed 20+ recruiter drives, facilitating industry hiring for the 2024–25 batch.</p>
-      </div>
-      <div class="ach-card reveal">
-        <div class="icon">🥇</div>
-        <h3>Gold Medalist — NSUT Women Kabaddi</h3>
-        <p>IIT BHU (Oct 2023), DTU (Apr 2023), IIT Kanpur (Apr 2022).</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="section" id="faq">
   <div class="wrap">
     <div class="section-head reveal">
@@ -995,19 +947,31 @@
     </div>
     <div class="faq reveal-group">
       <details class="reveal">
-        <summary>What kind of roles are you looking for?</summary>
+        <summary>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
+          <span class="faq-title">What kind of roles are you looking for?</span>
+        </summary>
         <p>Product design or senior graphic/brand design roles — 0→1 product work, design systems, or brand identity. Open to full-time and select freelance/contract work.</p>
       </details>
       <details class="reveal">
-        <summary>Are you open to relocation or remote work?</summary>
+        <summary>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span class="faq-title">Are you open to relocation or remote work?</span>
+        </summary>
         <p>Based in Bengaluru, open to remote-first teams and relocation for the right role.</p>
       </details>
       <details class="reveal">
-        <summary>What's your notice period?</summary>
+        <summary>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          <span class="faq-title">What's your notice period?</span>
+        </summary>
         <p>Currently employed at Digit Insurance — notice period applies. Happy to discuss timelines directly.</p>
       </details>
       <details class="reveal">
-        <summary>Do you design end-to-end, or hand off to engineering?</summary>
+        <summary>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M6 9v6"/><path d="M18 9a9 9 0 0 1-9 9"/><circle cx="18" cy="6" r="3"/></svg></span>
+          <span class="faq-title">Do you design end-to-end, or hand off to engineering?</span>
+        </summary>
         <p>Both. I take work from research through final UI and design systems, and I'm comfortable handing off with detailed specs, or working closely with engineering through build.</p>
       </details>
     </div>
@@ -1086,27 +1050,32 @@
 </div>
 
 <script>
-  // Word swap plays once through the list, then settles — no continuous loop.
-  // Each word carries its own accent color, cycling through the palette.
+  // Word rotator — subtle 3D flip (rotateX) swap, loops forever. Disclosed,
+  // deliberate exception to the "no continuous looping" rule: idiomatic for
+  // a rotating hero headline, not decorative noise.
   const rotatorEl = document.getElementById('rotatorWord');
-  if (rotatorEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (rotatorEl) {
     const words = [
       { text: 'complex systems', color: 'var(--blue)' },
       { text: 'insurance flows', color: 'var(--teal)' },
       { text: 'AI chatbots', color: 'var(--lavender)' },
       { text: 'design systems', color: 'var(--coral)' }
     ];
-    let wi = 0;
-    const timer = setInterval(() => {
-      rotatorEl.classList.add('swap');
-      setTimeout(() => {
-        wi++;
-        rotatorEl.textContent = words[wi].text;
-        rotatorEl.style.color = words[wi].color;
-        rotatorEl.classList.remove('swap');
-        if (wi >= words.length - 1) clearInterval(timer);
-      }, 350);
-    }, 2200);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      rotatorEl.textContent = words[0].text;
+      rotatorEl.style.color = words[0].color;
+    } else {
+      let wi = 0;
+      setInterval(() => {
+        rotatorEl.classList.add('swap');
+        setTimeout(() => {
+          wi = (wi + 1) % words.length;
+          rotatorEl.textContent = words[wi].text;
+          rotatorEl.style.color = words[wi].color;
+          rotatorEl.classList.remove('swap');
+        }, 380);
+      }, 2400);
+    }
   }
 
   // Generic overlay (drawer/modal) wiring — open trigger(s), close trigger(s), backdrop click, Escape
@@ -1160,12 +1129,12 @@
     });
   }
 
-  // AI toolkit modal — opened by clicking or activating the hero design-tokens card
+  // AI toolkit modal — opened by clicking or activating the hero orb
   const skillsModal = wireOverlay('skillsModal', [], [document.getElementById('skillsModalClose')]);
-  const tokensCardTrigger = document.querySelector('.tokens-card');
-  if (tokensCardTrigger && skillsModal) {
-    tokensCardTrigger.addEventListener('click', skillsModal.open);
-    tokensCardTrigger.addEventListener('keydown', (e) => {
+  const aiOrbTrigger = document.getElementById('aiOrb');
+  if (aiOrbTrigger && skillsModal) {
+    aiOrbTrigger.addEventListener('click', skillsModal.open);
+    aiOrbTrigger.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); skillsModal.open(); }
     });
   }
@@ -1246,16 +1215,17 @@
   }
 
   if (!reduceMotion) {
-    // Cursor tilt on the design-tokens card
-    const tokensCard = document.querySelector('.tokens-card');
-    if (tokensCard) {
-      tokensCard.addEventListener('mousemove', (e) => {
-        const r = tokensCard.getBoundingClientRect();
+    // Cursor tilt on the AI orb — tilts the whole wrapper; the rings/core keep
+    // spinning independently since they're nested transforms in the same 3D scene.
+    const aiOrb = document.getElementById('aiOrb');
+    if (aiOrb) {
+      aiOrb.addEventListener('mousemove', (e) => {
+        const r = aiOrb.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width - 0.5;
         const py = (e.clientY - r.top) / r.height - 0.5;
-        tokensCard.style.transform = `rotate(1.2deg) rotateX(${(-py * 9).toFixed(2)}deg) rotateY(${(px * 9).toFixed(2)}deg)`;
+        aiOrb.style.transform = `rotateX(${(-py * 16).toFixed(2)}deg) rotateY(${(px * 16).toFixed(2)}deg)`;
       });
-      tokensCard.addEventListener('mouseleave', () => { tokensCard.style.transform = ''; });
+      aiOrb.addEventListener('mouseleave', () => { aiOrb.style.transform = ''; });
     }
 
     // Magnetic buttons — small, capped pull toward the cursor
