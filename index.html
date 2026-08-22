@@ -72,14 +72,13 @@
   .parallax-blob{position:absolute;border-radius:50%;filter:blur(50px);pointer-events:none;z-index:0;will-change:transform;}
   @media (prefers-reduced-motion: reduce){ .parallax-blob{transition:none;} }
 
-  /* AVATAR STAGE — holographic 3D companion, fixed to the viewport, follows scroll via pose changes
-     rather than DOM repositioning. Placeholder figure until assets/avatar.glb exists (see script). */
+  /* AVATAR STAGE — holographic 3D companion, hero-only. Placeholder figure
+     until assets/avatar.glb exists; plays the file's own baked animation
+     once loaded rather than being hand-posed. */
   .avatar-stage{
-    position:fixed;top:50%;right:24px;width:220px;height:320px;
-    transform:translateY(-50%);z-index:40;cursor:pointer;
-    transition:right 1s cubic-bezier(.2,.6,.2,1), left 1s cubic-bezier(.2,.6,.2,1);
+    position:relative;width:100%;max-width:320px;height:420px;margin:0 auto;
+    cursor:pointer;
   }
-  .avatar-stage.side-left{right:auto;left:24px;}
   .avatar-stage canvas{width:100%;height:100%;display:block;}
   .avatar-stage::after{
     content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
@@ -89,7 +88,7 @@
   }
   @keyframes avatarScan{from{background-position:0 0;}to{background-position:0 42px;}}
   @media (prefers-reduced-motion: reduce){ .avatar-stage::after{animation:none;} }
-  @media (max-width:1100px){ .avatar-stage{display:none;} }
+  @media (max-width:900px){ .avatar-stage{max-width:260px;height:320px;} }
 
   /* SCROLL PROGRESS — thin gradient bar tracking read position */
   .scroll-progress{position:fixed;top:0;left:0;height:3px;width:100%;z-index:100;
@@ -152,7 +151,8 @@
     -webkit-mask-image:linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
     mask-image:linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
   }
-  .hero-grid{position:relative;z-index:1;}
+  .hero-grid{display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:center;position:relative;z-index:1;}
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;} }
   .confetti{position:absolute;border-radius:50%;pointer-events:none;}
   .ghost-mark{
     position:absolute;top:-18px;right:0;z-index:0;
@@ -599,7 +599,6 @@
 <body>
 
 <div class="scroll-progress" id="scrollProgress"></div>
-<div class="avatar-stage" id="avatarStage" aria-hidden="true"></div>
 <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
 <header>
@@ -659,6 +658,7 @@
           <a class="btn btn-secondary" href="mailto:sydnyaneshwari@gmail.com">Get in touch</a>
         </div>
       </div>
+      <div class="avatar-stage reveal" id="avatarStage" aria-hidden="true"></div>
     </div>
 
     <div class="stats reveal-group">
@@ -1238,12 +1238,11 @@
 </script>
 
 <!--
-  Holographic avatar companion. Placeholder figure (primitive capsules, not a
+  Holographic avatar, hero-only. Placeholder figure (primitive capsules, not a
   likeness) until assets/avatar.glb exists — GLTFLoader below tries to load it
-  and silently keeps the placeholder if the file isn't there yet. Once a real
-  Ready Player Me export lands at that path, this swaps in automatically; the
-  pose system will need re-pointing from the placeholder's armL/armR/head
-  objects to the model's Mixamo-style bones (see TODO in the loader callback).
+  and silently keeps the placeholder if the file isn't there yet. The real
+  export has its own baked animation clip ("avaturn_animation"), so once it
+  loads this plays that clip via AnimationMixer instead of hand-posing bones.
 -->
 <script type="importmap">
 { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
@@ -1255,7 +1254,7 @@
   const stage = document.getElementById('avatarStage');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (stage && window.innerWidth > 1100) {
+  if (stage) {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, stage.clientWidth / stage.clientHeight, 0.1, 100);
     camera.position.set(0, 1.3, 4.2);
@@ -1315,33 +1314,6 @@
     figure.scale.setScalar(1.15);
     scene.add(figure);
 
-    // Pose presets per section: arm rotation [x,y,z], head tilt, body yaw, which side of the viewport
-    const poses = {
-      hero:          { armL: [0.2, 0, 0.3],   armR: [0.2, 0, -0.3],   headX: 0,     groupY: 0.15,  side: 'right' },
-      work:          { armL: [0.1, 0, 0.2],   armR: [-0.9, 0, -0.4],  headX: -0.05, groupY: 0.5,   side: 'right' },
-      'how-i-work':  { armL: [-1.4, 0, 0.6],  armR: [-1.4, 0, -0.6],  headX: 0.05,  groupY: -0.1,  side: 'left' },
-      experience:    { armL: [0.15, 0, 0.25], armR: [-1.1, 0, -0.15], headX: -0.08, groupY: 0.4,   side: 'left' },
-      achievements:  { armL: [-1.9, 0, 0.4],  armR: [-1.9, 0, -0.4],  headX: 0.1,   groupY: 0,     side: 'right' },
-      toolkit:       { armL: [-0.7, 0, 0.7],  armR: [-0.7, 0, -0.7],  headX: 0,     groupY: -0.2,  side: 'left' },
-      faq:           { armL: [0.2, 0, 0.2],   armR: [-1.3, 1.1, -0.1], headX: 0.15, groupY: 0.1,  side: 'right' },
-      contact:       { armL: [0.2, 0, 0.2],   armR: [-1.6, 0, -0.9],  headX: -0.1,  groupY: 0,     side: 'right' }
-    };
-    let targetPose = poses.hero;
-    const currentPose = { armL: [...poses.hero.armL], armR: [...poses.hero.armR], headX: 0, groupY: poses.hero.groupY };
-
-    const sectionEls = Object.keys(poses).map((id) => document.getElementById(id)).filter(Boolean);
-    if (sectionEls.length) {
-      const poseObserver = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            targetPose = poses[e.target.id] || targetPose;
-            stage.classList.toggle('side-left', targetPose.side === 'left');
-          }
-        });
-      }, { rootMargin: '-40% 0px -40% 0px' });
-      sectionEls.forEach((s) => poseObserver.observe(s));
-    }
-
     // Clicking the avatar opens the AI toolkit modal — same #skillsModal the rest
     // of the page uses; this script can't reach that other <script>'s closures
     // (different scope), so it toggles the shared DOM element directly. The
@@ -1352,52 +1324,69 @@
       if (modal) { modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
     });
 
-    function lerp(a, b, t) { return a + (b - a) * t; }
     const clock = new THREE.Clock();
-    const ease = reduceMotion ? 1 : 0.04;
+    let mixer = null; // set once the real model's baked animation loads
 
     function animate() {
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
+      const delta = clock.getDelta();
 
-      for (let i = 0; i < 3; i++) {
-        currentPose.armL[i] = lerp(currentPose.armL[i], targetPose.armL[i], ease);
-        currentPose.armR[i] = lerp(currentPose.armR[i], targetPose.armR[i], ease);
+      if (mixer) {
+        if (!reduceMotion) mixer.update(delta);
+      } else if (!reduceMotion) {
+        // Placeholder-only idle motion; the real model's own animation clip
+        // handles this once it loads, so this branch stops applying then.
+        armL.rotation.set(0.1, 0, 0.15);
+        armR.rotation.set(0.1, 0, -0.15);
+        figure.rotation.y = Math.sin(t * 0.4) * 0.1;
+        figure.position.y = Math.sin(t * 0.9) * 0.05;
       }
-      currentPose.headX = lerp(currentPose.headX, targetPose.headX, ease);
-      currentPose.groupY = lerp(currentPose.groupY, targetPose.groupY, ease);
-
-      armL.rotation.set(currentPose.armL[0], currentPose.armL[1], currentPose.armL[2]);
-      armR.rotation.set(currentPose.armR[0], currentPose.armR[1], -currentPose.armR[2]);
-      head.rotation.x = currentPose.headX;
-      figure.rotation.y = currentPose.groupY + (reduceMotion ? 0 : Math.sin(t * 0.4) * 0.08);
-      if (!reduceMotion) figure.position.y = Math.sin(t * 0.9) * 0.05;
 
       renderer.render(scene, camera);
     }
     animate();
 
     window.addEventListener('resize', () => {
-      if (window.innerWidth <= 1100) { stage.style.display = 'none'; return; }
-      stage.style.display = '';
       camera.aspect = stage.clientWidth / stage.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(stage.clientWidth, stage.clientHeight);
     });
+
+    // Gives every mesh a translucent, faintly blue-glowing look while keeping
+    // its real color/texture visible underneath — reads as holographic without
+    // making the figure vanish. Paired with the CSS scanline overlay on the stage.
+    function applyHoloMaterial(root) {
+      root.traverse((obj) => {
+        if (!obj.isMesh) return;
+        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+        mats.forEach((m) => {
+          if (!m) return;
+          m.transparent = true;
+          m.opacity = 0.85;
+          m.emissive = new THREE.Color(0x4F7CFF);
+          m.emissiveIntensity = 0.12;
+        });
+      });
+    }
 
     // Swap in the real avatar the moment it exists. Stays on the placeholder
     // (silently) if assets/avatar.glb hasn't been added yet.
     new GLTFLoader().load('assets/avatar.glb', (gltf) => {
       scene.remove(figure);
       const model = gltf.scene;
-      model.scale.setScalar(1.4);
-      model.position.y = -0.9;
+      model.scale.setScalar(1.55);
+      model.position.y = -1.55;
       scene.add(model);
-      // TODO once the real Ready Player Me model loads: re-map the pose table
-      // above from armL/armR/head (placeholder objects) to the model's actual
-      // bones — Ready Player Me uses Mixamo-style names, e.g.
-      // model.getObjectByName('LeftArm') / 'RightArm' / 'Head' — and drive
-      // bone.rotation the same way the placeholder arms are driven now.
+      applyHoloMaterial(model);
+
+      // Play the file's own baked animation instead of hand-posing bones
+      if (gltf.animations && gltf.animations.length) {
+        mixer = new THREE.AnimationMixer(model);
+        const clip = gltf.animations.find((a) => /idle/i.test(a.name)) || gltf.animations[0];
+        mixer.clipAction(clip).play();
+        if (reduceMotion) mixer.update(0); // paint the first frame, then stay still
+      }
     }, undefined, () => { /* no avatar.glb yet — placeholder figure stays */ });
   }
 </script>
