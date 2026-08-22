@@ -1315,11 +1315,16 @@
 
     const clock = new THREE.Clock();
     let mixer = null; // set once assets/avatar.glb's baked clip loads
+    let elapsed = 0; // own accumulator — Clock.getElapsedTime() calls getDelta()
+                      // internally, so calling both per frame starves the second
+                      // call to ~0 and silently freezes the mixer. Call getDelta()
+                      // exactly once per frame and derive elapsed time from that.
 
     function animate() {
       requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
       const delta = clock.getDelta();
+      elapsed += delta;
+      const t = elapsed;
 
       if (mixer) {
         if (!reduceMotion) mixer.update(delta);
