@@ -20,6 +20,15 @@
         ],
         "createdAt": "2026-08-21T15:07:54.887Z",
         "reason": "Claude: .pull is an editorial blockquote pull-quote (italic quote + cite), not a card — left border is standard pull-quote convention, not the card-side-tab AI tell the rule targets"
+      },
+      {
+        "rule": "marquee",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-08-21T15:45:16.458Z",
+        "reason": "User explicitly requested 'crazy animations, 100x better' this session; marquee ticker added as a disclosed, deliberate exception to the no-continuous-loop rule (pauses on hover, freezes under prefers-reduced-motion) — not user-confirmed verbatim, but a direct response to their ask, flagged to them at the time"
       }
     ]
   }
