@@ -29,6 +29,12 @@
         ],
         "createdAt": "2026-08-21T15:45:16.458Z",
         "reason": "User explicitly requested 'crazy animations, 100x better' this session; marquee ticker added as a disclosed, deliberate exception to the no-continuous-loop rule (pauses on hover, freezes under prefers-reduced-motion) — not user-confirmed verbatim, but a direct response to their ask, flagged to them at the time"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(.34, 1.4, .64, 1)",
+        "createdAt": "2026-08-22T06:23:28.710Z",
+        "reason": "User explicitly asked for 'crazy ass motion' this session (spring-overshoot on achievement icon hover only) — disclosed to user as an intentional exception to the no-bounce rule, not user-confirmed verbatim"
       }
     ]
   }
