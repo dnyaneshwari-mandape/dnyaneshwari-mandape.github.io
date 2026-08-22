@@ -1350,24 +1350,43 @@
     // Swap in the real avatar the moment it exists. Stays on the placeholder
     // (silently) if assets/avatar.glb hasn't been added yet. No material or
     // color changes — this renders exactly what's in the file, at its own
-    // scale and position; only the camera moves, auto-framed to the model's
-    // real bounding box (same technique verified in _debug_avatar.html).
+    // scale and position; only the camera moves.
     new GLTFLoader().load('assets/avatar.glb', (gltf) => {
       scene.remove(figure);
       const model = gltf.scene;
       scene.add(model);
 
-      const box = new THREE.Box3().setFromObject(model);
-      const size = box.getSize(new THREE.Vector3());
-      const center = box.getCenter(new THREE.Vector3());
+      let clip = null;
+      if (gltf.animations && gltf.animations.length) {
+        clip = gltf.animations.find((a) => /idle/i.test(a.name)) || gltf.animations[0];
+      }
+
+      // Frame the camera to the FULL range of motion, not just the resting
+      // bind pose — a single-frame bounding box was too tight for the dance's
+      // wider swings and let her step out of frame mid-loop. Scrub the whole
+      // clip first, union every sampled frame's bounding box, then frame that.
+      const unionBox = new THREE.Box3().setFromObject(model, true);
+      if (clip) {
+        const sampleMixer = new THREE.AnimationMixer(model);
+        const action = sampleMixer.clipAction(clip);
+        action.play();
+        const samples = 40;
+        for (let i = 0; i <= samples; i++) {
+          sampleMixer.setTime((clip.duration * i) / samples);
+          unionBox.union(new THREE.Box3().setFromObject(model, true));
+        }
+        sampleMixer.stopAllAction();
+        sampleMixer.uncacheAction(clip, model);
+      }
+      const size = unionBox.getSize(new THREE.Vector3());
+      const center = unionBox.getCenter(new THREE.Vector3());
       const maxDim = Math.max(size.x, size.y, size.z);
-      camera.position.set(center.x, center.y, center.z + maxDim * 1.8);
+      camera.position.set(center.x, center.y, center.z + maxDim * 1.5);
       camera.lookAt(center);
 
-      // Play the file's own baked animation — the full clip, looping.
-      if (gltf.animations && gltf.animations.length) {
+      // Now play the clip for real — the full thing, looping.
+      if (clip) {
         mixer = new THREE.AnimationMixer(model);
-        const clip = gltf.animations.find((a) => /idle/i.test(a.name)) || gltf.animations[0];
         mixer.clipAction(clip).play();
         if (reduceMotion) mixer.update(0); // paint the first frame only, then stay still
       }
