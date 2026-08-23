@@ -335,30 +335,14 @@
     background:var(--card);border:1px solid var(--border);
     padding:5px 12px;border-radius:100px;font-size:0.72rem;font-weight:600;color:var(--muted);
   }
+  .mockup.mockup-photo{padding:0;transform:scale(1);}
+  .mockup.mockup-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .project-card:hover .mockup.mockup-photo{transform:scale(1.06);}
   @media (max-width:860px){
     .project-card{grid-template-columns:1fr;}
     .mockup-wrap{min-height:260px;border-right:none;border-bottom:1px solid var(--border);}
     .pindex{font-size:4rem;top:4px;right:16px;}
   }
-  /* Element Store mock: header + product grid */
-  .mock-store{width:100%;max-width:230px;background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 20px rgba(23,23,23,.06);overflow:hidden;}
-  .mock-store .msbar{display:flex;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--border);}
-  .mock-store .msbar i{width:6px;height:6px;border-radius:50%;background:var(--border);}
-  .mock-store .msbar span{margin-left:auto;width:60px;height:8px;border-radius:4px;background:var(--surface);}
-  .mock-store .msgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px;}
-  .mock-store .mstile{background:var(--surface);border-radius:6px;padding:6px;}
-  .mock-store .mstile i{display:block;height:26px;border-radius:4px;background:var(--blue);opacity:.15;margin-bottom:5px;}
-  .mock-store .mstile span{display:block;height:5px;width:70%;border-radius:3px;background:var(--border);}
-  /* FarmFresh mock: phone header + hero + chips */
-  .mock-farm{width:150px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 20px rgba(23,23,23,.06);overflow:hidden;padding-bottom:8px;}
-  .mock-farm .mfbar{display:flex;justify-content:space-between;align-items:center;padding:9px 12px 6px;}
-  .mock-farm .mfbar i{width:20px;height:6px;border-radius:3px;background:var(--border);}
-  .mock-farm .mfbar i:last-child{width:16px;height:16px;border-radius:5px;background:var(--surface);}
-  .mock-farm .mfhero{margin:0 10px 8px;height:56px;border-radius:10px;background:linear-gradient(160deg,var(--teal),color-mix(in srgb, var(--teal) 60%, var(--card)));position:relative;}
-  .mock-farm .mfhero span{position:absolute;bottom:6px;left:8px;color:#fff;font-size:9px;font-weight:700;}
-  .mock-farm .mfchips{display:flex;gap:5px;padding:0 10px;}
-  .mock-farm .mfchips i{flex:1;height:18px;border-radius:5px;background:var(--surface);}
-  .mock-farm .mfchips i:last-child{background:var(--teal);opacity:.25;}
   .project-body{padding:32px;flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1;}
   .project-body .ptitle-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
   .project-body .ptitle{font-family:'General Sans',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;}
@@ -674,18 +658,8 @@
         <span class="pindex">01</span>
         <div class="mockup-wrap" style="--mockup-tint:color-mix(in srgb, var(--blue) 8%, var(--surface));">
           <span class="badge">Case Study</span>
-          <div class="mockup">
-            <div class="mock-store">
-              <div class="msbar"><i></i><i></i><i></i><span></span></div>
-              <div class="msgrid">
-                <div class="mstile"><i></i><span></span></div>
-                <div class="mstile"><i></i><span></span></div>
-                <div class="mstile"><i></i><span></span></div>
-                <div class="mstile"><i></i><span></span></div>
-                <div class="mstile"><i></i><span></span></div>
-                <div class="mstile"><i></i><span></span></div>
-              </div>
-            </div>
+          <div class="mockup mockup-photo">
+            <img src="assets/cover-page/case-study-element-store.png" alt="Element Store case study cover" loading="lazy">
           </div>
         </div>
         <div class="project-body">
@@ -700,12 +674,8 @@
         <span class="pindex">02</span>
         <div class="mockup-wrap" style="--mockup-tint:color-mix(in srgb, var(--teal) 8%, var(--surface));">
           <span class="badge">Concept · Swiggy Instamart</span>
-          <div class="mockup">
-            <div class="mock-farm">
-              <div class="mfbar"><i></i><i></i></div>
-              <div class="mfhero"><span>FarmFresh</span></div>
-              <div class="mfchips"><i></i><i></i><i></i><i></i></div>
-            </div>
+          <div class="mockup mockup-photo">
+            <img src="assets/cover-page/case-study-farmfresh-cover.png" alt="Swiggy FarmFresh case study cover" loading="lazy">
           </div>
         </div>
         <div class="project-body">
