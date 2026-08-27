@@ -50,6 +50,24 @@
         ],
         "createdAt": "2026-08-22T16:19:30.338Z",
         "reason": "pull-quote left-border accent (.pull) matches the existing editorial convention already used identically in case-study-farmfresh.html and case-study-element-store.html — not a stray card side-tab"
+      },
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "createdAt": "2026-08-23T16:06:48.133Z",
+        "reason": "Matches font used in user's own uploaded Iconforge case-study source file — preserving their original design intent, not an AI default pick"
+      },
+      {
+        "rule": "overused-font",
+        "value": "instrument sans",
+        "createdAt": "2026-08-23T16:31:34.756Z",
+        "reason": "Faithful reconstruction of the original Element Store Artifact export, which specified Instrument Sans as body font \\u2014 preserving source fidelity, not a new AI-default choice"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-08-23T16:31:34.892Z",
+        "reason": "Pre-existing font choice in case-study-rewards-fab.html from a prior session; this turn only fixed a missing charset meta, did not touch typography"
       }
     ]
   }

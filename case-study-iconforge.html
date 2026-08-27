@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Iconforge — AI Icon Generation Case Study | Dnyaneshwari Mandape</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Literata:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0A10; --bg-2:#0E0D14; --card:#131019; --card-2:#161320; --tile:#1B1822; --tile-2:#211D2B;
+    --line:rgba(255,255,255,0.08); --line-soft:rgba(255,255,255,0.14);
+    --ink:#F3F1ED; --muted:#B8B4C4; --faint:#9C97AC; --dim:#6B667A;
+    --violet:#7C6CFF; --violet-deep:#4B3FBF; --lime:#C8FF6B; --bad:#E88B7A; --good:#8FD98C;
+    --font-display:'Space Grotesk',sans-serif; --font-serif:'Literata',Georgia,serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--muted);font-family:var(--font-display);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img{max-width:100%;display:block;}
+  a{color:var(--violet);}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--violet);outline-offset:2px;}
+  ::selection{background:var(--violet);color:var(--bg);}
+
+  .topnav{
+    position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;
+    padding:1rem 2.2rem;background:color-mix(in srgb, var(--bg) 82%, transparent);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{font-family:var(--font-mono);font-size:12px;letter-spacing:0.14em;color:var(--violet);text-transform:uppercase;white-space:nowrap;}
+  .navlinks{display:flex;gap:1.4rem;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;
+    mask-image:linear-gradient(to right, black calc(100% - 28px), transparent);
+    -webkit-mask-image:linear-gradient(to right, black calc(100% - 28px), transparent);}
+  .navlinks::-webkit-scrollbar{display:none;}
+  .navlinks a{text-decoration:none;color:var(--dim);font-size:11.5px;font-weight:600;text-transform:uppercase;
+    letter-spacing:0.05em;white-space:nowrap;padding-bottom:3px;border-bottom:1.5px solid transparent;transition:color .15s ease,border-color .15s ease;}
+  .navlinks a:hover{color:var(--ink);border-color:var(--violet);}
+  .navback{font-size:12px;color:var(--dim);text-decoration:none;white-space:nowrap;flex-shrink:0;}
+  .navback:hover{color:var(--violet);}
+  @media (max-width:760px){ .brand{display:none;} }
+
+  main{max-width:920px;margin:0 auto;padding:0 1.6rem 6rem;}
+  section{padding-top:4.8rem;scroll-margin-top:4.5rem;}
+  section + section{border-top:1px solid var(--line);}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:11.5px;
+    color:var(--violet);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:1.2rem;font-weight:600;}
+  .eyebrow .no{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;
+    border:1.5px solid var(--violet);color:var(--violet);font-size:10.5px;}
+
+  h1{font-family:var(--font-display);font-weight:700;font-size:clamp(2.6rem,6vw,4.5rem);letter-spacing:-0.02em;line-height:1;margin:0 0 1.4rem;color:var(--ink);}
+  h2{font-family:var(--font-display);font-weight:600;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-0.01em;line-height:1.18;margin:0 0 1rem;color:var(--ink);max-width:24ch;}
+  h3{font-family:var(--font-display);font-size:1.1rem;font-weight:600;margin:0 0 0.4rem;color:var(--ink);}
+  p{margin:0 0 1rem;max-width:64ch;font-size:15px;line-height:1.75;color:var(--muted);}
+  p.lede{font-family:var(--font-serif);font-style:italic;font-size:clamp(1.1rem,2vw,1.35rem);line-height:1.5;color:#D8D5E0;max-width:38ch;}
+  .subtle{font-size:13px;color:var(--dim);max-width:60ch;}
+
+  /* meta strip */
+  .metarow{display:grid;gap:1.6rem 2.4rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    padding-top:2.2rem;margin-top:2.6rem;border-top:1px solid var(--line);}
+  .metarow dt{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:0.5rem;}
+  .metarow dd{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink);}
+
+  /* browser chrome mockup */
+  .chrome{border-radius:16px;overflow:hidden;box-shadow:0 50px 100px -40px rgba(0,0,0,0.7),0 0 0 1px rgba(124,108,255,0.15);background:var(--card);}
+  .chrome-bar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--card-2);border-bottom:1px solid var(--line);}
+  .chrome-bar .dot{width:9px;height:9px;border-radius:50%;background:var(--tile-2);}
+  .chrome-bar .url{flex:1;margin-left:8px;background:var(--tile);border-radius:6px;padding:5px 12px;font-family:var(--font-mono);font-size:11px;color:var(--faint);}
+  .chrome-body{background:var(--card);}
+
+  /* generic key/value card grid */
+  .cardgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-radius:14px;overflow:hidden;margin-top:1rem;}
+  @media (max-width:700px){ .cardgrid{grid-template-columns:1fr 1fr;} }
+  .cardgrid .cell{background:var(--card);padding:1.6rem 1.3rem;}
+  .cardgrid .cell .k{font-size:13px;color:var(--faint);margin-bottom:6px;}
+  .cardgrid .cell .v{font-family:var(--font-display);font-size:14.5px;font-weight:600;color:var(--ink);}
+
+  /* pain -> method table */
+  .ptable{display:flex;flex-direction:column;gap:1px;background:var(--line);border-radius:14px;overflow:hidden;margin-top:2rem;}
+  .ptable .row{display:grid;grid-template-columns:1fr 1fr 1.3fr;background:var(--card);padding:1.4rem 1.5rem;gap:1rem;}
+  .ptable .row.head{background:var(--card-2);padding:1rem 1.5rem;}
+  .ptable .row.head div{font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:var(--dim);text-transform:uppercase;}
+  .ptable .pain{font-size:14.5px;color:var(--ink);}
+  .ptable .method{font-size:13.5px;color:var(--muted);}
+  .ptable .insight{font-size:13.5px;color:var(--muted);}
+  .ptable .insight em{color:var(--faint);font-style:italic;}
+  @media (max-width:700px){ .ptable .row{grid-template-columns:1fr;} }
+
+  /* personas */
+  .personagrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:2rem;}
+  @media (max-width:760px){ .personagrid{grid-template-columns:1fr;} }
+  .persona{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.8rem;}
+  .persona .pno{font-family:var(--font-mono);font-size:11px;color:var(--lime);margin-bottom:0.9rem;}
+  .persona .pname{font-family:var(--font-display);font-size:1.15rem;font-weight:600;color:var(--ink);margin-bottom:0.3rem;}
+  .persona .prole{font-size:12.5px;color:var(--faint);margin-bottom:1.2rem;}
+  .persona .pline{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:0.8rem;}
+  .persona .pline b{color:var(--ink);}
+
+  /* journey bars */
+  .journeylabels{display:grid;grid-template-columns:repeat(6,1fr);gap:0.9rem;margin:2rem 0 0.6rem;font-family:var(--font-mono);font-size:11px;color:var(--dim);}
+  .journeybars{display:grid;grid-template-columns:repeat(6,1fr);gap:0.9rem;align-items:end;height:110px;margin-bottom:0.5rem;}
+  .journeybars .bar{border-radius:6px 6px 0 0;}
+  .journeybars.before .bar{background:linear-gradient(180deg,#4B3FBF,#7C6CFF);}
+  .journeybars.after .bar{background:linear-gradient(180deg,#8FA83F,#C8FF6B);}
+  .journeycap{font-size:11px;color:var(--dim);font-family:var(--font-mono);margin-bottom:2.4rem;}
+
+  /* architecture pipeline */
+  .pipeline{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:0.4rem 0 0.8rem;margin-top:2rem;}
+  .pipeline .node{flex:0 0 180px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .pipeline .node.on{background:var(--tile);border-color:var(--violet);}
+  .pipeline .node .nk{font-family:var(--font-mono);font-size:10px;color:var(--lime);}
+  .pipeline .node .nt{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--ink);}
+  .pipeline .node .nd{font-size:11.5px;color:var(--faint);line-height:1.5;}
+  .pipeline .arrow{flex:0 0 36px;display:flex;align-items:center;justify-content:center;color:var(--violet-deep);font-size:18px;}
+
+  /* iteration triptych */
+  .iterrow{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2rem;}
+  @media (max-width:700px){ .iterrow{grid-template-columns:1fr;} }
+  .iterbox{background:var(--card);border:1px solid var(--line);border-radius:12px;height:150px;padding:14px;display:flex;flex-direction:column;gap:6px;}
+  .iterbox.hi{border-color:var(--violet);border-width:2px;}
+  .iterbox .r{background:var(--tile);border-radius:4px;flex-shrink:0;}
+  .iterlabel{font-family:var(--font-mono);font-size:11px;color:var(--dim);margin-top:0.9rem;}
+  .iterlabel.hi{color:var(--lime);}
+  .iterdesc{font-size:13px;color:var(--muted);margin-top:0.4rem;line-height:1.6;}
+
+  /* numbered takeaways */
+  .takeaways{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:2.2rem;}
+  @media (max-width:700px){ .takeaways{grid-template-columns:1fr;} }
+  .takeaway{display:flex;gap:0.9rem;}
+  .takeaway .tn{font-family:var(--font-mono);color:var(--lime);font-size:14px;flex-shrink:0;}
+  .takeaway p{font-size:13.5px;line-height:1.6;margin:0;color:var(--muted);}
+
+  /* customization panel */
+  .panelgrid{display:grid;grid-template-columns:1fr 1fr;gap:2.6rem;align-items:center;margin-top:2rem;}
+  @media (max-width:760px){ .panelgrid{grid-template-columns:1fr;} }
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.6rem;display:flex;flex-direction:column;gap:1.2rem;}
+  .panel .pk{font-size:10.5px;color:var(--dim);font-family:var(--font-mono);margin-bottom:0.5rem;}
+  .swatches{display:flex;gap:8px;}
+  .swatches i{width:26px;height:26px;border-radius:50%;display:block;}
+  .slider{height:6px;background:var(--tile-2);border-radius:99px;position:relative;}
+  .slider i{position:absolute;top:50%;width:15px;height:15px;border-radius:50%;background:var(--violet);transform:translate(-50%,-50%);}
+  .togglepair{display:flex;gap:8px;}
+  .togglepair span{flex:1;text-align:center;padding:8px;border-radius:6px;font-size:11.5px;}
+  .togglepair span.on{background:var(--violet);color:var(--bg);font-weight:600;}
+  .togglepair span.off{background:var(--tile-2);color:var(--faint);}
+
+  /* style system grid */
+  .stylegrid{display:grid;grid-template-columns:repeat(6,1fr);gap:0.9rem;margin-top:2rem;}
+  @media (max-width:700px){ .stylegrid{grid-template-columns:repeat(3,1fr);} }
+  .styletile{background:var(--card);border-radius:12px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.7rem;}
+  .styletile.on{border:1px solid var(--violet);}
+  .styletile .glyph{width:26px;height:26px;background:var(--ink);clip-path:polygon(55% 0,20% 55%,45% 55%,40% 100%,80% 40%,55% 40%);}
+  .styletile .lbl{font-size:10.5px;color:var(--faint);font-family:var(--font-mono);}
+  .styletile.on .lbl{color:var(--lime);}
+
+  /* supporting flows */
+  .flowduo{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:2rem;}
+  @media (max-width:700px){ .flowduo{grid-template-columns:1fr;} }
+  .flowbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.5rem;}
+  .flowbox .fk{font-family:var(--font-mono);font-size:11px;color:var(--dim);margin-bottom:1rem;}
+  .filerow{display:flex;justify-content:space-between;align-items:center;background:var(--tile-2);padding:9px 13px;border-radius:8px;font-size:12.5px;margin-bottom:8px;}
+  .filerow .dot{width:15px;height:15px;border-radius:4px;background:var(--violet);}
+  .filename{font-family:var(--font-mono);font-size:11.5px;color:var(--lime);background:var(--bg);padding:9px 13px;border-radius:8px;margin-top:8px;}
+  .flowbox .fd{font-size:13px;color:var(--muted);margin-top:1rem;line-height:1.6;}
+
+  /* testing table */
+  .ttable{display:flex;flex-direction:column;gap:1px;background:var(--line);border-radius:14px;overflow:hidden;margin-top:1.6rem;}
+  .ttable .row{display:grid;grid-template-columns:2fr 1fr 1fr 2fr;background:var(--card);padding:1.3rem 1.5rem;gap:1rem;align-items:center;}
+  .ttable .row.head{background:var(--card-2);padding:1rem 1.5rem;}
+  .ttable .row.head div{font-family:var(--font-mono);font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:0.06em;}
+  .ttable .task{font-size:14px;color:var(--ink);}
+  .ttable .r1{color:var(--bad);font-weight:600;}
+  .ttable .r2{color:var(--good);font-weight:600;}
+  .ttable .find{font-size:13px;color:var(--muted);}
+  @media (max-width:760px){ .ttable .row{grid-template-columns:1fr;gap:0.4rem;} }
+
+  /* impact */
+  .impactrow{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2rem;}
+  @media (max-width:760px){ .impactrow{grid-template-columns:1fr;} }
+  .impactcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.8rem;}
+  .impactcard .iv{font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--lime);margin-bottom:0.6rem;}
+  .impactcard p{font-size:13.5px;margin:0;color:var(--muted);}
+
+  .closing{margin-top:3rem;padding-top:2.6rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.4rem;}
+  .closing h3{margin-bottom:0.5rem;}
+  .closing .subtle{margin:0;}
+  .ctabtns{display:flex;gap:0.8rem;}
+  .ctabtns a{text-decoration:none;font-family:var(--font-display);font-weight:600;font-size:13.5px;padding:0.8rem 1.4rem;border-radius:99px;}
+  .ctabtns a.solid{background:var(--violet);color:var(--bg);}
+  .ctabtns a.solid:hover{opacity:0.85;}
+  .ctabtns a.outline{border:1px solid var(--line-soft);color:var(--ink);}
+  .ctabtns a.outline:hover{border-color:var(--violet);}
+
+  footer{max-width:920px;margin:3rem auto 0;color:var(--dim);padding:1.6rem 1.6rem 0;font-size:12px;
+    border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
+  footer a{color:var(--violet);text-decoration:none;font-weight:600;}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="brand">Iconforge — Case Study</div>
+  <div class="navlinks">
+    <a href="#context"><span>01</span>Context</a>
+    <a href="#personas"><span>03</span>Personas</a>
+    <a href="#journey"><span>04</span>Journey</a>
+    <a href="#architecture"><span>05</span>Architecture</a>
+    <a href="#keyflow"><span>07</span>Key Flow</a>
+    <a href="#styles"><span>09</span>Style System</a>
+    <a href="#testing"><span>11</span>Testing</a>
+    <a href="#impact"><span>12</span>Impact</a>
+  </div>
+  <a class="navback" href="index.html#work">← Portfolio</a>
+</nav>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section id="top" style="border-top:none;padding-top:3.2rem;">
+    <div class="eyebrow">Product Design — Case Study — 2026</div>
+    <h1>Iconforge</h1>
+    <p class="lede">Turning a sentence into a production-ready icon system — designed end-to-end, from research to shipped UI, as the sole product designer.</p>
+
+    <dl class="metarow">
+      <div><dt>Role</dt><dd>Solo Product Designer<br>Research · IA · UI · Prototyping · Testing</dd></div>
+      <div><dt>Duration</dt><dd>14 weeks</dd></div>
+      <div><dt>Team</dt><dd>Embedded with 2 engineers, 1 PM</dd></div>
+      <div><dt>Platform</dt><dd>Web application + REST API</dd></div>
+    </dl>
+
+    <div class="chrome" style="margin-top:2.6rem;">
+      <div class="chrome-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="url">app.iconforge.ai/generate</div></div>
+      <div class="chrome-body" style="padding:24px;">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;">
+          <div style="flex:1;background:var(--tile);border:1px solid var(--line-soft);border-radius:10px;padding:14px 18px;font-size:14px;color:#D8D5E0;">a modern electric vehicle charging station icon, outline style, rounded corners</div>
+          <div style="background:var(--violet);color:var(--bg);padding:14px 22px;border-radius:10px;font-size:13px;font-weight:600;white-space:nowrap;">Generate</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:18px;">
+          <div style="background:var(--violet);color:var(--bg);font-size:11px;padding:6px 14px;border-radius:100px;font-weight:600;">Outline</div>
+          <div style="background:var(--tile-2);color:var(--faint);font-size:11px;padding:6px 14px;border-radius:100px;">Flat</div>
+          <div style="background:var(--tile-2);color:var(--faint);font-size:11px;padding:6px 14px;border-radius:100px;">Duotone</div>
+          <div style="background:var(--tile-2);color:var(--faint);font-size:11px;padding:6px 14px;border-radius:100px;">Gradient</div>
+          <div style="background:var(--tile-2);color:var(--faint);font-size:11px;padding:6px 14px;border-radius:100px;">3D</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+          <div style="background:var(--tile);border-radius:12px;border:2px solid var(--violet);aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative;">
+            <div style="width:34px;height:34px;border:3px solid var(--ink);clip-path:polygon(55% 0,20% 55%,45% 55%,40% 100%,80% 40%,55% 40%);"></div>
+            <div style="position:absolute;top:8px;right:8px;background:var(--violet);color:var(--bg);font-size:9px;padding:2px 6px;border-radius:6px;font-weight:600;">LOCKED</div>
+          </div>
+          <div style="background:var(--tile);border-radius:12px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;"><div style="width:34px;height:34px;border:3px solid var(--faint);clip-path:polygon(55% 0,20% 55%,45% 55%,40% 100%,80% 40%,55% 40%);"></div></div>
+          <div style="background:var(--tile);border-radius:12px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;"><div style="width:34px;height:34px;border:3px solid var(--faint);clip-path:polygon(55% 0,20% 55%,45% 55%,40% 100%,80% 40%,55% 40%);transform:scaleX(-1);"></div></div>
+          <div style="background:var(--tile);border-radius:12px;border:1px dashed var(--line-soft);aspect-ratio:1;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:22px;">+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 01 CONTEXT ============ -->
+  <section id="context">
+    <div class="eyebrow"><span class="no">01</span>Context &amp; Opportunity</div>
+    <h2>Icon libraries don't scale the way products do.</h2>
+    <p>Every new feature, dashboard, or platform needs icons — but design bandwidth grows slower than product surface area. Teams patch the gap with generic stock libraries (killing brand distinctiveness) or commission custom work (slow, expensive, and impossible to keep consistent past the first dozen assets).</p>
+    <p>The opportunity wasn't "AI that draws pictures." It was a systemized pipeline that treats icons as tokens — consistent, versioned, exportable at the scale a real design system demands.</p>
+
+    <div class="cardgrid">
+      <div class="cell"><div class="k">Bottleneck</div><div class="v">Design-ops queue</div></div>
+      <div class="cell"><div class="k">Symptom</div><div class="v">Style drift across packs</div></div>
+      <div class="cell"><div class="k">Symptom</div><div class="v">Hand-off friction</div></div>
+      <div class="cell"><div class="k">Cost</div><div class="v">Specialist dependency</div></div>
+    </div>
+  </section>
+
+  <!-- ============ 02 PAIN -> METHOD ============ -->
+  <section id="method">
+    <div class="eyebrow"><span class="no">02</span>Pain Points to UX Methods</div>
+    <h2>Every method was chosen to answer one specific question about scale.</h2>
+
+    <div class="ptable">
+      <div class="row head"><div>Pain point</div><div>Method</div><div>Insight</div></div>
+      <div class="row">
+        <div class="pain">Icon requests bottleneck design ops</div>
+        <div class="method">Stakeholder interviews (6) + service-blueprint mapping</div>
+        <div class="insight">The bottleneck was the consistency <em>review</em>, not the drawing itself.</div>
+      </div>
+      <div class="row">
+        <div class="pain">Generic AI output ignores brand systems</div>
+        <div class="method">Competitive audit of 6 AI generators + heuristic review</div>
+        <div class="insight">None enforced token-level rules — stroke, grid, radius stayed the user's problem.</div>
+      </div>
+      <div class="row">
+        <div class="pain">Engineers get assets, not production files</div>
+        <div class="method">Contextual inquiry with 4 dev teams + task analysis</div>
+        <div class="insight">Naming, versioning and format mattered more than style range.</div>
+      </div>
+      <div class="row">
+        <div class="pain">One icon rarely stays consistent as a pack</div>
+        <div class="method">Card sort on style attributes + Wizard-of-Oz prototype test</div>
+        <div class="insight">Users wanted one consistency dial, not twelve style parameters.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 PERSONAS ============ -->
+  <section id="personas">
+    <div class="eyebrow"><span class="no">03</span>Who This Serves</div>
+    <h2>Three roles, one shared need — speed without losing control.</h2>
+
+    <div class="personagrid">
+      <div class="persona">
+        <div class="pno">PERSONA 01</div>
+        <div class="pname">Priya</div>
+        <div class="prole">Enterprise Design Systems Lead</div>
+        <div class="pline"><b>Goal:</b> enforce brand consistency across 40+ product surfaces.</div>
+        <div class="pline"><b>Frustration:</b> one-off icon requests quietly break token rules at scale.</div>
+      </div>
+      <div class="persona">
+        <div class="pno">PERSONA 02</div>
+        <div class="pname">Marcus</div>
+        <div class="prole">Product / UI Designer, early-stage startup</div>
+        <div class="pline"><b>Goal:</b> ship a coherent icon set in hours, not weeks.</div>
+        <div class="pline"><b>Frustration:</b> stock libraries feel generic; custom work needs a specialist he doesn't have.</div>
+      </div>
+      <div class="persona">
+        <div class="pno">PERSONA 03</div>
+        <div class="pname">Dev</div>
+        <div class="prole">Full-stack Engineer</div>
+        <div class="pline"><b>Goal:</b> drop production-ready assets into the codebase without a design round-trip.</div>
+        <div class="pline"><b>Frustration:</b> gets flat PNGs, mismatched viewBoxes, and no naming convention.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 JOURNEY MAP ============ -->
+  <section id="journey">
+    <div class="eyebrow"><span class="no">04</span>Journey Map</div>
+    <h2>Compressing a week-long round-trip into a single sitting.</h2>
+
+    <div class="journeylabels"><div>TRIGGER</div><div>BRIEF</div><div>QUEUE WAIT</div><div>DRAFT REVIEW</div><div>REVISIONS</div><div>HAND-OFF</div></div>
+    <div class="journeybars before">
+      <div class="bar" style="height:34%;"></div><div class="bar" style="height:48%;"></div><div class="bar" style="height:100%;"></div>
+      <div class="bar" style="height:70%;"></div><div class="bar" style="height:85%;"></div><div class="bar" style="height:40%;"></div>
+    </div>
+    <div class="journeycap">BEFORE — effort / wait per phase (illustrative)</div>
+
+    <div class="journeybars after">
+      <div class="bar" style="height:30%;"></div><div class="bar" style="height:22%;"></div><div class="bar" style="height:12%;"></div>
+      <div class="bar" style="height:15%;"></div><div class="bar" style="height:10%;"></div><div class="bar" style="height:14%;"></div>
+    </div>
+    <div class="journeycap" style="margin-bottom:0;">AFTER, WITH ICONFORGE — same phases (illustrative)</div>
+    <p style="margin-top:1.6rem;">The queue wait and revision loop — the two most painful phases — collapsed almost entirely once generation, style-locking, and export happened inside one continuous view instead of across tickets and files.</p>
+  </section>
+
+  <!-- ============ 05 SYSTEM ARCHITECTURE ============ -->
+  <section id="architecture">
+    <div class="eyebrow"><span class="no">05</span>System Architecture</div>
+    <h2>The core IA decision: icons as tokens, not one-off images.</h2>
+    <p>Generation is the easy part. The design problem was building a pipeline that keeps 200 icons as consistent as 2 — so the product scales with a design system instead of fighting it.</p>
+
+    <div class="pipeline">
+      <div class="node"><div class="nk">INPUT</div><div class="nt">Prompt Parser</div><div class="nd">Natural language → subject, domain, style intent</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nk">RULES</div><div class="nt">Style + Token Engine</div><div class="nd">16 style presets bound to brand rules: stroke, grid, radius</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nk">GENERATE</div><div class="nt">Variation Grid</div><div class="nd">8 candidates per request, never a single forced result</div></div>
+      <div class="arrow">→</div>
+      <div class="node on"><div class="nk">SCALE</div><div class="nt">Consistency Lock</div><div class="nd">Propagates chosen style/tokens to every future icon in the pack</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nk">OUTPUT</div><div class="nt">Export Pipeline</div><div class="nd">SVG / PNG / PDF / WebP, auto-named, versioned</div></div>
+    </div>
+  </section>
+
+  <!-- ============ 06 WIREFRAME ITERATION ============ -->
+  <section id="iteration">
+    <div class="eyebrow"><span class="no">06</span>From Sketch to System</div>
+    <h2>Three rounds, each driven by a testing finding.</h2>
+
+    <div class="iterrow">
+      <div>
+        <div class="iterbox">
+          <div class="r" style="height:26%;"></div>
+          <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
+            <div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div>
+          </div>
+        </div>
+        <div class="iterlabel">LO-FI</div>
+        <div class="iterdesc">Prompt + results only. Testing showed users wanted to adjust without losing their generation.</div>
+      </div>
+      <div>
+        <div class="iterbox" style="flex-direction:row;">
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+            <div class="r" style="height:22%;"></div>
+            <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
+              <div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div>
+            </div>
+          </div>
+          <div style="width:26%;background:var(--tile);border-radius:4px;border:1px dashed var(--line-soft);"></div>
+        </div>
+        <div class="iterlabel">MID-FI</div>
+        <div class="iterdesc">Persistent side panel introduced. Consistency control still buried two clicks deep.</div>
+      </div>
+      <div>
+        <div class="iterbox hi" style="flex-direction:row;">
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+            <div class="r" style="height:22%;background:var(--violet);opacity:0.3;"></div>
+            <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
+              <div class="r" style="background:var(--violet);opacity:0.5;"></div><div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div>
+            </div>
+          </div>
+          <div style="width:26%;background:var(--tile);border-radius:4px;"></div>
+        </div>
+        <div class="iterlabel hi">HI-FI</div>
+        <div class="iterdesc">Consistency Lock promoted to a single persistent toolbar toggle, always visible.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 07 KEY FLOW ============ -->
+  <section id="keyflow">
+    <div class="eyebrow"><span class="no">07</span>Key Flow: Prompt to Icon</div>
+    <h2>The screen that carries the most weight in the whole product.</h2>
+
+    <div class="chrome" style="margin-top:2rem;">
+      <div class="chrome-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="url">app.iconforge.ai/generate</div></div>
+      <div class="chrome-body" style="display:flex;">
+        <div style="flex:1;display:flex;flex-direction:column;">
+          <div style="padding:18px 22px;border-bottom:1px solid var(--line);display:flex;gap:12px;">
+            <div style="flex:1;background:var(--tile);border:1px solid var(--violet);border-radius:10px;padding:12px 16px;font-size:13px;color:#D8D5E0;">solar panel monitoring dashboard icon, duotone, blue and teal</div>
+            <div style="background:var(--violet);color:var(--bg);padding:12px 20px;border-radius:10px;font-size:12px;font-weight:600;white-space:nowrap;">Generate · 8</div>
+          </div>
+          <div style="flex:1;padding:20px 22px;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:12px;">
+            <div style="background:var(--tile);border-radius:12px;border:2px solid var(--violet);display:flex;align-items:center;justify-content:center;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#2D9CDB,#2ED9C3);border-radius:6px;"></div></div>
+            <div style="background:var(--tile);border-radius:12px;display:flex;align-items:center;justify-content:center;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#2D9CDB,#2ED9C3);border-radius:6px;opacity:0.85;"></div></div>
+            <div style="background:var(--tile);border-radius:12px;display:flex;align-items:center;justify-content:center;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#2D9CDB,#2ED9C3);border-radius:50%;"></div></div>
+            <div style="background:var(--tile);border-radius:12px;display:flex;align-items:center;justify-content:center;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#2D9CDB,#2ED9C3);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);"></div></div>
+            <div style="background:var(--tile);border-radius:12px;display:flex;align-items:center;justify-content:center;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#2D9CDB,#2ED9C3);border-radius:6px;transform:rotate(20deg);"></div></div>
+            <div style="background:var(--tile);border-radius:12px;display:flex;align-items:center;justify-content:center;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#2D9CDB,#2ED9C3);border-radius:6px 6px 0 0;"></div></div>
+            <div style="background:var(--tile);border-radius:12px;display:flex;align-items:center;justify-content:center;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#2D9CDB,#2ED9C3);border-radius:6px;opacity:0.6;"></div></div>
+            <div style="background:var(--tile);border-radius:12px;border:1px dashed var(--line-soft);display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:18px;">+</div>
+          </div>
+        </div>
+        <div style="width:200px;border-left:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:14px;">
+          <div style="font-size:11px;color:var(--dim);font-family:var(--font-mono);">SELECTED</div>
+          <div style="width:100%;aspect-ratio:1;background:var(--tile);border-radius:10px;display:flex;align-items:center;justify-content:center;"><div style="width:38px;height:38px;background:linear-gradient(135deg,#2D9CDB,#2ED9C3);border-radius:8px;"></div></div>
+          <div style="background:var(--tile-2);border-radius:8px;padding:9px 11px;font-size:11.5px;color:var(--lime);display:flex;align-items:center;gap:8px;">● Consistency Lock: ON</div>
+          <div style="background:var(--violet);color:var(--bg);text-align:center;padding:9px;border-radius:8px;font-size:12px;font-weight:600;">Export</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="takeaways">
+      <div class="takeaway"><div class="tn">01</div><p>Style chips remove prompt-engineering guesswork — no one has to know the word "duotone."</p></div>
+      <div class="takeaway"><div class="tn">02</div><p>A grid of 8, never a single result — reduces regeneration cost and decision fatigue.</p></div>
+      <div class="takeaway"><div class="tn">03</div><p>Consistency Lock lives in the persistent rail — every next prompt inherits it automatically.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 08 CUSTOMIZATION ============ -->
+  <section id="customization">
+    <div class="eyebrow"><span class="no">08</span>Customization</div>
+    <div class="panelgrid">
+      <div>
+        <h2>Enough control for a systems lead. Simple enough for a first-time user.</h2>
+        <p>Palette, stroke weight, corner radius, background and export presets sit in one panel that never leaves the canvas — refine without losing your generation history.</p>
+      </div>
+      <div class="panel">
+        <div>
+          <div class="pk">PALETTE</div>
+          <div class="swatches">
+            <i style="background:var(--violet);border:2px solid var(--ink);"></i><i style="background:#2D9CDB;"></i><i style="background:var(--lime);"></i><i style="background:var(--ink);"></i><i style="background:var(--bg);border:1px solid var(--line-soft);"></i>
+          </div>
+        </div>
+        <div><div class="pk">STROKE WEIGHT</div><div class="slider"><i style="left:38%;"></i></div></div>
+        <div><div class="pk">CORNER RADIUS</div><div class="slider"><i style="left:65%;"></i></div></div>
+        <div><div class="pk">BACKGROUND</div><div class="togglepair"><span class="on">Transparent</span><span class="off">Solid</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 09 STYLE SYSTEM ============ -->
+  <section id="styles">
+    <div class="eyebrow"><span class="no">09</span>One Prompt, Sixteen Systems</div>
+    <h2>The same icon, rendered consistently across every style the platform supports.</h2>
+
+    <div class="stylegrid">
+      <div class="styletile on"><div class="glyph"></div><div class="lbl">Outline</div></div>
+      <div class="styletile"><div class="glyph" style="background:var(--faint);"></div><div class="lbl">Flat</div></div>
+      <div class="styletile"><div class="glyph" style="background:var(--violet);"></div><div class="lbl">Filled</div></div>
+      <div class="styletile"><div class="glyph" style="background:linear-gradient(135deg,var(--violet),#2ED9C3);"></div><div class="lbl">Gradient</div></div>
+      <div class="styletile"><div class="glyph" style="background:var(--faint);border-radius:6px;"></div><div class="lbl">3D</div></div>
+      <div class="styletile"><div class="glyph" style="background:var(--faint);opacity:0.6;transform:skew(-10deg,4deg);"></div><div class="lbl">Isometric</div></div>
+      <div class="styletile"><div class="glyph" style="background:var(--lime);clip-path:none;border-radius:50%;"></div><div class="lbl">Mascot</div></div>
+      <div class="styletile"><div class="glyph" style="background:var(--faint);clip-path:none;border-radius:4px;width:20px;height:20px;border:2px solid var(--ink);"></div><div class="lbl">Minimalist</div></div>
+      <div class="styletile"><div class="glyph" style="background:var(--faint);clip-path:none;border-radius:50%;width:20px;height:20px;box-shadow:inset -3px -3px 6px rgba(255,255,255,.06),inset 3px 3px 6px rgba(0,0,0,.5);"></div><div class="lbl">Neumorphic</div></div>
+      <div class="styletile"><div class="glyph" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:8px;width:30px;height:30px;clip-path:none;"></div><div class="lbl">Glass</div></div>
+      <div class="styletile"><div class="glyph" style="background:var(--violet);border-radius:8px;"></div><div class="lbl">Material</div></div>
+      <div class="styletile on"><div class="glyph" style="background:var(--violet);"></div><div class="lbl">Brand-custom</div></div>
+    </div>
+  </section>
+
+  <!-- ============ 10 SUPPORTING FLOWS ============ -->
+  <section id="supporting">
+    <div class="eyebrow"><span class="no">10</span>Supporting Flows</div>
+    <h2>Managing a growing pack, and handing it off cleanly.</h2>
+
+    <div class="flowduo">
+      <div class="flowbox">
+        <div class="fk">LIBRARY &amp; PACK MANAGEMENT</div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <div style="flex:1;background:var(--tile-2);border-radius:6px;height:28px;"></div>
+          <div style="width:56px;background:var(--violet);border-radius:6px;height:28px;"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:7px;">
+          <div style="aspect-ratio:1;background:var(--tile-2);border-radius:6px;"></div><div style="aspect-ratio:1;background:var(--tile-2);border-radius:6px;"></div><div style="aspect-ratio:1;background:var(--tile-2);border-radius:6px;"></div><div style="aspect-ratio:1;background:var(--tile-2);border-radius:6px;"></div><div style="aspect-ratio:1;background:var(--tile-2);border-radius:6px;"></div>
+        </div>
+        <div class="fd">Tag, search and version every generation the same way you'd manage components in a design system.</div>
+      </div>
+      <div class="flowbox">
+        <div class="fk">EXPORT</div>
+        <div class="filerow"><span>SVG</span><div class="dot"></div></div>
+        <div class="filerow"><span>PNG @2x</span><div class="dot"></div></div>
+        <div class="filerow" style="opacity:0.5;"><span>PDF</span><div style="width:15px;height:15px;border:1px solid var(--dim);border-radius:4px;"></div></div>
+        <div class="filename">icon_solar-monitor_duotone_24.svg</div>
+        <div class="fd">Naming and versioning shown live — the detail that decided whether engineers trusted the tool.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 11 USABILITY TESTING ============ -->
+  <section id="testing">
+    <div class="eyebrow"><span class="no">11</span>Validation</div>
+    <h2>Two rounds of testing, one persona in each seat.</h2>
+    <div class="subtle">Simulated usability study — concept validation, 5 participants across target personas, 2 iterative rounds.</div>
+
+    <div class="ttable">
+      <div class="row head"><div>TASK</div><div>ROUND 1</div><div>ROUND 2</div><div>FINDING → CHANGE</div></div>
+      <div class="row">
+        <div class="task">Generate an on-brand icon in under 2 minutes</div>
+        <div class="r1">62%</div><div class="r2">90%</div>
+        <div class="find">Consistency Lock had low discoverability → moved to persistent toolbar</div>
+      </div>
+      <div class="row">
+        <div class="task">Export a dev-ready asset without help</div>
+        <div class="r1">71%</div><div class="r2">95%</div>
+        <div class="find">Naming convention unclear → added a live filename preview</div>
+      </div>
+      <div class="row">
+        <div class="task">Build a 10-icon pack that stays visually consistent</div>
+        <div class="r1">55%</div><div class="r2">88%</div>
+        <div class="find">Users tweaked parameters per-icon → single consistency dial replaced 5 controls</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 12 IMPACT ============ -->
+  <section id="impact">
+    <div class="eyebrow"><span class="no">12</span>Projected Impact</div>
+    <h2>What this is worth once it ships.</h2>
+    <div class="subtle" style="margin-bottom:0.4rem;">Hypothesis-driven estimates from usability task timing and comparative benchmarking — not production analytics.</div>
+
+    <div class="impactrow">
+      <div class="impactcard"><div class="iv">3–5d → &lt;10min</div><p>Estimated time-to-icon, from design-ops request to final asset.</p></div>
+      <div class="impactcard"><div class="iv">1 dial</div><p>Replaces manual QA of every asset in a 100+ icon pack for style consistency.</p></div>
+      <div class="impactcard"><div class="iv">3 formats</div><p>Production-ready export, zero manual re-export requests from engineering.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 13 REFLECTION + CTA ============ -->
+  <section id="reflection">
+    <div class="eyebrow"><span class="no">13</span>Reflection &amp; Next</div>
+    <h2>The highest-leverage decision wasn't a screen. It was Consistency Lock.</h2>
+    <p>Treating generation as a systems problem — not a single magic screen — is what let this scale from "make one icon" to "maintain a hundred." That reframe, more than any visual choice, is the actual design contribution here.</p>
+    <p>Next: a Figma plugin for direct hand-off, multi-language prompt support, and per-brand versioned token sets for enterprise teams managing more than one product line.</p>
+
+    <div class="closing">
+      <div>
+        <h3>Let's talk about how this was built.</h3>
+        <p class="subtle">Personal project, designed solo — part of an ongoing exploration of AI-assisted design tooling.</p>
+      </div>
+      <div class="ctabtns">
+        <a class="solid" href="mailto:sydnyaneshwari@gmail.com">Email</a>
+        <a class="outline" href="index.html#work">More work</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Iconforge — Personal Project · AI Product Design</span>
+  <span><a href="index.html#work">Dnyaneshwari Mandape — Portfolio</a></span>
+</footer>
+
+</body>
+</html>
