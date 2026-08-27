@@ -54,6 +54,9 @@
   }
   a{color:inherit;text-decoration:none;}
   img{max-width:100%;display:block;}
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{
+    outline:2px solid var(--blue);outline-offset:2px;border-radius:4px;
+  }
 
   /* CURSOR GLOW — soft color blob trailing the pointer, native (no images), lerped for smooth motion */
   .cursor-glow{
@@ -124,7 +127,7 @@
   }
   .nav-cta:hover{opacity:.82;}
   .nav-burger{
-    display:none;flex-direction:column;gap:5px;width:38px;height:38px;
+    display:none;flex-direction:column;gap:5px;width:44px;height:44px;
     align-items:center;justify-content:center;background:none;border:none;cursor:pointer;flex-shrink:0;
   }
   .nav-burger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:transform .25s ease, opacity .25s ease;}
@@ -231,8 +234,7 @@
     background-repeat:no-repeat, no-repeat, no-repeat, repeat;
   }
   #work.dark-band .project-card{color:var(--text);}
-  #work.dark-band .more-work{color:var(--text);}
-  #work.dark-band .pindex{color:rgba(255,255,255,0.06);}
+  #work.dark-band .pro-card{color:var(--text);}
   .mesh-bg{
     background-image:
       radial-gradient(440px 320px at 8% 15%, color-mix(in srgb, var(--blue) 9%, transparent), transparent 70%),
@@ -300,38 +302,44 @@
   .section-head h2{font-family:'General Sans',sans-serif;font-size:clamp(2.1rem,5vw,3rem);font-weight:700;letter-spacing:-0.03em;line-height:1.08;}
   .section-head p{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);margin-top:14px;max-width:560px;font-size:1.02rem;}
 
-  /* FEATURED PROJECTS — editorial spread, mockup + copy side by side, giant ghost index */
-  .featured-projects{display:flex;flex-direction:column;gap:28px;margin-bottom:20px;}
+  /* GRID SECTION LABELS — shared by both project grids */
+  .grid-label{font-family:'General Sans',sans-serif;font-size:1.05rem;font-weight:700;color:inherit;margin-bottom:6px;}
+  .grid-sublabel{font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:rgba(250,250,248,0.6);margin-bottom:24px;max-width:560px;}
+
+  /* PERSONAL PROJECTS — photo-forward card, 3-up grid, giant ghost index */
+  .featured-projects{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:56px;}
   .project-card{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);
     overflow:hidden;transition:transform .3s cubic-bezier(.2,.6,.2,1), box-shadow .3s ease;
-    display:grid;grid-template-columns:1.15fr 1fr;position:relative;
+    display:flex;flex-direction:column;position:relative;
   }
   .project-card:nth-child(1) .project-body{background:color-mix(in srgb, var(--blue) 4%, var(--card));}
   .project-card:nth-child(2) .project-body{background:color-mix(in srgb, var(--teal) 4%, var(--card));}
   .project-card:nth-child(3) .project-body{background:color-mix(in srgb, var(--lavender) 4%, var(--card));}
   .project-card:hover{transform:translateY(-6px);box-shadow:0 22px 44px rgba(23,23,23,0.09);}
-  .project-card:hover .mockup{transform:scale(1.4) rotate(0.6deg);}
+  .project-card:hover .mockup{transform:scale(1.08);}
   .pindex{
-    position:absolute;top:2px;right:26px;z-index:0;
+    position:absolute;top:12px;right:14px;z-index:2;
     font-family:'JetBrains Mono',monospace;font-weight:700;
-    font-size:6.5rem;line-height:1;color:var(--surface);pointer-events:none;user-select:none;
+    font-size:0.7rem;letter-spacing:0.04em;
+    background:rgba(255,255,255,0.88);color:var(--muted);
+    padding:4px 9px;border-radius:100px;pointer-events:none;user-select:none;
   }
   .mockup-wrap{
-    min-height:340px;position:relative;overflow:hidden;
-    background:var(--mockup-tint, var(--surface));border-right:1px solid var(--border);
+    min-height:200px;position:relative;overflow:hidden;
+    background:var(--mockup-tint, var(--surface));border-bottom:1px solid var(--border);
   }
   .mockup{
     position:absolute;inset:0;transition:transform .45s cubic-bezier(.2,.6,.2,1);
     display:flex;align-items:center;justify-content:center;padding:18px;
-    transform:scale(1.32);
+    transform:scale(1);
   }
   .mockup .badge{
-    position:absolute;top:18px;left:18px;z-index:2;
+    position:absolute;top:14px;left:14px;z-index:2;
     background:var(--card);border:1px solid var(--border);
-    padding:5px 12px;border-radius:100px;font-size:0.72rem;font-weight:600;color:var(--muted);
+    padding:4px 11px;border-radius:100px;font-size:0.68rem;font-weight:600;color:var(--muted);
   }
-  .mockup.mockup-photo{padding:0;transform:scale(1);}
+  .mockup.mockup-photo{padding:0;}
   .mockup.mockup-photo img{width:100%;height:100%;object-fit:cover;display:block;}
   .project-card:hover .mockup.mockup-photo{transform:scale(1.06);}
   /* Iconforge mock: prompt bar + generated icon grid */
@@ -344,40 +352,33 @@
   .mock-forge .mfgtile i{width:16px;height:16px;border-radius:4px;background:#7C6CFF;opacity:.85;}
   .mock-forge .mfgtile.on{border:1.5px solid #7C6CFF;}
   .mock-forge .mfgtile.lime i{background:#C8FF6B;}
-  @media (max-width:860px){
-    .project-card{grid-template-columns:1fr;}
-    .mockup-wrap{min-height:260px;border-right:none;border-bottom:1px solid var(--border);}
-    .pindex{font-size:4rem;top:4px;right:16px;}
-  }
-  .project-body{padding:32px;flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1;}
-  .project-body .ptitle-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
-  .project-body .ptitle{font-family:'General Sans',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;}
-  .project-body .pyear{font-family:'JetBrains Mono',monospace;font-size:0.76rem;color:var(--muted);flex-shrink:0;}
-  .project-body .prole{font-size:0.82rem;font-weight:600;margin-top:6px;}
-  .project-body .pdesc{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.96rem;margin-top:14px;}
-  .project-body .plink{margin-top:20px;font-size:0.9rem;font-weight:600;color:var(--blue);display:inline-flex;align-items:center;gap:6px;transition:gap .2s ease;}
+  .project-body{padding:22px;flex:1;display:flex;flex-direction:column;justify-content:flex-start;position:relative;z-index:1;}
+  .project-body .ptitle-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .project-body .ptitle{font-family:'General Sans',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:-0.02em;}
+  .project-body .pyear{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--muted);flex-shrink:0;}
+  .project-body .prole{font-size:0.78rem;font-weight:600;margin-top:6px;}
+  .project-body .pdesc{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.87rem;margin-top:12px;line-height:1.55;}
+  .project-body .plink{margin-top:16px;font-size:0.85rem;font-weight:600;color:var(--blue);display:inline-flex;align-items:center;gap:6px;transition:gap .2s ease;}
   .project-card:hover .plink{gap:11px;}
 
-  /* MORE WORK — lighter-weight list, not competing with featured case studies */
-  .more-work{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--card);}
-  .mw-head{padding:16px 22px;border-bottom:1px solid var(--border);font-size:0.8rem;font-weight:600;color:var(--muted);letter-spacing:0.02em;}
-  .mw-row{
-    display:flex;align-items:center;gap:16px;padding:18px 22px;
-    border-bottom:1px solid var(--border);transition:background .2s ease;
+  /* PROFESSIONAL WORK — text-forward card with a colored top accent, distinguishing it from the photo-led personal grid */
+  .pro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .pro-card{
+    background:var(--card);border:1px solid var(--border);border-top:3px solid var(--pro-accent, var(--border));
+    border-radius:var(--radius-lg);padding:24px;display:flex;flex-direction:column;
+    text-decoration:none;color:inherit;transition:transform .2s ease, box-shadow .2s ease;
   }
-  .mw-row:last-child{border-bottom:none;}
-  .mw-row:nth-child(2):hover{background:color-mix(in srgb, var(--amber) 8%, var(--card));}
-  .mw-row:nth-child(3):hover{background:color-mix(in srgb, var(--lavender) 8%, var(--card));}
-  .mw-row:nth-child(4):hover{background:color-mix(in srgb, var(--coral) 8%, var(--card));}
-  .mw-row:nth-child(5):hover{background:color-mix(in srgb, var(--blue) 8%, var(--card));}
-  .mw-row:nth-child(6):hover{background:color-mix(in srgb, var(--teal) 8%, var(--card));}
-  .mw-row .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-  .mw-row .mw-title{font-family:'General Sans',sans-serif;font-weight:600;font-size:0.96rem;width:230px;flex-shrink:0;}
-  .mw-row .mw-role{font-size:0.78rem;font-weight:600;width:170px;flex-shrink:0;}
-  .mw-row .mw-desc{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.86rem;}
-  @media (max-width:760px){
-    .mw-row{flex-wrap:wrap;}
-    .mw-row .mw-title,.mw-row .mw-role{width:auto;}
+  .pro-card:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(23,23,23,0.08);}
+  .pro-num{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);margin-bottom:14px;}
+  .pro-title{font-family:'General Sans',sans-serif;font-weight:700;font-size:1.02rem;letter-spacing:-0.01em;}
+  .pro-role{font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:600;margin-top:6px;}
+  .pro-desc{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:0.85rem;line-height:1.55;margin-top:12px;flex:1;}
+  .pro-link{margin-top:16px;font-size:0.83rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:gap .2s ease;}
+  .pro-card:hover .pro-link{gap:11px;}
+
+  @media (max-width:900px){
+    .featured-projects{grid-template-columns:1fr;}
+    .pro-grid{grid-template-columns:1fr;}
   }
 
   /* HOW I WORK */
@@ -493,7 +494,8 @@
   }
   .contact h2{font-family:'General Sans',sans-serif;font-size:clamp(1.8rem,5vw,2.6rem);font-weight:600;letter-spacing:-0.02em;}
   .contact p{font-family:'IBM Plex Sans',sans-serif;color:var(--muted);margin-top:14px;}
-  .contact .actions{justify-content:center;margin-top:32px;}
+  .contact .actions{display:flex;justify-content:center;gap:14px;margin-top:32px;flex-wrap:wrap;}
+  @media (max-width:480px){ .contact .actions{gap:16px;} }
 
   footer{border-top:1px solid var(--border);padding:32px 0;color:var(--muted);font-size:0.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 
@@ -542,7 +544,7 @@
   .drawer-overlay.open .drawer{transform:translateX(0);}
   @media (prefers-reduced-motion: reduce){ .drawer,.drawer-overlay{transition:none;} }
   .drawer-close{
-    align-self:flex-end;width:34px;height:34px;border-radius:50%;
+    align-self:flex-end;width:44px;height:44px;border-radius:50%;
     background:var(--surface);border:1px solid var(--border);font-size:1.15rem;
     cursor:pointer;color:var(--muted);line-height:1;margin-bottom:16px;
   }
@@ -678,55 +680,45 @@
       <h2>Case studies & projects</h2>
       <p>0-to-1 products, design systems, and AI-led UX across insurance, e-commerce, and social platforms.</p>
     </div>
-    <div class="more-work reveal">
-      <div class="mw-head">From Problem to Production</div>
-      <div class="mw-head">Deep dives into products I’ve worked on professionally — from discovery and design to deployment and adoption.</div>
+    <div class="grid-label reveal">From Problem to Production</div>
+    <div class="grid-sublabel reveal">Deep dives into products I’ve worked on professionally — from discovery and design to deployment and adoption.</div>
+    <div class="pro-grid reveal-group" style="margin-bottom:56px;">
 
-      <a class="mw-row" href="case-study-rewards-fab.html" style="text-decoration:none;color:inherit;cursor:pointer;">
-        <span class="dot" style="background:var(--amber);"></span>
-        <span class="mw-title">Gamified "Get Rewards" FAB</span>
-        <span class="mw-role" style="color:var(--amber);">Digit Insurance · Motion</span>
-        <span class="mw-desc">Interactive unboxing animation for premium discounts — lifted offer redemption 6.5%. <span style="color:var(--amber);font-weight:600;">Read case study →</span></span>
+      <a class="pro-card reveal" href="case-study-rewards-fab.html" style="--pro-accent:var(--amber);">
+        <div class="pro-num">01</div>
+        <div class="pro-title">Gamified "Get Rewards" FAB</div>
+        <div class="pro-role" style="color:var(--amber);">Digit Insurance · Motion</div>
+        <p class="pro-desc">Interactive unboxing animation for premium discounts — lifted offer redemption 6.5%.</p>
+        <span class="pro-link" style="color:var(--amber);">Read case study →</span>
       </a>
 
-      <a class="mw-row" href="case-study-3d-visual-language.html" style="text-decoration:none;color:inherit;cursor:pointer;">
-        <span class="dot" style="background:var(--teal);"></span>
-        <span class="mw-title">3D Visual Language for Insurance</span>
-        <span class="mw-role" style="color:var(--teal);">Digit Insurance · Design System</span>
-        <span class="mw-desc">UI modernization across 5 touchpoints, 60+ 3D assets — 3.6% lift in widget CTR. <span style="color:var(--teal);font-weight:600;">Read case study →</span></span>
+      <a class="pro-card reveal" href="case-study-3d-visual-language.html" style="--pro-accent:var(--teal);">
+        <div class="pro-num">02</div>
+        <div class="pro-title">3D Visual Language for Insurance</div>
+        <div class="pro-role" style="color:var(--teal);">Digit Insurance · Design System</div>
+        <p class="pro-desc">UI modernization across 5 touchpoints, 60+ 3D assets — 3.6% lift in widget CTR.</p>
+        <span class="pro-link" style="color:var(--teal);">Read case study →</span>
       </a>
 
-      <a class="mw-row" href="case-study-valueattics-re.html" style="text-decoration:none;color:inherit;cursor:pointer;">
-        <span class="dot" style="background:var(--lavender);"></span>
-        <span class="mw-title">Valueattics Re</span>
-        <span class="mw-role" style="color:var(--lavender);">Brand Experience</span>
-        <span class="mw-desc">End-to-end brand experience and Look Book for a reinsurance business. <span style="color:var(--lavender);font-weight:600;">Read case study →</span></span>
+      <a class="pro-card reveal" href="case-study-valueattics-re.html" style="--pro-accent:var(--lavender);">
+        <div class="pro-num">03</div>
+        <div class="pro-title">Valueattics Re</div>
+        <div class="pro-role" style="color:var(--lavender);">Brand Experience</div>
+        <p class="pro-desc">End-to-end brand experience and Look Book for a reinsurance business.</p>
+        <span class="pro-link" style="color:var(--lavender);">Read case study →</span>
       </a>
 
-      <div class="mw-row">
-        <span class="dot" style="background:var(--coral);"></span>
-        <span class="mw-title">Parametric 3D Iconology Engine</span>
-        <span class="mw-role" style="color:var(--coral);">Design Engineering</span>
-        <span class="mw-desc">JSON-driven parametric 3D agent adapting spatial UIs — scaled 3D production 600%.</span>
+      <div class="pro-card reveal" style="--pro-accent:var(--coral);">
+        <div class="pro-num">04</div>
+        <div class="pro-title">Parametric 3D Iconology Engine</div>
+        <div class="pro-role" style="color:var(--coral);">Design Engineering</div>
+        <p class="pro-desc">JSON-driven parametric 3D agent adapting spatial UIs — scaled 3D production 600%.</p>
       </div>
 
-      <!-- <div class="mw-row">
-        <span class="dot" style="background:var(--blue);"></span>
-        <span class="mw-title">AI Shopping Assistant</span>
-        <span class="mw-role" style="color:var(--blue);">Conversational UX</span>
-        <span class="mw-desc">End-to-end AI chatbot journey cutting click paths 60%, scoring 85/100 SUS.</span>
-      </div> -->
-
-      <!-- <div class="mw-row">
-        <span class="dot" style="background:var(--teal);"></span>
-        <span class="mw-title">LinkedIn Semiotics</span>
-        <span class="mw-role" style="color:var(--teal);">Information Architecture</span>
-        <span class="mw-desc">Semiotic analysis & IA restructure — task discoverability up to 11%.</span>
-      </div> -->
     </div>
 
-    <div class="mw-head" style="margin-top:56px;border-top:1px solid var(--border);padding-top:24px;">Personal &amp; Concept Work</div>
-    <div class="mw-head" style="margin-bottom:28px;">0-to-1 concepts designed solo, end to end, outside of client or employer work.</div>
+    <div class="grid-label reveal" style="border-top:1px solid var(--border);padding-top:24px;">Personal &amp; Concept Work</div>
+    <div class="grid-sublabel reveal">0-to-1 concepts designed solo, end to end, outside of client or employer work.</div>
     <div class="featured-projects reveal-group">
 
       <a class="project-card reveal" href="case-study-element-store.html">
@@ -793,7 +785,7 @@
   </div>
 </section>
 
-<section class="section mesh-bg" id="how-i-work" style="padding-top:0;position:relative;overflow:hidden;">
+<section class="section mesh-bg" id="how-i-work" style="padding-top:72px;position:relative;overflow:hidden;">
   <div class="parallax-blob" data-speed="0.2" aria-hidden="true" style="top:10%;left:2%;width:200px;height:200px;background:color-mix(in srgb, var(--lavender) 20%, transparent);"></div>
   <div class="parallax-blob" data-speed="0.32" aria-hidden="true" style="bottom:5%;right:4%;width:240px;height:240px;background:color-mix(in srgb, var(--teal) 18%, transparent);"></div>
   <div class="wrap">
@@ -901,17 +893,17 @@
     </div>
     <div class="ach-grid reveal-group">
       <div class="ach-card reveal">
-        <div class="icon">🏆</div>
+        <div class="icon" style="color:var(--amber);" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 5H4a2 2 0 0 0 2 4"/><path d="M17 5h3a2 2 0 0 1-2 4"/></svg></div>
         <h3>Wall of Awesomeness — Digit Insurance</h3>
         <p>Top performer for bridging design and marketing with high-impact contributions. April 2026.</p>
       </div>
       <div class="ach-card reveal">
-        <div class="icon">🎓</div>
+        <div class="icon" style="color:var(--blue);" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg></div>
         <h3>Award for Excellence — Placement Coordinator</h3>
         <p>Managed 20+ recruiter drives, facilitating industry hiring for the 2024–25 batch.</p>
       </div>
       <div class="ach-card reveal">
-        <div class="icon">🥇</div>
+        <div class="icon" style="color:var(--coral);" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M8 3l2 5-4 3-2-5z"/><path d="M16 3l-2 5 4 3 2-5z"/><circle cx="12" cy="15" r="6"/><path d="M12 12v3l2 2"/></svg></div>
         <h3>Gold Medalist — NSUT Women Kabaddi</h3>
         <p>IIT BHU (Oct 2023), DTU (Apr 2023), IIT Kanpur (Apr 2022).</p>
       </div>
