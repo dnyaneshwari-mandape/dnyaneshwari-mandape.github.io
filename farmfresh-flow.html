@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>FarmFresh Screen Flow</title>
+<style>
+  :root{
+    --p-ink:#1C1C1C; --p-soft:#3D4152; --p-faint:#767A85; --p-line:#ECECEE;
+    --p-orange:#FC8019; --p-green:#1D7A46; --p-sage:#E8F5EC; --p-salt:#FFF1E6; --p-surface:#F7F7F5;
+    --canvas:#F4F1EC; --ink:#201C17; --ink-soft:#5C4C3E; --orange:#FC8019; --orange-deep:#B45700;
+    --font-display:-apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-mono:ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{background:var(--canvas);color:var(--ink);font-family:var(--font-display);-webkit-font-smoothing:antialiased;width:max-content;min-width:100%;padding:64px 72px 96px;}
+  img{max-width:100%;display:block;}
+  header{margin-bottom:56px;max-width:820px;}
+  header .k{font:600 13px/1 var(--font-mono);color:var(--orange-deep);letter-spacing:.04em;}
+  header h1{font-size:44px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 10px;}
+  header p{font-size:17px;color:var(--ink-soft);margin:0;max-width:62ch;line-height:1.5;}
+  .act{margin-bottom:88px;}
+  .act h2{font-size:22px;margin:0 0 6px;display:flex;align-items:baseline;gap:12px;}
+  .act h2 span{font:600 13px/1 var(--font-mono);color:#fff;background:var(--orange-deep);border-radius:6px;padding:6px 8px;}
+  .from{font-size:14px;color:var(--ink-soft);margin:0 0 4px;}
+  .row{display:flex;align-items:flex-start;gap:0;margin-top:24px;}
+  .screen{flex:0 0 375px;width:375px;}
+  .label{font-size:15px;font-weight:600;margin:0 0 12px 4px;color:var(--ink);}
+  .label b{font-family:var(--font-mono);color:var(--orange-deep);margin-right:6px;}
+  .phone{width:375px;border-radius:36px;overflow:hidden;background:#fff;border:1px solid #E4DED6;box-shadow:0 18px 50px rgba(28,27,27,.12);font-family:var(--font-display);}
+  .arrow{flex:0 0 150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:0 12px;margin-top:280px;}
+  .arrow span{font-size:13px;font-weight:600;color:var(--orange-deep);text-align:center;line-height:1.35;}
+  .gap{flex:0 0 72px;}
+  .ph{background:linear-gradient(135deg,#EAF6EF 0%,#FBEFE1 100%);display:flex;align-items:center;justify-content:center;color:#9CAF9E;}
+  img.ph{display:block;width:100%;object-fit:cover;}
+  .ph-icon{color:var(--p-green);background:var(--p-sage);}
+</style>
+</head>
+<body>
+<header>
+  <div class="k">SWIGGY INSTAMART · FARMFRESH · v2</div>
+  <h1>FarmFresh — screen flow</h1>
+  <p>14 screens from Instamart entry to checkout and tracking. Arrows show the tap that moves a shopper to the next screen.</p>
+</header>
+<section class="act" data-name="Discovery → Selection">
+<h2><span>I–II</span> Discovery → Selection</h2>
+<div class="row">
+<div class="screen" data-name="01 · Instamart entry">
+  <div class="label"><b>01</b> Instamart entry</div>
+  <div class="phone">
+              <div style="padding:14px 20px 10px;display:flex;align-items:center;gap:10px;">
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;gap:4px;"><span style="color:var(--p-orange);font-size:11px;">📍</span><span style="font-size:11.5px;font-weight:700;color:var(--p-faint);">Deliver to</span></div>
+                  <div style="font-size:15px;font-weight:800;color:var(--p-ink);">Home — Indiranagar, Blr</div>
+                </div>
+                <div style="width:38px;height:38px;border-radius:12px;background:var(--p-surface);"></div>
+              </div>
+              <div style="padding:6px 20px 18px;">
+                <div style="display:flex;align-items:center;gap:10px;background:var(--p-surface);border:1px solid var(--p-line);border-radius:12px;padding:12px 14px;">
+                  <span style="color:var(--p-faint);">⌕</span><span style="flex:1;font-size:14px;color:var(--p-faint);">Search 'paneer'</span><span style="color:var(--p-orange);">🎤</span>
+                </div>
+              </div>
+              <div style="padding:0 20px 20px;">
+                <div style="position:relative;height:250px;border-radius:20px;overflow:hidden;">
+                <img class="ph" src="assets/farmfresh/hero.webp" alt="Fresh leafy greens beside a smiling farmer holding a crate of produce" decoding="async" style="position:absolute;inset:0;height:100%;">
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(0,0,0,.7) 100%);"></div>
+                <div style="position:absolute;left:0;right:0;bottom:0;padding:0 16px 16px;pointer-events:none;">
+                  <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.94);border-radius:7px;padding:4px 9px;margin-bottom:8px;">
+                    <span style="font-size:10.5px;font-weight:800;letter-spacing:.03em;color:var(--p-green);">NEW · VERIFIED FARMS</span>
+                  </div>
+                  <div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.01em;line-height:1.1;text-shadow:0 2px 10px rgba(0,0,0,.35);">FarmFresh</div>
+                  <div style="font-size:13px;font-weight:600;color:#fff;margin:4px 0 12px;text-shadow:0 1px 6px rgba(0,0,0,.4);">Produce with a visible journey, farm to your door.</div>
+                  <span style="pointer-events:auto;display:inline-block;background:var(--p-orange);color:#fff;border-radius:11px;padding:10px 16px;font-size:13.5px;font-weight:800;">Explore FarmFresh</span>
+                </div>
+                </div>
+              </div>
+              <div style="padding:0 20px 22px;">
+                <div style="font-size:15px;font-weight:800;color:var(--p-ink);margin-bottom:12px;">Shop by category</div>
+                <div style="display:flex;gap:16px;">
+                  <div style="text-align:center;"><div style="width:48px;height:48px;border-radius:14px;background:var(--p-surface);margin:0 auto 6px;"></div><span style="font-size:10.5px;font-weight:600;color:var(--p-soft);">Grocery</span></div>
+                  <div style="text-align:center;"><div style="width:48px;height:48px;border-radius:14px;background:var(--p-surface);margin:0 auto 6px;"></div><span style="font-size:10.5px;font-weight:600;color:var(--p-soft);">Dairy</span></div>
+                  <div style="text-align:center;"><div style="width:48px;height:48px;border-radius:14px;background:var(--p-surface);margin:0 auto 6px;"></div><span style="font-size:10.5px;font-weight:600;color:var(--p-soft);">Snacks</span></div>
+                  <div style="text-align:center;"><div style="width:48px;height:48px;border-radius:14px;background:var(--p-sage);margin:0 auto 6px;"></div><span style="font-size:10.5px;font-weight:700;color:var(--p-green);">FarmFresh</span></div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-around;padding:10px 8px 14px;border-top:1px solid var(--p-line);">
+                <div style="text-align:center;"><div style="font-size:16px;">⌂</div><span style="font-size:9.5px;font-weight:700;color:var(--p-orange);">Home</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">▦</div><span style="font-size:9.5px;font-weight:600;">Categories</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">🛒</div><span style="font-size:9.5px;font-weight:600;">Cart</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">▤</div><span style="font-size:9.5px;font-weight:600;">Orders</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">◍</div><span style="font-size:9.5px;font-weight:600;">Account</span></div>
+              </div>
+  </div>
+</div>
+<div class="arrow"><span>Tap “Explore FarmFresh”</span><svg width="96" height="16" viewBox="0 0 96 16"><path d="M0 8H90" stroke="#FC8019" stroke-width="2"/><path d="M84 2L94 8L84 14" fill="none" stroke="#FC8019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="screen" data-name="02 · FarmFresh home">
+  <div class="label"><b>02</b> FarmFresh home</div>
+  <div class="phone">
+              <div style="padding:14px 20px 8px;display:flex;align-items:center;gap:12px;">
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);flex-shrink:0;"></div>
+                <div style="flex:1;display:flex;align-items:center;gap:6px;"><span style="color:var(--p-green);">✓</span><span style="font-size:18px;font-weight:800;color:var(--p-ink);">FarmFresh</span></div>
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div>
+              </div>
+              <div style="padding:0 20px 14px;display:flex;align-items:center;gap:6px;">
+                <span style="font-size:12.5px;font-weight:700;color:var(--p-green);">✓ Verified farms</span><span style="color:var(--p-line);">·</span><span style="font-size:12.5px;font-weight:600;color:var(--p-faint);">Harvested within 24h</span>
+              </div>
+              <div style="padding:0 20px 16px;display:flex;gap:8px;">
+                <span style="background:var(--p-ink);color:#fff;border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:700;">All</span>
+                <span style="background:var(--p-surface);color:var(--p-soft);border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:700;">Vegetables</span>
+                <span style="background:var(--p-surface);color:var(--p-soft);border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:700;">Fruits</span>
+              </div>
+              <div style="padding:0 20px 8px;display:flex;justify-content:space-between;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Today's Harvest</span><span style="font-size:12px;font-weight:700;color:var(--p-orange);">View All ›</span></div>
+              <div style="padding:0 0 20px 20px;display:flex;gap:10px;overflow-x:hidden;">
+                <div style="flex-shrink:0;width:130px;background:#fff;border:1px solid var(--p-line);border-radius:14px;overflow:hidden;">
+                  <img class="ph" src="assets/farmfresh/tomatoes.webp" alt="Heirloom tomatoes on the vine" decoding="async" style="height:90px;">
+                  <div style="padding:9px 10px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Heirloom Tomatoes</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);margin-bottom:6px;">₹85 <span style="font-size:10px;color:var(--p-faint);font-weight:600;">/500g</span></div><span style="display:block;text-align:center;border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:5px;font-size:11px;font-weight:800;">ADD</span></div>
+                </div>
+                <div style="flex-shrink:0;width:130px;background:#fff;border:1px solid var(--p-line);border-radius:14px;overflow:hidden;">
+                  <img class="ph" src="assets/farmfresh/spinach.webp" alt="Bunch of organic spinach" decoding="async" style="height:90px;">
+                  <div style="padding:9px 10px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Organic Spinach</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);margin-bottom:6px;">₹45 <span style="font-size:10px;color:var(--p-faint);font-weight:600;">/250g</span></div><span style="display:block;text-align:center;border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:5px;font-size:11px;font-weight:800;">ADD</span></div>
+                </div>
+              </div>
+              <div style="padding:0 20px 10px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Meet the Farmers</span></div>
+              <div style="padding:0 0 22px 20px;display:flex;gap:14px;">
+                <div style="text-align:center;width:80px;"><img class="ph" src="assets/farmfresh/farmer-lakshmi.webp" alt="Lakshmi Devi in her tomato field" decoding="async" style="width:72px;height:72px;border-radius:50%;margin:0 auto 6px;object-position:38% 30%;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);">Lakshmi Devi</div><div style="font-size:10px;color:var(--p-faint);">Green Valley</div></div>
+                <div style="text-align:center;width:80px;"><img class="ph" src="assets/farmfresh/farmer-ravi.webp" alt="Ravi Shankar, farmer" decoding="async" style="width:72px;height:72px;border-radius:50%;margin:0 auto 6px;object-position:50% 25%;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);">Ravi Shankar</div><div style="font-size:10px;color:var(--p-faint);">Sunrise Organics</div></div>
+              </div>
+              <div style="padding:0 20px 22px;">
+                <div style="background:var(--p-sage);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;">
+                  <div style="flex:1;"><div style="font-size:13.5px;font-weight:800;color:var(--p-green);margin-bottom:3px;">Subscribe &amp; Save</div><div style="font-size:11.5px;color:var(--p-soft);line-height:1.4;">Weekly baskets, straight from the farm.</div></div>
+                  <span style="background:var(--p-green);color:#fff;border-radius:9px;padding:8px 12px;font-size:11.5px;font-weight:800;white-space:nowrap;">View Plans</span>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-around;padding:10px 8px 14px;border-top:1px solid var(--p-line);">
+                <div style="text-align:center;"><div style="font-size:16px;">⌂</div><span style="font-size:9.5px;font-weight:700;color:var(--p-orange);">Home</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">▦</div><span style="font-size:9.5px;font-weight:600;">Categories</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">🛒</div><span style="font-size:9.5px;font-weight:600;">Cart</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">▤</div><span style="font-size:9.5px;font-weight:600;">Orders</span></div>
+                <div style="text-align:center;color:var(--p-faint);"><div style="font-size:16px;">◍</div><span style="font-size:9.5px;font-weight:600;">Account</span></div>
+              </div>
+  </div>
+</div>
+<div class="arrow"><span>View All</span><svg width="96" height="16" viewBox="0 0 96 16"><path d="M0 8H90" stroke="#FC8019" stroke-width="2"/><path d="M84 2L94 8L84 14" fill="none" stroke="#FC8019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="screen" data-name="03 · Category listing">
+  <div class="label"><b>03</b> Category listing</div>
+  <div class="phone">
+              <div style="padding:14px 20px 10px;display:flex;align-items:center;gap:12px;">
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);flex-shrink:0;"></div>
+                <span style="flex:1;font-size:16px;font-weight:800;color:var(--p-ink);">All Produce</span>
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div>
+              </div>
+              <div style="padding:0 20px 14px;display:flex;gap:8px;">
+                <span style="background:var(--p-ink);color:#fff;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;">All</span>
+                <span style="background:var(--p-surface);color:var(--p-soft);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;">Vegetables</span>
+                <span style="background:var(--p-surface);color:var(--p-soft);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;">Fruits</span>
+              </div>
+              <div style="padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="background:#fff;border:1px solid var(--p-line);border-radius:16px;overflow:hidden;">
+                  <img class="ph" src="assets/farmfresh/guava.webp" alt="Halved premium white guava" decoding="async" style="height:96px;">
+                  <div style="padding:10px 11px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Premium White Guava</div><div style="font-size:10.5px;color:var(--p-faint);margin-bottom:6px;">✓ 9 km away</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13.5px;font-weight:800;color:var(--p-ink);">₹140<span style="font-size:9.5px;font-weight:600;color:var(--p-faint);">/kg</span></span><span style="border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:4px 8px;font-size:10.5px;font-weight:800;">ADD</span></div></div>
+                </div>
+                <div style="background:#fff;border:1px solid var(--p-line);border-radius:16px;overflow:hidden;">
+                  <img class="ph" src="assets/farmfresh/amaranth.webp" alt="Bunch of red amaranth leaves" decoding="async" style="height:96px;">
+                  <div style="padding:10px 11px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Red Amaranth</div><div style="font-size:10.5px;color:var(--p-faint);margin-bottom:6px;">✓ 14 km away</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13.5px;font-weight:800;color:var(--p-ink);">₹35<span style="font-size:9.5px;font-weight:600;color:var(--p-faint);">/250g</span></span><span style="border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:4px 8px;font-size:10.5px;font-weight:800;">ADD</span></div></div>
+                </div>
+              </div>
+  </div>
+</div>
+<div class="arrow"><span>Search</span><svg width="96" height="16" viewBox="0 0 96 16"><path d="M0 8H90" stroke="#FC8019" stroke-width="2"/><path d="M84 2L94 8L84 14" fill="none" stroke="#FC8019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="screen" data-name="04 · Search & filters">
+  <div class="label"><b>04</b> Search &amp; filters</div>
+  <div class="phone">
+              <div style="padding:14px 20px 12px;display:flex;align-items:center;gap:10px;">
+                <div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);flex-shrink:0;"></div>
+                <div style="flex:1;background:var(--p-surface);border:1px solid var(--p-line);border-radius:12px;padding:10px 13px;font-size:13px;font-weight:600;color:var(--p-ink);">Tomatoes</div>
+              </div>
+              <div style="padding:0 20px 14px;"><div style="font-size:11px;font-weight:700;color:var(--p-faint);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Recent Searches</div>
+                <div style="display:flex;gap:7px;flex-wrap:wrap;"><span style="background:var(--p-surface);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:600;color:var(--p-soft);">Spinach</span><span style="background:var(--p-surface);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:600;color:var(--p-soft);">Mangoes</span></div>
+              </div>
+              <div style="position:relative;">
+                <div style="position:absolute;inset:0;background:rgba(20,16,12,0.42);border-radius:0;"></div>
+                <div style="position:relative;background:#fff;border-radius:20px 20px 0 0;padding:18px 20px 22px;margin-top:180px;box-shadow:0 -8px 30px rgba(0,0,0,0.15);">
+                  <div style="display:flex;justify-content:space-between;margin-bottom:16px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Filters</span><span style="width:26px;height:26px;border-radius:8px;background:var(--p-surface);display:inline-block;"></span></div>
+                  <div style="font-size:11.5px;font-weight:700;color:var(--p-faint);margin-bottom:8px;">Distance</div>
+                  <div style="display:flex;gap:7px;margin-bottom:16px;"><span style="background:var(--p-salt);color:var(--p-orange);border:1.5px solid var(--p-orange);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;">Within 10 km</span><span style="background:var(--p-surface);border:1.5px solid var(--p-line);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;color:var(--p-soft);">Any</span></div>
+                  <div style="font-size:11.5px;font-weight:700;color:var(--p-faint);margin-bottom:8px;">Harvest Window</div>
+                  <div style="display:flex;gap:7px;margin-bottom:16px;"><span style="background:var(--p-salt);color:var(--p-orange);border:1.5px solid var(--p-orange);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;">Today</span><span style="background:var(--p-surface);border:1.5px solid var(--p-line);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;color:var(--p-soft);">This week</span></div>
+                  <div style="font-size:11.5px;font-weight:700;color:var(--p-faint);margin-bottom:8px;">Certifications</div>
+                  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+                    <div style="display:flex;align-items:center;gap:9px;"><span style="width:17px;height:17px;border-radius:5px;background:var(--p-green);color:#fff;font-size:11px;text-align:center;line-height:17px;">✓</span><span style="font-size:12.5px;font-weight:600;color:var(--p-ink);">Certified Organic</span></div>
+                    <div style="display:flex;align-items:center;gap:9px;"><span style="width:17px;height:17px;border-radius:5px;border:1.5px solid var(--p-line);"></span><span style="font-size:12.5px;font-weight:600;color:var(--p-ink);">Pesticide-Free Tested</span></div>
+                  </div>
+                  <span style="display:block;text-align:center;background:var(--p-orange);color:#fff;border-radius:12px;padding:12px;font-size:14px;font-weight:800;">Apply Filters</span>
+                </div>
+              </div>
+  </div>
+</div>
+<div class="arrow"><span>Apply filters, tap product</span><svg width="96" height="16" viewBox="0 0 96 16"><path d="M0 8H90" stroke="#FC8019" stroke-width="2"/><path d="M84 2L94 8L84 14" fill="none" stroke="#FC8019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="screen" data-name="05 · Product detail">
+  <div class="label"><b>05</b> Product detail</div>
+  <div class="phone">
+              <img class="ph" src="assets/farmfresh/tomato-vine.webp" alt="Dew-covered heirloom tomatoes" decoding="async" style="height:210px;">
+              <div style="padding:16px 20px 0;">
+                <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(28,28,28,0.82);color:#fff;font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:8px;margin-bottom:10px;">✓ Harvested 3 hours ago</span>
+                <h4 style="font-size:19px;font-weight:800;color:var(--p-ink);margin:0 0 4px;">Heirloom Tomatoes</h4>
+                <p style="font-size:12.5px;color:var(--p-faint);margin:0 0 12px;">Vine-ripened, hand-picked this morning.</p>
+                <div style="display:flex;align-items:center;gap:8px;background:var(--p-surface);border-radius:12px;padding:10px 12px;margin-bottom:14px;">
+                  <div style="width:26px;height:26px;border-radius:50%;background:var(--p-sage);flex-shrink:0;"></div>
+                  <span style="flex:1;font-size:12.5px;font-weight:700;color:var(--p-ink);">Lakshmi Devi</span>
+                  <span style="font-size:11px;color:var(--p-faint);">12 km ›</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                  <span style="font-size:22px;font-weight:800;color:var(--p-ink);">₹85 <span style="font-size:12px;font-weight:600;color:var(--p-faint);">/500g</span></span>
+                  <div style="display:flex;align-items:center;gap:10px;background:var(--p-surface);border-radius:20px;padding:6px 12px;"><span>−</span><span style="font-weight:700;">1</span><span>+</span></div>
+                </div>
+                <div style="border-top:1px solid var(--p-line);padding:11px 0;display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--p-ink);">Harvest Date <span>⌄</span></div>
+                <div style="border-top:1px solid var(--p-line);padding:11px 0;display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--p-ink);">The Farmer <span>⌄</span></div>
+                <div style="border-top:1px solid var(--p-line);padding:11px 0;display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--p-ink);">Growing Practices <span>⌄</span></div>
+                <div style="border-top:1px solid var(--p-line);border-bottom:1px solid var(--p-line);padding:11px 0;display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--p-ink);">Certifications <span>⌄</span></div>
+                <div style="display:flex;flex-direction:column;gap:9px;margin:14px 0;">
+                  <span style="border:1px solid var(--p-line);border-radius:12px;padding:12px;font-size:12.5px;font-weight:700;color:var(--p-ink);">🌱 See the Full Journey — Seed to Delivery ›</span>
+                  <span style="border:1px solid var(--p-line);border-radius:12px;padding:12px;font-size:12.5px;font-weight:700;color:var(--p-ink);">✓ Why You Can Trust This Produce ›</span>
+                </div>
+              </div>
+              <div style="padding:12px 20px 16px;border-top:1px solid var(--p-line);"><span style="display:block;text-align:center;background:var(--p-orange);color:#fff;border-radius:12px;padding:14px;font-size:14.5px;font-weight:800;">Add 1 to Cart · ₹85</span></div>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="act" data-name="Trust layer → Commitment">
+<h2><span>III–IV</span> Trust layer → Commitment</h2><div class="from">From Product detail (05): farmer row → 06</div>
+<div class="row">
+<div class="screen" data-name="06 · Farmer profile">
+  <div class="label"><b>06</b> Farmer profile</div>
+  <div class="phone">
+              <img class="ph" src="assets/farmfresh/farmer-lakshmi.webp" alt="Lakshmi Devi holding freshly picked tomatoes" decoding="async" style="height:180px;object-position:38% 30%;">
+              <div style="padding:16px 20px 20px;">
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:2px;"><h4 style="font-size:19px;font-weight:800;color:var(--p-ink);margin:0;">Lakshmi Devi</h4><span style="color:var(--p-green);">✓</span></div>
+                <div style="font-size:12.5px;font-weight:600;color:var(--p-faint);margin-bottom:14px;">Green Valley Farms · Devanahalli</div>
+                <div style="display:flex;background:var(--p-surface);border-radius:14px;padding:14px 6px;margin-bottom:16px;">
+                  <div style="flex:1;text-align:center;border-right:1px solid var(--p-line);"><div style="font-size:14px;font-weight:800;color:var(--p-ink);">14 yrs</div><div style="font-size:9.5px;color:var(--p-faint);">Farming</div></div>
+                  <div style="flex:1.3;text-align:center;border-right:1px solid var(--p-line);"><div style="font-size:11.5px;font-weight:800;color:var(--p-ink);">Tomatoes &amp; greens</div><div style="font-size:9.5px;color:var(--p-faint);">Specialty</div></div>
+                  <div style="flex:1;text-align:center;"><div style="font-size:14px;font-weight:800;color:var(--p-green);">Verified</div><div style="font-size:9.5px;color:var(--p-faint);">KYC Status</div></div>
+                </div>
+                <div style="font-size:13.5px;font-weight:800;color:var(--p-ink);margin-bottom:6px;">Our Story</div>
+                <p style="font-size:12px;line-height:1.6;color:var(--p-soft);margin:0 0 14px;">Third-generation farmer growing heirloom tomatoes and leafy greens on 6 acres, using drip irrigation to cut water use by half.</p>
+                <div style="font-size:13.5px;font-weight:800;color:var(--p-ink);margin-bottom:8px;">Farming Methods</div>
+                <div style="display:flex;gap:6px;margin-bottom:16px;"><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;">Organic</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;">No Pesticides</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;">Drip Irrigation</span></div>
+                <div style="display:flex;gap:8px;margin-bottom:16px;"><img class="ph" src="assets/farmfresh/farm-vines.webp" alt="Tomatoes ripening on the vine at Green Valley Farms" decoding="async" style="flex:1;height:80px;border-radius:12px;"><img class="ph" src="assets/farmfresh/farm-aerial.webp" alt="Aerial view of the farm fields" decoding="async" style="flex:1;height:80px;border-radius:12px;"></div>
+                <span style="display:block;text-align:center;background:var(--p-ink);color:#fff;border-radius:12px;padding:12px;font-size:13px;font-weight:800;">View This Farm's Journey</span>
+              </div>
+  </div>
+</div>
+<div class="arrow"><span>View This Farm’s Journey</span><svg width="96" height="16" viewBox="0 0 96 16"><path d="M0 8H90" stroke="#FC8019" stroke-width="2"/><path d="M84 2L94 8L84 14" fill="none" stroke="#FC8019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="screen" data-name="07 · Farm journey">
+  <div class="label"><b>07</b> Farm journey</div>
+  <div class="phone">
+              <div style="padding:16px 20px 6px;display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div><span style="font-size:16px;font-weight:800;color:var(--p-ink);">From Seed to Your Door</span></div>
+              <div style="padding:2px 20px 6px;"><span style="font-size:12px;color:var(--p-faint);">Heirloom Tomatoes · Green Valley Farms</span></div>
+              <div style="padding:16px 20px 24px;">
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Seed Planted</div><div style="font-size:11.5px;color:var(--p-soft);">Feb 12</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Sprouted</div><div style="font-size:11.5px;color:var(--p-soft);">Feb 22</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Growing</div><div style="font-size:11.5px;color:var(--p-soft);">Drip-irrigated, no pesticides</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Flowering</div><div style="font-size:11.5px;color:var(--p-soft);">Late April</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div><div style="width:2px;flex:1;background:var(--p-sage);min-height:30px;"></div></div><div style="padding-bottom:18px;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Harvested</div><div style="font-size:11.5px;color:var(--p-soft);">Peak ripeness, this morning</div></div></div>
+                <div style="display:flex;gap:12px;"><div style="display:flex;flex-direction:column;align-items:center;width:14px;"><div style="width:12px;height:12px;border-radius:50%;background:var(--p-green);"></div></div><div><div style="font-size:13px;font-weight:800;color:var(--p-ink);">Delivered</div><div style="font-size:11.5px;color:var(--p-soft);">Cold-chain maintained</div></div></div>
+              </div>
+  </div>
+</div>
+<div class="arrow"><span>Why You Can Trust This</span><svg width="96" height="16" viewBox="0 0 96 16"><path d="M0 8H90" stroke="#FC8019" stroke-width="2"/><path d="M84 2L94 8L84 14" fill="none" stroke="#FC8019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="screen" data-name="08 · Trust & verification">
+  <div class="label"><b>08</b> Trust &amp; verification</div>
+  <div class="phone">
+              <div style="padding:16px 20px 6px;display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Why You Can Trust This</span></div>
+              <div style="padding:4px 20px 16px;"><span style="font-size:12px;color:var(--p-faint);">Every claim about Heirloom Tomatoes is backed by evidence, not marketing.</span></div>
+              <div style="padding:0 20px 16px;display:flex;flex-direction:column;gap:10px;">
+                <div style="background:var(--p-surface);border-radius:14px;padding:12px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="color:var(--p-green);font-size:13px;">✓</span><span style="font-size:12.5px;font-weight:800;color:var(--p-ink);">Farm Verification</span></div><p style="font-size:11px;line-height:1.5;color:var(--p-soft);margin:0;">Verified in-person. FSSAI confirmed, renewed annually.</p></div>
+                <div style="background:var(--p-surface);border-radius:14px;padding:12px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="color:var(--p-green);font-size:13px;">✓</span><span style="font-size:12.5px;font-weight:800;color:var(--p-ink);">Quality Inspection</span></div><p style="font-size:11px;line-height:1.5;color:var(--p-soft);margin:0;">12-point check by Field Officer Priya R. before dispatch.</p></div>
+                <div style="background:var(--p-surface);border-radius:14px;padding:12px 14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="color:var(--p-green);font-size:13px;">✓</span><span style="font-size:12.5px;font-weight:800;color:var(--p-ink);">Farmer Verification</span></div><p style="font-size:11px;line-height:1.5;color:var(--p-soft);margin:0;">Lakshmi Devi, KYC-verified, paid directly — no middlemen.</p></div>
+              </div>
+              <div style="padding:0 20px 22px;"><div style="background:var(--p-ink);border-radius:16px;padding:18px;text-align:center;"><div style="font-size:32px;font-weight:800;color:#fff;">96<span style="font-size:15px;color:rgba(255,255,255,0.5);">/100</span></div><div style="font-size:12px;font-weight:700;color:#fff;margin:4px 0 8px;">Freshness Score</div><div style="width:100%;height:5px;background:rgba(255,255,255,0.18);border-radius:4px;overflow:hidden;"><div style="width:96%;height:100%;background:var(--p-orange);"></div></div><p style="font-size:10.5px;color:rgba(255,255,255,0.6);margin:10px 0 0;line-height:1.5;">Harvest-to-delivery time · cold-chain adherence · inspection results.</p></div></div>
+  </div>
+</div>
+<div class="arrow"><span>Add to Cart</span><svg width="96" height="16" viewBox="0 0 96 16"><path d="M0 8H90" stroke="#FC8019" stroke-width="2"/><path d="M84 2L94 8L84 14" fill="none" stroke="#FC8019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="screen" data-name="09 · Cart & checkout">
+  <div class="label"><b>09</b> Cart &amp; checkout</div>
+  <div class="phone">
+              <div style="padding:16px 20px 10px;display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Your Cart</span></div>
+              <div style="padding:6px 20px 0;">
+                <div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line);"><img class="ph" src="assets/farmfresh/tomatoes.webp" alt="Heirloom tomatoes" decoding="async" style="width:48px;height:48px;border-radius:10px;flex-shrink:0;"><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Heirloom Tomatoes</div><div style="font-size:10.5px;color:var(--p-faint);">Lakshmi Devi</div></div><div style="text-align:right;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">₹170</div><div style="font-size:10px;color:var(--p-faint);">Qty 2</div></div></div>
+                <div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line);"><img class="ph" src="assets/farmfresh/spinach.webp" alt="Organic spinach" decoding="async" style="width:48px;height:48px;border-radius:10px;flex-shrink:0;"><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Organic Spinach</div><div style="font-size:10.5px;color:var(--p-faint);">Ravi Shankar</div></div><div style="text-align:right;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">₹45</div><div style="font-size:10px;color:var(--p-faint);">Qty 1</div></div></div>
+                <div style="display:flex;align-items:center;gap:9px;background:var(--p-sage);border-radius:14px;padding:12px 13px;margin:14px 0;"><span style="color:var(--p-green);">🛡</span><span style="font-size:11px;line-height:1.4;color:var(--p-green);font-weight:600;">Freshness Guarantee — free replacement or refund, no questions asked.</span></div>
+                <div style="font-size:12.5px;font-weight:700;color:var(--p-ink);margin-bottom:8px;">Delivery Slot</div>
+                <div style="display:flex;gap:8px;margin-bottom:16px;">
+                  <div style="flex:1;background:var(--p-ink);color:#fff;border-radius:12px;padding:10px;"><div style="font-size:11.5px;font-weight:800;">Today, 6–8 PM</div><div style="font-size:9.5px;opacity:0.75;">Harvested this morning</div></div>
+                  <div style="flex:1;background:var(--p-surface);color:var(--p-ink);border-radius:12px;padding:10px;"><div style="font-size:11.5px;font-weight:800;">Tomorrow, 8–10 AM</div><div style="font-size:9.5px;opacity:0.7;">Harvested at dawn</div></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--p-soft);margin-bottom:7px;"><span>Item Total</span><span>₹215</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--p-soft);margin-bottom:7px;"><span>Farmer Support Fee <span style="color:var(--p-faint);">(direct to farmers)</span></span><span>₹10</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--p-soft);margin-bottom:12px;"><span>Delivery Fee</span><span>₹25</span></div>
+                <div style="border-top:1px solid var(--p-line);padding-top:10px;display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:var(--p-ink);margin-bottom:14px;"><span>Total</span><span>₹250</span></div>
+              </div>
+              <div style="padding:10px 20px 16px;border-top:1px solid var(--p-line);"><span style="display:block;text-align:center;background:var(--p-orange);color:#fff;border-radius:12px;padding:14px;font-size:14px;font-weight:800;">Proceed to Pay · ₹250</span></div>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="act" data-name="Fulfillment → Retention">
+<h2><span>V–VI</span> Fulfillment → Retention</h2><div class="from">From Cart (09): Proceed to Pay → 10</div>
+<div class="row">
+<div class="screen" data-name="10 · Order confirmation">
+  <div class="label"><b>10</b> Order confirmation</div>
+  <div class="phone">
+              <div style="padding:50px 20px 30px;text-align:center;">
+                <div style="width:56px;height:56px;border-radius:50%;background:var(--p-sage);color:var(--p-green);font-size:26px;line-height:56px;margin:0 auto 16px;">✓</div>
+                <h4 style="font-size:19px;font-weight:800;color:var(--p-ink);margin:0 0 6px;">Order Confirmed</h4>
+                <div style="font-size:12px;color:var(--p-faint);margin-bottom:18px;">Order #FF-10482</div>
+                <p style="font-size:12.5px;line-height:1.6;color:var(--p-soft);margin:0 0 20px;">Harvested this morning. Packed fresh, arriving today.</p>
+                <div style="background:var(--p-surface);border-radius:14px;padding:14px;display:flex;justify-content:space-between;margin-bottom:20px;text-align:left;">
+                  <div><div style="font-size:10.5px;color:var(--p-faint);">Total</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);">₹250</div></div>
+                  <div style="text-align:right;"><div style="font-size:10.5px;color:var(--p-faint);">Arriving</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);">Today, 6–8 PM</div></div>
+                </div>
+                <span style="display:block;text-align:center;background:var(--p-orange);color:#fff;border-radius:12px;padding:13px;font-size:13.5px;font-weight:800;">Track Freshness</span>
+              </div>
+  </div>
+</div>
+<div class="arrow"><span>Track Freshness</span><svg width="96" height="16" viewBox="0 0 96 16"><path d="M0 8H90" stroke="#FC8019" stroke-width="2"/><path d="M84 2L94 8L84 14" fill="none" stroke="#FC8019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="screen" data-name="11 · Freshness tracking">
+  <div class="label"><b>11</b> Freshness tracking</div>
+  <div class="phone">
+              <div style="padding:16px 20px 10px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Track Your Order</span><div style="font-size:11.5px;color:var(--p-faint);margin-top:2px;">Order #FF-10482</div></div>
+              <img class="ph" src="assets/farmfresh/map.webp" alt="Live delivery map" decoding="async" style="height:150px;">
+              <div style="padding:14px 20px 20px;">
+                <div style="display:flex;align-items:center;gap:10px;background:var(--p-surface);border-radius:14px;padding:12px 14px;margin-bottom:14px;"><div class="ph ph-icon" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 7.5"/><path d="M5.5 17.5 9 10h6l3.5 7.5"/><path d="M9 10 7.5 6H5"/></svg></div><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Manjunath K.</div><div style="font-size:10.5px;color:var(--p-faint);">Bike · KA-05 AB 1234</div></div><div style="font-size:13px;font-weight:800;color:var(--p-ink);">6:45 PM</div></div>
+                <div style="display:flex;align-items:center;gap:9px;background:var(--p-sage);border-radius:14px;padding:12px 13px;"><span style="color:var(--p-green);">❄</span><span style="font-size:11px;line-height:1.4;color:var(--p-green);font-weight:600;">Packed within 30 minutes of harvest — cold-chain maintained.</span></div>
+              </div>
+  </div>
+</div>
+<div class="arrow"><span>Subscribe &amp; Save</span><svg width="96" height="16" viewBox="0 0 96 16"><path d="M0 8H90" stroke="#FC8019" stroke-width="2"/><path d="M84 2L94 8L84 14" fill="none" stroke="#FC8019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="screen" data-name="12 · Weekly subscriptions">
+  <div class="label"><b>12</b> Weekly subscriptions</div>
+  <div class="phone">
+              <div style="padding:16px 20px 4px;"><span style="font-size:17px;font-weight:800;color:var(--p-ink);">Weekly Subscriptions</span></div>
+              <div style="padding:2px 20px 16px;"><span style="font-size:12px;color:var(--p-faint);">Skip or cancel anytime.</span></div>
+              <div style="padding:0 20px 14px;display:flex;gap:6px;"><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Skip anytime</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Farmer-direct pricing</span></div>
+              <div style="padding:0 20px 16px;">
+                <div style="border:2px solid var(--p-orange);border-radius:16px;padding:14px;margin-bottom:12px;">
+                  <span style="background:var(--p-salt);color:var(--p-orange);font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:6px;">MOST POPULAR</span>
+                  <div style="font-size:14.5px;font-weight:800;color:var(--p-ink);margin:8px 0 2px;">Family Box</div>
+                  <div style="font-size:16px;font-weight:800;color:var(--p-ink);margin-bottom:8px;">₹599 <span style="font-size:11px;font-weight:600;color:var(--p-faint);">/week</span></div>
+                  <div style="font-size:11px;color:var(--p-faint);margin-bottom:8px;">Delivery Day</div>
+                  <div style="display:flex;gap:6px;"><span style="background:var(--p-ink);color:#fff;border-radius:8px;padding:5px 10px;font-size:10.5px;font-weight:700;">Mon</span><span style="background:var(--p-surface);border-radius:8px;padding:5px 10px;font-size:10.5px;font-weight:700;">Wed</span><span style="background:var(--p-surface);border-radius:8px;padding:5px 10px;font-size:10.5px;font-weight:700;">Fri</span></div>
+                </div>
+                <div style="border:1px solid var(--p-line);border-radius:16px;padding:14px;">
+                  <div style="font-size:14.5px;font-weight:800;color:var(--p-ink);margin-bottom:2px;">Solo Basket</div>
+                  <div style="font-size:16px;font-weight:800;color:var(--p-ink);">₹299 <span style="font-size:11px;font-weight:600;color:var(--p-faint);">/week</span></div>
+                </div>
+              </div>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="act" data-name="System rigor">
+<h2><span>VII</span> System rigor</h2><div class="from">Supporting screens — not part of the linear flow</div>
+<div class="row">
+<div class="screen" data-name="13 · Empty / loading / error">
+  <div class="label"><b>13</b> Empty / loading / error</div>
+  <div class="phone">
+              <div style="padding:18px 20px 14px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">System States</span></div>
+              <div style="padding:0 20px 16px;display:flex;flex-direction:column;gap:12px;">
+                <div style="border:1px solid var(--p-line);border-radius:14px;padding:16px;text-align:center;">
+                  <div style="font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--p-faint);margin-bottom:8px;">Empty</div>
+                  <div style="font-size:13px;font-weight:800;color:var(--p-ink);margin-bottom:4px;">Your cart is empty</div>
+                  <span style="display:inline-block;background:var(--p-orange);color:#fff;border-radius:10px;padding:8px 14px;font-size:11.5px;font-weight:800;">Browse FarmFresh</span>
+                </div>
+                <div style="border:1px solid var(--p-line);border-radius:14px;padding:16px;">
+                  <div style="font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--p-faint);margin-bottom:8px;">Loading</div>
+                  <div style="height:12px;border-radius:6px;background:linear-gradient(90deg,#EDEBE7,#F7F5F1,#EDEBE7);margin-bottom:7px;width:70%;"></div>
+                  <div style="height:12px;border-radius:6px;background:linear-gradient(90deg,#EDEBE7,#F7F5F1,#EDEBE7);width:45%;"></div>
+                </div>
+                <div style="border:1px solid var(--p-line);border-radius:14px;padding:16px;text-align:center;">
+                  <div style="font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--p-faint);margin-bottom:8px;">Error</div>
+                  <div style="font-size:13px;font-weight:800;color:var(--p-ink);margin-bottom:4px;">Couldn't load your orders</div>
+                  <span style="display:inline-block;border:1.5px solid var(--p-ink);color:var(--p-ink);border-radius:10px;padding:8px 14px;font-size:11.5px;font-weight:800;">Retry</span>
+                </div>
+              </div>
+  </div>
+</div>
+<div class="gap"></div>
+<div class="screen" data-name="14 · Component library">
+  <div class="label"><b>14</b> Component library</div>
+  <div class="phone">
+              <div style="padding:18px 20px 4px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">FarmFresh Components</span></div>
+              <div style="padding:0 20px 14px;"><span style="font-size:11px;color:var(--p-faint);">Design system extension — internal reference</span></div>
+              <div style="padding:0 20px 14px;">
+                <div style="font-size:10.5px;font-weight:800;color:var(--p-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Colors</div>
+                <div style="display:flex;gap:8px;">
+                  <div style="text-align:center;"><div style="width:34px;height:34px;border-radius:8px;background:#FC8019;"></div><div style="font-size:8.5px;color:var(--p-faint);margin-top:4px;">Orange</div></div>
+                  <div style="text-align:center;"><div style="width:34px;height:34px;border-radius:8px;background:#1D7A46;"></div><div style="font-size:8.5px;color:var(--p-faint);margin-top:4px;">Farm Green</div></div>
+                  <div style="text-align:center;"><div style="width:34px;height:34px;border-radius:8px;background:#1C1C1C;"></div><div style="font-size:8.5px;color:var(--p-faint);margin-top:4px;">Ink</div></div>
+                  <div style="text-align:center;"><div style="width:34px;height:34px;border-radius:8px;background:#F7F7F5;border:1px solid var(--p-line);"></div><div style="font-size:8.5px;color:var(--p-faint);margin-top:4px;">Surface</div></div>
+                </div>
+              </div>
+              <div style="padding:0 20px 16px;">
+                <div style="font-size:10.5px;font-weight:800;color:var(--p-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Chips &amp; badges</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Verified Farmer</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Organic</span><span style="background:rgba(28,28,28,0.85);color:#fff;border-radius:20px;padding:5px 10px;font-size:10.5px;font-weight:700;">Harvested 4h ago</span></div>
+              </div>
+  </div>
+</div>
+</div>
+</section>
+</body>
+</html>
