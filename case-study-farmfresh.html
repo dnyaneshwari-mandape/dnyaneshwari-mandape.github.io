@@ -159,15 +159,60 @@
   .act-head .roman{font-family:var(--font-mono);color:var(--orange);font-size:12.5px;}
   .act-intro{color:var(--ink-faint);max-width:60ch;margin-bottom:1.8rem;font-size:14px;}
 
-  .screen-row{display:grid;grid-template-columns:280px minmax(0,1fr);gap:2.2rem;align-items:start;padding:2.2rem 0;border-top:0.5px solid var(--line);}
-  .screen-row.reverse{grid-template-columns:minmax(0,1fr) 280px;}
-  .screen-row.reverse .frame{order:2;}
-  @media (max-width:780px){
-    .screen-row, .screen-row.reverse{grid-template-columns:1fr;}
-    .screen-row.reverse .frame{order:0;}
+  /* annotated screen: copy on top, phone centred, numbered change notes on both sides */
+  .screen-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 290px minmax(0,1fr);grid-template-areas:"copy copy copy" "nl frame nr";column-gap:3.5rem;row-gap:1.8rem;align-items:center;padding:2.6rem 0 2.8rem;border-top:0.5px solid var(--line);}
+  .screen-row .frame{grid-area:frame;}
+  .screen-row .screen-copy{grid-area:copy;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);column-gap:2.5rem;align-items:start;}
+  .screen-copy .screen-no, .screen-copy h3, .screen-copy .role{grid-column:1;}
+  .screen-copy .oneliner{grid-column:2;grid-row:1 / span 3;margin:0;}
+  .screen-copy details{grid-column:2;grid-row:4;}
+  .notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1.5rem;min-width:0;align-self:stretch;}
+  @media (min-width:1181px){ .notes{gap:0;} }
+  .notes-l{grid-area:nl;align-items:flex-end;text-align:right;}
+  .notes-r{grid-area:nr;align-items:flex-start;}
+  .note{position:relative;width:100%;max-width:270px;background:var(--card);border:0.5px solid var(--line);border-radius:12px;padding:0.75rem 0.95rem 0.8rem;box-shadow:var(--shadow-1);transition:border-color .15s ease, box-shadow .15s ease;}
+  .note .k{display:block;font-family:var(--font-mono);font-size:11px;color:var(--orange-deep);letter-spacing:.02em;margin-bottom:0.15rem;}
+  .note b{display:block;font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.35;}
+  .note p{font-size:12.5px;line-height:1.45;color:var(--ink-soft);margin:0.25rem 0 0;}
+  .pin{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#B45700;color:#fff;font:700 11px/1 var(--font-display);box-shadow:0 0 0 3px var(--paper);}
+  .note > .pin{position:absolute;top:50%;margin-top:-10px;}
+  .notes-l .note > .pin{right:-10px;}
+  .notes-r .note > .pin{left:-10px;}
+  .note.on, .note:hover{border-color:var(--orange);box-shadow:var(--shadow-2);}
+  .hl{position:absolute;border:1.5px dashed var(--orange);border-radius:9px;background:rgba(252,128,25,0.07);pointer-events:none;transition:background .15s ease;z-index:2;}
+  .hl.on{background:rgba(252,128,25,0.18);border-style:solid;}
+  .hl > .pin{position:absolute;top:-10px;}
+  .hl.side-l > .pin{left:-10px;}
+  .hl.side-r > .pin{right:-10px;}
+  .anno-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:1;}
+  .anno-lines path{fill:none;stroke:var(--orange);stroke-width:1.25;stroke-dasharray:4 3;opacity:.85;}
+  .anno-lines circle{fill:var(--orange);}
+  @media (max-width:1180px){
+    .screen-row{grid-template-columns:290px minmax(0,1fr);grid-template-areas:none;align-items:start;row-gap:0;}
+    .screen-row .screen-copy{grid-area:auto;grid-column:1 / -1;grid-row:1;margin-bottom:1.6rem;}
+    .screen-row .frame{grid-area:auto;grid-column:1;grid-row:2 / span 5;}
+    .notes{display:contents;}
+    .note{grid-column:2;margin-bottom:1rem;text-align:left;}
+    .notes-l .note > .pin{right:auto;left:-10px;}
+    .hl.side-l > .pin{left:auto;right:-10px;}
+  }
+  @media (max-width:760px){
+    .screen-row{grid-template-columns:1fr;grid-template-areas:none;row-gap:0.8rem;}
+    .screen-row .screen-copy, .screen-row .frame{grid-area:auto;}
+    .screen-row .screen-copy{order:-1;}
+    .screen-row .frame{margin:0.6rem 0 0.8rem;}
+    .notes{display:contents;}
+    .screen-row .frame{justify-self:center;width:100%;max-width:300px;}
+    .screen-row .screen-copy{grid-template-columns:1fr;}
+    .screen-copy .oneliner, .screen-copy details{grid-column:1;grid-row:auto;}
+    .screen-copy .oneliner{margin-top:0.4rem;}
+    .notes{gap:0.8rem;}
+    .note{max-width:none;padding-left:2.4rem;grid-column:1;margin-bottom:0;}
+    .note > .pin, .notes-l .note > .pin, .notes-r .note > .pin{left:0.7rem;right:auto;top:0.85rem;margin-top:0;}
+    .anno-lines{display:none;}
   }
 
-  .frame{position:sticky;top:1.5rem;background:var(--card);border-radius:24px;padding:8px;box-shadow:var(--shadow-2);border:0.5px solid var(--line);}
+  .frame{position:relative;background:var(--card);border-radius:24px;padding:8px;box-shadow:var(--shadow-2);border:0.5px solid var(--line);}
   .frame .cap{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);padding:0 0.35rem 0.5rem;}
   .phone{border-radius:18px;overflow:hidden;border:0.5px solid var(--p-line);background:#fff;font-family:var(--font-display);}
 
@@ -429,9 +474,16 @@
               </div>
             </details>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="NEW · VERIFIED FARMS"><span class="pin">1</span><span class="k">Trust signal</span><b>Verification promised on the banner</b><p>The first line a shopper reads is a claim the next 13 screens have to prove.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Explore FarmFresh"><span class="pin">2</span><span class="k">Interaction</span><b>Instamart&#x27;s own orange CTA</b><p>No new pattern to learn — same button as every Instamart promo.</p></li>
+            <li class="note" data-target="FarmFresh" data-nth="1"><span class="pin">3</span><span class="k">Placement</span><b>Peer category chip</b><p>Sits beside Grocery, Dairy, Snacks — a section of Instamart, not a campaign.</p></li>
+          </ol>
         </div>
 
-        <div class="screen-row reverse">
+        <div class="screen-row">
           <div class="frame">
             <div class="phone">
               <div style="padding:14px 20px 8px;display:flex;align-items:center;gap:12px;">
@@ -492,6 +544,14 @@
               </div>
             </details>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="✓ Verified farms" data-to="Harvested within 24h"><span class="pin">1</span><span class="k">Trust signal</span><b>Proof strip under the title</b><p>Two promises stated before a single product appears.</p></li>
+            <li class="note" data-target="Meet the Farmers" data-to="Sunrise Organics"><span class="pin">3</span><span class="k">New section</span><b>Farmers above the fold</b><p>Circular portraits tap through to full profiles — start from a person.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Today&#x27;s Harvest"><span class="pin">2</span><span class="k">Content order</span><b>Harvest-first shelf</b><p>What was picked today leads — not an A–Z catalog.</p></li>
+            <li class="note" data-target="Subscribe &amp; Save" data-to="View Plans"><span class="pin">4</span><span class="k">Placement</span><b>Subscription after discovery</b><p>Offered once, after browsing — never pitched cold.</p></li>
+          </ol>
         </div>
       </div>
 
@@ -532,9 +592,16 @@
             <div class="role">Farm distance on every card, not just the PDP</div>
             <p class="oneliner">Same green check used for every verified signal across the system — one vocabulary, not one per screen.</p>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Vegetables"><span class="pin">1</span><span class="k">Reuse</span><b>Existing chip filters</b><p>All · Vegetables · Fruits — Instamart’s pattern, no new taxonomy.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="✓ 9 km away"><span class="pin">2</span><span class="k">Trust signal</span><b>Farm distance on every card</b><p>Same green check as every verified signal — one vocabulary system-wide.</p></li>
+            <li class="note" data-target="✓ 14 km away"><span class="pin">3</span><span class="k">Consistency</span><b>Repeated, not decorated</b><p>The signal appears identically on every card, so it reads as data.</p></li>
+          </ol>
         </div>
 
-        <div class="screen-row reverse">
+        <div class="screen-row">
           <div class="frame">
             <div class="phone">
               <div style="padding:14px 20px 12px;display:flex;align-items:center;gap:10px;">
@@ -569,6 +636,14 @@
             <div class="role">Distance, harvest window, certifications — no price filter first</div>
             <p class="oneliner">Bottom-sheet pills, not a settings page — a distance is picked the way an ETA is picked.</p>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Distance" data-to="Any"><span class="pin">1</span><span class="k">Filter order</span><b>Distance first</b><p>Picked the way an ETA is picked — pills, not a slider.</p></li>
+            <li class="note" data-target="Certifications" data-to="Pesticide-Free Tested"><span class="pin">3</span><span class="k">Trust signal</span><b>Certifications as checks</b><p>Organic and pesticide-free are filterable claims, not badges.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Harvest Window" data-to="This week"><span class="pin">2</span><span class="k">New filter</span><b>Harvest window</b><p>Today / This week — a filter no grocery app offers today.</p></li>
+            <li class="note" data-target="Apply Filters"><span class="pin">4</span><span class="k">Interaction</span><b>Bottom sheet, one action</b><p>No price filter first — freshness criteria lead the sheet.</p></li>
+          </ol>
         </div>
 
         <div class="screen-row">
@@ -614,6 +689,14 @@
               </div>
             </details>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="✓ Harvested 3 hours ago"><span class="pin">1</span><span class="k">Trust signal</span><b>Freshness stamp above the title</b><p>Harvest time is the first fact on the PDP, not buried below.</p></li>
+            <li class="note" data-target="Harvest Date" data-to="Certifications"><span class="pin">3</span><span class="k">Structure</span><b>Collapsed accordions</b><p>Quick-scan by default; detail one tap away.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Lakshmi Devi" data-to="12 km ›"><span class="pin">2</span><span class="k">Attribution</span><b>Farmer + distance</b><p>A named grower with a tap-through, right under the price.</p></li>
+            <li class="note" data-target="🌱 See the Full Journey" data-to="✓ Why You Can Trust This"><span class="pin">4</span><span class="k">Changed</span><b>Two doors to go deeper</b><p>Breaks the accordion pattern on purpose — and measures which evidence converts.</p></li>
+          </ol>
         </div>
       </div>
 
@@ -650,9 +733,17 @@
             <div class="role">A KYC status where a seller GST number used to be</div>
             <p class="oneliner">Years farming, specialty, verification — stated as a stat strip, not a legal footer.</p>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Lakshmi Devi"><span class="pin">1</span><span class="k">Attribution</span><b>Portrait and name lead</b><p>A real person, verified tick beside the name.</p></li>
+            <li class="note" data-target="Farming Methods" data-to="Drip Irrigation"><span class="pin">3</span><span class="k">Content</span><b>Methods as tags</b><p>Organic, no pesticides, drip irrigation — scannable claims.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="14 yrs" data-to="KYC Status"><span class="pin">2</span><span class="k">Changed</span><b>Stat strip, not a legal footer</b><p>KYC status sits where a seller GST number used to be.</p></li>
+            <li class="note" data-target="View This Farm&#x27;s Journey"><span class="pin">4</span><span class="k">Flow</span><b>Exit to Farm journey</b><p>Leads straight into the new screen 07.</p></li>
+          </ol>
         </div>
 
-        <div class="screen-row reverse">
+        <div class="screen-row">
           <div class="frame">
             <div class="phone">
               <div style="padding:16px 20px 6px;display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div><span style="font-size:16px;font-weight:800;color:var(--p-ink);">From Seed to Your Door</span></div>
@@ -674,6 +765,14 @@
             <div class="role">Seed to door, told in the order it happened</div>
             <p class="oneliner">Runs forward, not backward from "Delivered" — the crop's story, not a status log to reverse.</p>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Seed Planted" data-to="Feb 22"><span class="pin">1</span><span class="k">New screen</span><b>Dated milestones</b><p>Runs forward in the order it happened — real dates, not statuses.</p></li>
+            <li class="note" data-target="Harvested" data-to="Peak ripeness, this morning"><span class="pin">3</span><span class="k">Freshness</span><b>Harvest anchors freshness</b><p>“This morning” is the number that matters most.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Growing" data-to="Drip-irrigated, no pesticides"><span class="pin">2</span><span class="k">Trust signal</span><b>Practice at the stage it happened</b><p>Growing method attached to the moment, not a separate list.</p></li>
+            <li class="note" data-target="Delivered" data-to="Cold-chain maintained"><span class="pin">4</span><span class="k">Fulfilment</span><b>Ends at your door</b><p>Cold chain is the last step of the crop’s story.</p></li>
+          </ol>
         </div>
 
         <div class="screen-row">
@@ -703,6 +802,14 @@
               </div>
             </details>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Farm Verification" data-to="Verified in-person. FSSAI confirmed, renewed annually."><span class="pin">1</span><span class="k">New screen</span><b>Every claim attributed</b><p>In-person visit, FSSAI licence, renewal cadence — stated.</p></li>
+            <li class="note" data-target="Farmer Verification" data-to="Lakshmi Devi, KYC-verified, paid directly — no middlemen."><span class="pin">3</span><span class="k">Trust signal</span><b>Paid directly</b><p>KYC plus payment route — no middlemen.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Quality Inspection" data-to="12-point check by Field Officer Priya R. before dispatch."><span class="pin">2</span><span class="k">Changed</span><b>The inspector is named</b><p>“Priya R.” replaces anonymous “Quality Checked” copy.</p></li>
+            <li class="note" data-target="96" data-to="Harvest-to-delivery time · cold-chain adherence · inspection results."><span class="pin">4</span><span class="k">Open risk</span><b>Premium becomes a number</b><p>96/100 with its formula in one line — needs calibration before ship.</p></li>
+          </ol>
         </div>
       </div>
 
@@ -746,6 +853,14 @@
               </div>
             </details>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Heirloom Tomatoes" data-to="Qty 1"><span class="pin">1</span><span class="k">Attribution</span><b>Farmer on every line item</b><p>The grower’s name carries through to the receipt.</p></li>
+            <li class="note" data-target="Delivery Slot" data-to="Harvested at dawn"><span class="pin">3</span><span class="k">Changed</span><b>Slots carry harvest timing</b><p>“Harvested this morning” attached to each delivery window.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Freshness Guarantee — free replacement or refund, no questions asked."><span class="pin">2</span><span class="k">Placement</span><b>Guarantee before the slot</b><p>The failure mode is known before a shopper commits.</p></li>
+            <li class="note" data-target="Farmer Support Fee" data-to="(direct to farmers)"><span class="pin">4</span><span class="k">New</span><b>Itemized Farmer Support Fee</b><p>₹10 shown as its own line. Open question: opt-in or fixed.</p></li>
+          </ol>
         </div>
       </div>
 
@@ -777,9 +892,16 @@
             <div class="role">Restates freshness, not just success</div>
             <p class="oneliner">CTA reads "Track Freshness," not "Track Order" — the funnel's vocabulary stays consistent to the last screen.</p>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Arriving" data-to="Today, 6–8 PM"><span class="pin">2</span><span class="k">Continuity</span><b>Slot carried forward</b><p>The window chosen at checkout, echoed back.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Harvested this morning. Packed fresh, arriving today."><span class="pin">1</span><span class="k">Changed</span><b>Restates freshness</b><p>Confirmation repeats the promise, not just “success”.</p></li>
+            <li class="note" data-target="Track Freshness"><span class="pin">3</span><span class="k">Copy</span><b>“Track Freshness”, not “Track Order”</b><p>Funnel vocabulary stays consistent to the last screen.</p></li>
+          </ol>
         </div>
 
-        <div class="screen-row reverse">
+        <div class="screen-row">
           <div class="frame">
             <div class="phone">
               <div style="padding:16px 20px 10px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Track Your Order</span><div style="font-size:11.5px;color:var(--p-faint);margin-top:2px;">Order #FF-10482</div></div>
@@ -797,6 +919,13 @@
             <div class="role">"Is it still fresh, right now" — not just "where"</div>
             <p class="oneliner">Delivery partner shown by name, vehicle, plate — the same attribution vocabulary as farmers, extended to the last mile.</p>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="img:Live delivery map"><span class="pin">1</span><span class="k">Reuse</span><b>Standard live map</b><p>Answers “where” with the pattern shoppers already know.</p></li>
+            <li class="note" data-target="Packed within 30 minutes of harvest — cold-chain maintained."><span class="pin">3</span><span class="k">New</span><b>Is it still fresh, right now</b><p>Cold-chain status answers freshness, not just location.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Manjunath K." data-to="Bike · KA-05 AB 1234"><span class="pin">2</span><span class="k">Attribution</span><b>Rider named like farmers</b><p>Name, vehicle and plate — same attribution, last mile.</p></li>
+          </ol>
         </div>
       </div>
 
@@ -833,6 +962,13 @@
             <div class="role">A delivery-day picker, not just a discount</div>
             <p class="oneliner">Batches harvest requests to a predictable cadence — an operational win disguised as convenience.</p>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Skip anytime" data-to="Farmer-direct pricing"><span class="pin">1</span><span class="k">Trust signal</span><b>Reassurance first</b><p>Skip anytime and farmer-direct pricing before any plan.</p></li>
+            <li class="note" data-target="Delivery Day" data-to="Fri"><span class="pin">3</span><span class="k">New</span><b>Delivery-day picker</b><p>Batches harvest requests into a predictable cadence.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="MOST POPULAR" data-to="₹599"><span class="pin">2</span><span class="k">Pricing</span><b>Plans priced per week</b><p>Family Box anchors the choice with a clear weekly price.</p></li>
+          </ol>
         </div>
       </div>
 
@@ -871,9 +1007,16 @@
             <div class="role">The unglamorous 20% that sets the real timeline</div>
             <p class="oneliner">A concept that only shows the happy path can't be estimated by engineering.</p>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Empty" data-to="Browse FarmFresh"><span class="pin">1</span><span class="k">New</span><b>Empty state with a way out</b><p>Every dead end offers the next step.</p></li>
+            <li class="note" data-target="Error" data-to="Retry"><span class="pin">3</span><span class="k">New</span><b>Error with retry</b><p>Plain-language failure plus one recovery action.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Loading"><span class="pin">2</span><span class="k">New</span><b>Loading skeleton</b><p>Layout holds its shape while data arrives.</p></li>
+          </ol>
         </div>
 
-        <div class="screen-row reverse">
+        <div class="screen-row">
           <div class="frame">
             <div class="phone">
               <div style="padding:18px 20px 4px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">FarmFresh Components</span></div>
@@ -900,6 +1043,12 @@
             <div class="role">The design system, documented as its own extension</div>
             <p class="oneliner">Orange is <code style="font-family:var(--font-mono);">#FC8019</code> — Instamart's real product orange, not the brand book's <code style="font-family:var(--font-mono);">#FF5200</code> marketing spec.</p>
           </div>
+          <ol class="notes notes-l">
+            <li class="note" data-target="Colors" data-to="Surface"><span class="pin">1</span><span class="k">System</span><b>Product orange #FC8019</b><p>Instamart’s real UI orange, not the #FF5200 marketing spec.</p></li>
+          </ol>
+          <ol class="notes notes-r">
+            <li class="note" data-target="Chips &amp; badges" data-to="Harvested 4h ago"><span class="pin">2</span><span class="k">System</span><b>Reusable trust chips</b><p>Verified Farmer, Organic, Harvested — one set used on every screen.</p></li>
+          </ol>
         </div>
       </div>
     </section>
@@ -967,3 +1116,111 @@
 
   </main>
 </div>
+
+<script>
+/* Annotated screens: find each note's target inside the phone, outline it, and draw a leader line from the note's pin. */
+(function () {
+  var norm = function (t) { return (t || '').replace(/\s+/g, ' ').trim(); };
+
+  function findEl(phone, target, nth, after) {
+    if (target.indexOf('img:') === 0) {
+      var alt = target.slice(4);
+      return [].filter.call(phone.querySelectorAll('img'), function (i) { return i.alt === alt; })[nth || 0] || null;
+    }
+    var all = [].slice.call(phone.querySelectorAll('*'));
+    if (after) all = all.filter(function (el) { return after.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING; });
+    var pick = function (test) {
+      // innermost elements whose text matches (skip ancestors that merely wrap a match)
+      var hits = all.filter(function (el) { return test(norm(el.textContent)); });
+      return hits.filter(function (el) { return !hits.some(function (o) { return o !== el && el.contains(o); }); });
+    };
+    var hits = pick(function (t) { return t === target; });
+    if (!hits.length) hits = pick(function (t) { return t.indexOf(target) === 0; });
+    return hits[nth || 0] || null;
+  }
+
+  var wide = window.matchMedia('(min-width:1181px)');
+
+  function setup(row) {
+    var frame = row.querySelector('.frame'), phone = row.querySelector('.phone');
+    var notes = [].slice.call(row.querySelectorAll('.note'));
+    if (!frame || !phone || !notes.length) return;
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'anno-lines'); svg.setAttribute('aria-hidden', 'true');
+    row.appendChild(svg);
+
+    var pairs = notes.map(function (note) {
+      var a = findEl(phone, note.dataset.target, +note.dataset.nth || 0);
+      var b = a && note.dataset.to ? findEl(phone, note.dataset.to, 0, a) : null;
+      if (!a) { console.warn('annotation target not found:', note.dataset.target); return null; }
+      var hl = document.createElement('div');
+      hl.className = 'hl';
+      hl.innerHTML = '<span class="pin">' + note.querySelector('.pin').textContent + '</span>';
+      frame.appendChild(hl);
+      var on = function (v) { note.classList.toggle('on', v); hl.classList.toggle('on', v); };
+      note.addEventListener('mouseenter', function () { on(true); });
+      note.addEventListener('mouseleave', function () { on(false); });
+      return { note: note, a: a, b: b, hl: hl };
+    }).filter(Boolean);
+
+    // number pins in the order targets appear on the phone, top to bottom
+    var topOf = function (p) { return p.a.getBoundingClientRect().top; };
+    pairs.sort(function (x, y) { return topOf(x) - topOf(y); });
+    pairs.forEach(function (p, i) {
+      p.note.querySelector('.pin').textContent = i + 1;
+      p.hl.querySelector('.pin').textContent = i + 1;
+      p.note.parentNode.appendChild(p.note);
+      p.note.style.order = i + 1;
+    });
+
+    // slide each note down so it sits level with its target (keeps order, never overlaps)
+    function align() {
+      pairs.forEach(function (p) { p.note.style.marginTop = ''; });
+      if (!wide.matches) return;
+      [].forEach.call(row.querySelectorAll('.notes'), function (col) {
+        var floor = col.getBoundingClientRect().top, gap = 16;
+        pairs.filter(function (p) { return p.note.parentNode === col; }).forEach(function (p, i) {
+          var r1 = p.a.getBoundingClientRect(), r2 = p.b ? p.b.getBoundingClientRect() : r1;
+          var mid = (Math.min(r1.top, r2.top) + Math.max(r1.bottom, r2.bottom)) / 2;
+          var nr = p.note.getBoundingClientRect();
+          var want = Math.max(mid - nr.height / 2, i ? floor + gap : floor);
+          p.note.style.marginTop = Math.max(0, want - nr.top) + 'px';
+          floor = p.note.getBoundingClientRect().bottom;
+        });
+      });
+    }
+
+    function layout() {
+      align();
+      var fr = frame.getBoundingClientRect(), rr = row.getBoundingClientRect(), fx = fr.left + fr.width / 2;
+      var paths = '';
+      pairs.forEach(function (p) {
+        var r1 = p.a.getBoundingClientRect(), r2 = p.b ? p.b.getBoundingClientRect() : r1;
+        var L = Math.min(r1.left, r2.left) - 4, T = Math.min(r1.top, r2.top) - 4;
+        var R = Math.max(r1.right, r2.right) + 4, B = Math.max(r1.bottom, r2.bottom) + 4;
+        var pr = phone.getBoundingClientRect();
+        L = Math.max(L, pr.left + 3); R = Math.min(R, pr.right - 3);
+        var st = p.hl.style;
+        st.left = (L - fr.left) + 'px'; st.top = (T - fr.top) + 'px';
+        st.width = (R - L) + 'px'; st.height = (B - T) + 'px';
+        var nr = p.note.getBoundingClientRect(), pin = p.note.querySelector('.pin').getBoundingClientRect();
+        var leftSide = nr.left + nr.width / 2 < fx;
+        p.hl.classList.toggle('side-l', leftSide); p.hl.classList.toggle('side-r', !leftSide);
+        var x1 = pin.left + pin.width / 2 - rr.left, y1 = pin.top + pin.height / 2 - rr.top;
+        var x2 = (leftSide ? L : R) - rr.left, y2 = Math.min(Math.max(y1, T + 8), B - 8) - rr.top;
+        var dx = (x2 - x1) * 0.5;
+        paths += '<path d="M' + x1 + ' ' + y1 + ' C' + (x1 + dx) + ' ' + y1 + ' ' + (x2 - dx) + ' ' + y2 + ' ' + x2 + ' ' + y2 + '"/>' +
+                 '<circle cx="' + x2 + '" cy="' + y2 + '" r="2.5"/>';
+      });
+      svg.innerHTML = paths;
+    }
+    layout();
+    if ('ResizeObserver' in window) new ResizeObserver(layout).observe(row);
+    window.addEventListener('resize', layout);
+    [].forEach.call(phone.querySelectorAll('img'), function (i) { if (!i.complete) i.addEventListener('load', layout); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+  }
+
+  [].forEach.call(document.querySelectorAll('.screen-row'), setup);
+})();
+</script>
