@@ -160,7 +160,7 @@
   .act-intro{color:var(--ink-faint);max-width:60ch;margin-bottom:1.8rem;font-size:14px;}
 
   /* annotated screen: copy on top, phone centred, numbered change notes on both sides */
-  .screen-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 290px minmax(0,1fr);grid-template-areas:"copy copy copy" "nl frame nr";column-gap:3.5rem;row-gap:1.8rem;align-items:center;padding:2.6rem 0 2.8rem;border-top:0.5px solid var(--line);}
+  .screen-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 376px minmax(0,1fr);grid-template-areas:"copy copy copy" "nl frame nr";column-gap:3rem;row-gap:1.8rem;align-items:center;padding:2.6rem 0 2.8rem;border-top:0.5px solid var(--line);}
   .screen-row .frame{grid-area:frame;}
   .screen-row .screen-copy{grid-area:copy;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);column-gap:2.5rem;align-items:start;}
   .screen-copy .screen-no, .screen-copy h3, .screen-copy .role{grid-column:1;}
@@ -179,30 +179,28 @@
   .notes-l .note > .pin{right:-10px;}
   .notes-r .note > .pin{left:-10px;}
   .note.on, .note:hover{border-color:var(--orange);box-shadow:var(--shadow-2);}
-  .hl{position:absolute;border:1.5px dashed var(--orange);border-radius:9px;background:rgba(252,128,25,0.07);pointer-events:none;transition:background .15s ease;z-index:2;}
-  .hl.on{background:rgba(252,128,25,0.18);border-style:solid;}
-  .hl > .pin{position:absolute;top:-10px;}
-  .hl.side-l > .pin{left:-10px;}
-  .hl.side-r > .pin{right:-10px;}
+  .hl{position:absolute;border:1.5px dashed var(--orange);pointer-events:none;transition:background-color .15s ease, border-color .15s ease;z-index:2;}
+  .hl.on{background:rgba(252,128,25,0.12);border-style:solid;}
+  .hl > .pin{display:none;}
   .anno-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:1;}
   .anno-lines path{fill:none;stroke:var(--orange);stroke-width:1.25;stroke-dasharray:4 3;opacity:.85;}
   .anno-lines circle{fill:var(--orange);}
   @media (max-width:1180px){
-    .screen-row{grid-template-columns:290px minmax(0,1fr);grid-template-areas:none;align-items:start;row-gap:0;}
+    .screen-row{grid-template-columns:376px minmax(0,1fr);grid-template-areas:none;align-items:start;row-gap:0;}
     .screen-row .screen-copy{grid-area:auto;grid-column:1 / -1;grid-row:1;margin-bottom:1.6rem;}
     .screen-row .frame{grid-area:auto;grid-column:1;grid-row:2 / span 5;}
     .notes{display:contents;}
     .note{grid-column:2;margin-bottom:1rem;text-align:left;}
     .notes-l .note > .pin{right:auto;left:-10px;}
-    .hl.side-l > .pin{left:auto;right:-10px;}
   }
   @media (max-width:760px){
-    .screen-row{grid-template-columns:1fr;grid-template-areas:none;row-gap:0.8rem;}
+    .screen-row{grid-template-columns:minmax(0,1fr);grid-template-areas:none;row-gap:0.8rem;}
+    .screen-row .frame{min-width:0;}
     .screen-row .screen-copy, .screen-row .frame{grid-area:auto;}
     .screen-row .screen-copy{order:-1;}
     .screen-row .frame{margin:0.6rem 0 0.8rem;}
     .notes{display:contents;}
-    .screen-row .frame{justify-self:center;width:100%;max-width:300px;}
+    .screen-row .frame{justify-self:center;width:100%;max-width:376px;}
     .screen-row .screen-copy{grid-template-columns:1fr;}
     .screen-copy .oneliner, .screen-copy details{grid-column:1;grid-row:auto;}
     .screen-copy .oneliner{margin-top:0.4rem;}
@@ -210,6 +208,7 @@
     .note{max-width:none;padding-left:2.4rem;grid-column:1;margin-bottom:0;}
     .note > .pin, .notes-l .note > .pin, .notes-r .note > .pin{left:0.7rem;right:auto;top:0.85rem;margin-top:0;}
     .anno-lines{display:none;}
+    .hl > .pin{display:inline-flex;position:absolute;top:-9px;right:-9px;width:18px;height:18px;font-size:10.5px;}
   }
 
   .frame{position:relative;background:var(--card);border-radius:24px;padding:8px;box-shadow:var(--shadow-2);border:0.5px solid var(--line);}
@@ -549,7 +548,7 @@
             <li class="note" data-target="Meet the Farmers" data-to="Sunrise Organics"><span class="pin">3</span><span class="k">New section</span><b>Farmers above the fold</b><p>Circular portraits tap through to full profiles — start from a person.</p></li>
           </ol>
           <ol class="notes notes-r">
-            <li class="note" data-target="Today&#x27;s Harvest"><span class="pin">2</span><span class="k">Content order</span><b>Harvest-first shelf</b><p>What was picked today leads — not an A–Z catalog.</p></li>
+            <li class="note" data-target="Today&#x27;s Harvest" data-to="Organic Spinach"><span class="pin">2</span><span class="k">Content order</span><b>Harvest-first shelf</b><p>What was picked today leads — not an A–Z catalog.</p></li>
             <li class="note" data-target="Subscribe &amp; Save" data-to="View Plans"><span class="pin">4</span><span class="k">Placement</span><b>Subscription after discovery</b><p>Offered once, after browsing — never pitched cold.</p></li>
           </ol>
         </div>
@@ -593,7 +592,7 @@
             <p class="oneliner">Same green check used for every verified signal across the system — one vocabulary, not one per screen.</p>
           </div>
           <ol class="notes notes-l">
-            <li class="note" data-target="Vegetables"><span class="pin">1</span><span class="k">Reuse</span><b>Existing chip filters</b><p>All · Vegetables · Fruits — Instamart’s pattern, no new taxonomy.</p></li>
+            <li class="note" data-target="All" data-to="Fruits"><span class="pin">1</span><span class="k">Reuse</span><b>Existing chip filters</b><p>All · Vegetables · Fruits — Instamart’s pattern, no new taxonomy.</p></li>
           </ol>
           <ol class="notes notes-r">
             <li class="note" data-target="✓ 9 km away"><span class="pin">2</span><span class="k">Trust signal</span><b>Farm distance on every card</b><p>Same green check as every verified signal — one vocabulary system-wide.</p></li>
@@ -734,7 +733,7 @@
             <p class="oneliner">Years farming, specialty, verification — stated as a stat strip, not a legal footer.</p>
           </div>
           <ol class="notes notes-l">
-            <li class="note" data-target="Lakshmi Devi"><span class="pin">1</span><span class="k">Attribution</span><b>Portrait and name lead</b><p>A real person, verified tick beside the name.</p></li>
+            <li class="note" data-target="Lakshmi Devi" data-to="Green Valley Farms · Devanahalli"><span class="pin">1</span><span class="k">Attribution</span><b>Portrait and name lead</b><p>A real person, verified tick beside the name.</p></li>
             <li class="note" data-target="Farming Methods" data-to="Drip Irrigation"><span class="pin">3</span><span class="k">Content</span><b>Methods as tags</b><p>Organic, no pesticides, drip irrigation — scannable claims.</p></li>
           </ol>
           <ol class="notes notes-r">
@@ -859,7 +858,7 @@
           </ol>
           <ol class="notes notes-r">
             <li class="note" data-target="Freshness Guarantee — free replacement or refund, no questions asked."><span class="pin">2</span><span class="k">Placement</span><b>Guarantee before the slot</b><p>The failure mode is known before a shopper commits.</p></li>
-            <li class="note" data-target="Farmer Support Fee" data-to="(direct to farmers)"><span class="pin">4</span><span class="k">New</span><b>Itemized Farmer Support Fee</b><p>₹10 shown as its own line. Open question: opt-in or fixed.</p></li>
+            <li class="note" data-target="Farmer Support Fee" data-to="₹10"><span class="pin">4</span><span class="k">New</span><b>Itemized Farmer Support Fee</b><p>₹10 shown as its own line. Open question: opt-in or fixed.</p></li>
           </ol>
         </div>
       </div>
@@ -893,10 +892,10 @@
             <p class="oneliner">CTA reads "Track Freshness," not "Track Order" — the funnel's vocabulary stays consistent to the last screen.</p>
           </div>
           <ol class="notes notes-l">
+            <li class="note" data-target="Harvested this morning. Packed fresh, arriving today."><span class="pin">1</span><span class="k">Changed</span><b>Restates freshness</b><p>Confirmation repeats the promise, not just “success”.</p></li>
             <li class="note" data-target="Arriving" data-to="Today, 6–8 PM"><span class="pin">2</span><span class="k">Continuity</span><b>Slot carried forward</b><p>The window chosen at checkout, echoed back.</p></li>
           </ol>
           <ol class="notes notes-r">
-            <li class="note" data-target="Harvested this morning. Packed fresh, arriving today."><span class="pin">1</span><span class="k">Changed</span><b>Restates freshness</b><p>Confirmation repeats the promise, not just “success”.</p></li>
             <li class="note" data-target="Track Freshness"><span class="pin">3</span><span class="k">Copy</span><b>“Track Freshness”, not “Track Order”</b><p>Funnel vocabulary stays consistent to the last screen.</p></li>
           </ol>
         </div>
@@ -924,7 +923,7 @@
             <li class="note" data-target="Packed within 30 minutes of harvest — cold-chain maintained."><span class="pin">3</span><span class="k">New</span><b>Is it still fresh, right now</b><p>Cold-chain status answers freshness, not just location.</p></li>
           </ol>
           <ol class="notes notes-r">
-            <li class="note" data-target="Manjunath K." data-to="Bike · KA-05 AB 1234"><span class="pin">2</span><span class="k">Attribution</span><b>Rider named like farmers</b><p>Name, vehicle and plate — same attribution, last mile.</p></li>
+            <li class="note" data-target="Manjunath K." data-to="6:45 PM"><span class="pin">2</span><span class="k">Attribution</span><b>Rider named like farmers</b><p>Name, vehicle and plate — same attribution, last mile.</p></li>
           </ol>
         </div>
       </div>
@@ -967,7 +966,7 @@
             <li class="note" data-target="Delivery Day" data-to="Fri"><span class="pin">3</span><span class="k">New</span><b>Delivery-day picker</b><p>Batches harvest requests into a predictable cadence.</p></li>
           </ol>
           <ol class="notes notes-r">
-            <li class="note" data-target="MOST POPULAR" data-to="₹599"><span class="pin">2</span><span class="k">Pricing</span><b>Plans priced per week</b><p>Family Box anchors the choice with a clear weekly price.</p></li>
+            <li class="note" data-target="Family Box" data-to="/week"><span class="pin">2</span><span class="k">Pricing</span><b>Plans priced per week</b><p>Family Box anchors the choice with a clear weekly price.</p></li>
           </ol>
         </div>
       </div>
@@ -1153,6 +1152,24 @@
       var a = findEl(phone, note.dataset.target, +note.dataset.nth || 0);
       var b = a && note.dataset.to ? findEl(phone, note.dataset.to, 0, a) : null;
       if (!a) { console.warn('annotation target not found:', note.dataset.target); return null; }
+      // outline the smallest element holding both ends; when that is a big container, outline only
+      // the run of its children from the one holding `a` to the one holding `b`
+      var region = a, span = null;
+      // a lone label inside its own box (an icon at most beside it) outlines the box
+      if (!b) while (region.parentElement !== phone && norm(region.parentElement.textContent).length <= norm(a.textContent).length + 3) region = region.parentElement;
+      if (b) {
+        while (region !== phone && !region.contains(b)) region = region.parentElement;
+        var kids = [].slice.call(region.children);
+        var ia = kids.findIndex(function (k) { return k.contains(a); }), ib = kids.findIndex(function (k) { return k.contains(b); });
+        if (ia > -1 && ib > -1) {
+          span = kids.slice(ia, ib + 1);
+          // keep the whole container when nothing else with text sits in it (an avatar, a chevron)
+          var others = kids.filter(function (k) { return span.indexOf(k) < 0 && norm(k.textContent); });
+          if (region !== phone && !others.length) span = null;
+        }
+        // take in icon-only neighbours (a timeline dot, a check mark box)
+        if (!span) while (region.parentElement !== phone && norm(region.parentElement.textContent).length <= norm(region.textContent).length + 3) region = region.parentElement;
+      }
       var hl = document.createElement('div');
       hl.className = 'hl';
       hl.innerHTML = '<span class="pin">' + note.querySelector('.pin').textContent + '</span>';
@@ -1160,8 +1177,43 @@
       var on = function (v) { note.classList.toggle('on', v); hl.classList.toggle('on', v); };
       note.addEventListener('mouseenter', function () { on(true); });
       note.addEventListener('mouseleave', function () { on(false); });
-      return { note: note, a: a, b: b, hl: hl };
+      return { note: note, a: a, region: region, span: span, hl: hl };
     }).filter(Boolean);
+
+    // a box with its own fill or border is outlined as drawn; a plain wrapper is outlined around
+    // what it shows (text, images, filled boxes), so padding never widens the outline
+    var painted = function (el) {
+      var cs = getComputedStyle(el);
+      return el.tagName === 'IMG' || el.tagName === 'svg' || !/rgba\(0, 0, 0, 0\)|transparent/.test(cs.backgroundColor) ||
+        (parseFloat(cs.borderTopWidth) > 0 && parseFloat(cs.borderLeftWidth) > 0) || cs.backgroundImage !== 'none';
+    };
+    var contentRects = function (el, acc) {
+      if (painted(el)) { acc.push(el.getBoundingClientRect()); return acc; }
+      [].forEach.call(el.childNodes, function (c) {
+        if (c.nodeType === 1) contentRects(c, acc);
+        else if (c.nodeType === 3 && c.textContent.trim()) {
+          var r = document.createRange(); r.selectNodeContents(c); acc.push(r.getBoundingClientRect());
+        }
+      });
+      return acc;
+    };
+    var union = function (rs) {
+      rs = rs.filter(function (r) { return r.width || r.height; });
+      return { left: Math.min.apply(0, rs.map(function (r) { return r.left; })), top: Math.min.apply(0, rs.map(function (r) { return r.top; })),
+               right: Math.max.apply(0, rs.map(function (r) { return r.right; })), bottom: Math.max.apply(0, rs.map(function (r) { return r.bottom; })) };
+    };
+    var boxOf = function (p) {
+      var els = p.span || [p.region];
+      return union(els.reduce(function (acc, el) { return contentRects(el, acc); }, []));
+    };
+    var radiusOf = function (p) { return parseFloat(getComputedStyle(p.span ? p.span[0] : p.region).borderTopLeftRadius) || 0; };
+
+    // a target clearly on one half of the phone gets its note on that side, so leaders never cross it
+    var colL = row.querySelector('.notes-l'), colR = row.querySelector('.notes-r'), ph = phone.getBoundingClientRect();
+    pairs.forEach(function (p) {
+      var r = boxOf(p), off = (r.left + r.right) / 2 - (ph.left + ph.width / 2);
+      if (Math.abs(off) > ph.width * 0.15) (off < 0 ? colL : colR).appendChild(p.note);
+    });
 
     // number pins in the order targets appear on the phone, top to bottom
     var topOf = function (p) { return p.a.getBoundingClientRect().top; };
@@ -1180,8 +1232,8 @@
       [].forEach.call(row.querySelectorAll('.notes'), function (col) {
         var floor = col.getBoundingClientRect().top, gap = 16;
         pairs.filter(function (p) { return p.note.parentNode === col; }).forEach(function (p, i) {
-          var r1 = p.a.getBoundingClientRect(), r2 = p.b ? p.b.getBoundingClientRect() : r1;
-          var mid = (Math.min(r1.top, r2.top) + Math.max(r1.bottom, r2.bottom)) / 2;
+          var rg = boxOf(p);
+          var mid = (rg.top + rg.bottom) / 2;
           var nr = p.note.getBoundingClientRect();
           var want = Math.max(mid - nr.height / 2, i ? floor + gap : floor);
           p.note.style.marginTop = Math.max(0, want - nr.top) + 'px';
@@ -1193,21 +1245,30 @@
     function layout() {
       align();
       var fr = frame.getBoundingClientRect(), rr = row.getBoundingClientRect(), fx = fr.left + fr.width / 2;
-      var paths = '';
-      pairs.forEach(function (p) {
-        var r1 = p.a.getBoundingClientRect(), r2 = p.b ? p.b.getBoundingClientRect() : r1;
-        var L = Math.min(r1.left, r2.left) - 4, T = Math.min(r1.top, r2.top) - 4;
-        var R = Math.max(r1.right, r2.right) + 4, B = Math.max(r1.bottom, r2.bottom) + 4;
-        var pr = phone.getBoundingClientRect();
-        L = Math.max(L, pr.left + 3); R = Math.min(R, pr.right - 3);
+      var paths = '', pr = phone.getBoundingClientRect(), pad = 5;
+      var boxes = pairs.map(function (p) {
+        var rg = boxOf(p);
+        return { L: Math.max(rg.left - pad, pr.left + 4), T: Math.max(rg.top - pad, pr.top + 4),
+                 R: Math.min(rg.right + pad, pr.right - 4), B: Math.min(rg.bottom + pad, pr.bottom - 4) };
+      });
+      // outlines that would touch share the gap between them, 4px apart
+      boxes.forEach(function (a, i) {
+        boxes.slice(i + 1).forEach(function (b) {
+          var xs = a.L < b.R && b.L < a.R;
+          if (xs && a.T < b.T && a.B > b.T - 4) { var m = (a.B - pad + b.T + pad) / 2; a.B = m - 2; b.T = m + 2; }
+        });
+      });
+      pairs.forEach(function (p, i) {
+        var L = boxes[i].L, T = boxes[i].T, R = boxes[i].R, B = boxes[i].B;
         var st = p.hl.style;
         st.left = (L - fr.left) + 'px'; st.top = (T - fr.top) + 'px';
         st.width = (R - L) + 'px'; st.height = (B - T) + 'px';
+        st.borderRadius = (p.span || !painted(p.region) ? 8 : Math.max(8, radiusOf(p) + pad)) + 'px';
         var nr = p.note.getBoundingClientRect(), pin = p.note.querySelector('.pin').getBoundingClientRect();
         var leftSide = nr.left + nr.width / 2 < fx;
         p.hl.classList.toggle('side-l', leftSide); p.hl.classList.toggle('side-r', !leftSide);
         var x1 = pin.left + pin.width / 2 - rr.left, y1 = pin.top + pin.height / 2 - rr.top;
-        var x2 = (leftSide ? L : R) - rr.left, y2 = Math.min(Math.max(y1, T + 8), B - 8) - rr.top;
+        var x2 = (leftSide ? L : R) - rr.left, y2 = Math.min(Math.max(y1 + rr.top, T + 10), B - 10) - rr.top;
         var dx = (x2 - x1) * 0.5;
         paths += '<path d="M' + x1 + ' ' + y1 + ' C' + (x1 + dx) + ' ' + y1 + ' ' + (x2 - dx) + ' ' + y2 + ' ' + x2 + ' ' + y2 + '"/>' +
                  '<circle cx="' + x2 + '" cy="' + y2 + '" r="2.5"/>';
@@ -1215,7 +1276,13 @@
       svg.innerHTML = paths;
     }
     layout();
-    if ('ResizeObserver' in window) new ResizeObserver(layout).observe(row);
+    // re-run when the row gets wider or narrower or the phone changes height (images, fonts,
+    // an opened details), not on the height changes align() itself causes
+    var seen = '';
+    if ('ResizeObserver' in window) new ResizeObserver(function () {
+      var key = row.clientWidth + 'x' + phone.offsetHeight + 'x' + row.querySelector('.screen-copy').offsetHeight;
+      if (key !== seen) { seen = key; layout(); }
+    }).observe(row);
     window.addEventListener('resize', layout);
     [].forEach.call(phone.querySelectorAll('img'), function (i) { if (!i.complete) i.addEventListener('load', layout); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
