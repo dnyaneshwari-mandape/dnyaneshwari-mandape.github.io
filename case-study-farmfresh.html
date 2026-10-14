@@ -214,6 +214,8 @@
   footer{max-width:820px;margin:0 auto;padding:2rem 0 0;font-size:12px;color:var(--ink-faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
 
   .ph{background:linear-gradient(135deg,#EAF6EF 0%,#FBEFE1 100%);display:flex;align-items:center;justify-content:center;color:#9CAF9E;}
+  img.ph{display:block;width:100%;object-fit:cover;}
+  .ph-icon{color:var(--p-green);background:var(--p-sage);}
 </style>
 
 <div class="shell">
@@ -382,14 +384,17 @@
                 </div>
               </div>
               <div style="padding:0 20px 20px;">
-                <div style="position:relative;width:100%;height:200px;border-radius:20px;overflow:hidden;" class="ph">Hero: farm produce + farmer</div>
-                <div style="margin-top:-64px;padding:0 18px 18px;position:relative;pointer-events:none;">
+                <div style="position:relative;height:250px;border-radius:20px;overflow:hidden;">
+                <img class="ph" src="assets/farmfresh/hero.webp" alt="Fresh leafy greens beside a smiling farmer holding a crate of produce" loading="lazy" decoding="async" style="position:absolute;inset:0;height:100%;">
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(0,0,0,.7) 100%);"></div>
+                <div style="position:absolute;left:0;right:0;bottom:0;padding:0 16px 16px;pointer-events:none;">
                   <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.94);border-radius:7px;padding:4px 9px;margin-bottom:8px;">
                     <span style="font-size:10.5px;font-weight:800;letter-spacing:.03em;color:var(--p-green);">NEW · VERIFIED FARMS</span>
                   </div>
                   <div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.01em;line-height:1.1;text-shadow:0 2px 10px rgba(0,0,0,.35);">FarmFresh</div>
                   <div style="font-size:13px;font-weight:600;color:#fff;margin:4px 0 12px;text-shadow:0 1px 6px rgba(0,0,0,.4);">Produce with a visible journey, farm to your door.</div>
                   <span style="pointer-events:auto;display:inline-block;background:var(--p-orange);color:#fff;border-radius:11px;padding:10px 16px;font-size:13.5px;font-weight:800;">Explore FarmFresh</span>
+                </div>
                 </div>
               </div>
               <div style="padding:0 20px 22px;">
@@ -445,18 +450,18 @@
               <div style="padding:0 20px 8px;display:flex;justify-content:space-between;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Today's Harvest</span><span style="font-size:12px;font-weight:700;color:var(--p-orange);">View All ›</span></div>
               <div style="padding:0 0 20px 20px;display:flex;gap:10px;overflow-x:hidden;">
                 <div style="flex-shrink:0;width:130px;background:#fff;border:1px solid var(--p-line);border-radius:14px;overflow:hidden;">
-                  <div class="ph" style="height:90px;font-size:10px;">produce photo</div>
+                  <img class="ph" src="assets/farmfresh/tomatoes.webp" alt="Heirloom tomatoes on the vine" loading="lazy" decoding="async" style="height:90px;">
                   <div style="padding:9px 10px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Heirloom Tomatoes</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);margin-bottom:6px;">₹85 <span style="font-size:10px;color:var(--p-faint);font-weight:600;">/500g</span></div><span style="display:block;text-align:center;border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:5px;font-size:11px;font-weight:800;">ADD</span></div>
                 </div>
                 <div style="flex-shrink:0;width:130px;background:#fff;border:1px solid var(--p-line);border-radius:14px;overflow:hidden;">
-                  <div class="ph" style="height:90px;font-size:10px;">produce photo</div>
+                  <img class="ph" src="assets/farmfresh/spinach.webp" alt="Bunch of organic spinach" loading="lazy" decoding="async" style="height:90px;">
                   <div style="padding:9px 10px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Organic Spinach</div><div style="font-size:14px;font-weight:800;color:var(--p-ink);margin-bottom:6px;">₹45 <span style="font-size:10px;color:var(--p-faint);font-weight:600;">/250g</span></div><span style="display:block;text-align:center;border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:5px;font-size:11px;font-weight:800;">ADD</span></div>
                 </div>
               </div>
               <div style="padding:0 20px 10px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Meet the Farmers</span></div>
               <div style="padding:0 0 22px 20px;display:flex;gap:14px;">
-                <div style="text-align:center;width:80px;"><div class="ph" style="width:72px;height:72px;border-radius:50%;margin:0 auto 6px;font-size:9px;">photo</div><div style="font-size:12px;font-weight:700;color:var(--p-ink);">Lakshmi Devi</div><div style="font-size:10px;color:var(--p-faint);">Green Valley</div></div>
-                <div style="text-align:center;width:80px;"><div class="ph" style="width:72px;height:72px;border-radius:50%;margin:0 auto 6px;font-size:9px;">photo</div><div style="font-size:12px;font-weight:700;color:var(--p-ink);">Ravi Shankar</div><div style="font-size:10px;color:var(--p-faint);">Sunrise Organics</div></div>
+                <div style="text-align:center;width:80px;"><img class="ph" src="assets/farmfresh/farmer-lakshmi.webp" alt="Lakshmi Devi in her tomato field" loading="lazy" decoding="async" style="width:72px;height:72px;border-radius:50%;margin:0 auto 6px;object-position:38% 30%;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);">Lakshmi Devi</div><div style="font-size:10px;color:var(--p-faint);">Green Valley</div></div>
+                <div style="text-align:center;width:80px;"><img class="ph" src="assets/farmfresh/farmer-ravi.webp" alt="Ravi Shankar, farmer" loading="lazy" decoding="async" style="width:72px;height:72px;border-radius:50%;margin:0 auto 6px;object-position:50% 25%;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);">Ravi Shankar</div><div style="font-size:10px;color:var(--p-faint);">Sunrise Organics</div></div>
               </div>
               <div style="padding:0 20px 22px;">
                 <div style="background:var(--p-sage);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;">
@@ -510,12 +515,12 @@
               </div>
               <div style="padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div style="background:#fff;border:1px solid var(--p-line);border-radius:16px;overflow:hidden;">
-                  <div class="ph" style="height:96px;font-size:9px;">produce photo</div>
-                  <div style="padding:10px 11px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Alphonso Mangoes</div><div style="font-size:10.5px;color:var(--p-faint);margin-bottom:6px;">✓ 9 km away</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13.5px;font-weight:800;color:var(--p-ink);">₹220<span style="font-size:9.5px;font-weight:600;color:var(--p-faint);">/kg</span></span><span style="border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:4px 8px;font-size:10.5px;font-weight:800;">ADD</span></div></div>
+                  <img class="ph" src="assets/farmfresh/guava.webp" alt="Halved premium white guava" loading="lazy" decoding="async" style="height:96px;">
+                  <div style="padding:10px 11px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Premium White Guava</div><div style="font-size:10.5px;color:var(--p-faint);margin-bottom:6px;">✓ 9 km away</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13.5px;font-weight:800;color:var(--p-ink);">₹140<span style="font-size:9.5px;font-weight:600;color:var(--p-faint);">/kg</span></span><span style="border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:4px 8px;font-size:10.5px;font-weight:800;">ADD</span></div></div>
                 </div>
                 <div style="background:#fff;border:1px solid var(--p-line);border-radius:16px;overflow:hidden;">
-                  <div class="ph" style="height:96px;font-size:9px;">produce photo</div>
-                  <div style="padding:10px 11px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Baby Carrots</div><div style="font-size:10.5px;color:var(--p-faint);margin-bottom:6px;">✓ 14 km away</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13.5px;font-weight:800;color:var(--p-ink);">₹60<span style="font-size:9.5px;font-weight:600;color:var(--p-faint);">/500g</span></span><span style="border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:4px 8px;font-size:10.5px;font-weight:800;">ADD</span></div></div>
+                  <img class="ph" src="assets/farmfresh/amaranth.webp" alt="Bunch of red amaranth leaves" loading="lazy" decoding="async" style="height:96px;">
+                  <div style="padding:10px 11px;"><div style="font-size:12px;font-weight:700;color:var(--p-ink);min-height:30px;">Red Amaranth</div><div style="font-size:10.5px;color:var(--p-faint);margin-bottom:6px;">✓ 14 km away</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13.5px;font-weight:800;color:var(--p-ink);">₹35<span style="font-size:9.5px;font-weight:600;color:var(--p-faint);">/250g</span></span><span style="border:1.5px solid var(--p-orange);color:var(--p-orange);border-radius:8px;padding:4px 8px;font-size:10.5px;font-weight:800;">ADD</span></div></div>
                 </div>
               </div>
             </div>
@@ -569,7 +574,7 @@
         <div class="screen-row">
           <div class="frame">
             <div class="phone">
-              <div class="ph" style="height:210px;font-size:11px;">product photo</div>
+              <img class="ph" src="assets/farmfresh/tomato-vine.webp" alt="Dew-covered heirloom tomatoes" loading="lazy" decoding="async" style="height:210px;">
               <div style="padding:16px 20px 0;">
                 <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(28,28,28,0.82);color:#fff;font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:8px;margin-bottom:10px;">✓ Harvested 3 hours ago</span>
                 <h4 style="font-size:19px;font-weight:800;color:var(--p-ink);margin:0 0 4px;">Heirloom Tomatoes</h4>
@@ -620,7 +625,7 @@
         <div class="screen-row">
           <div class="frame">
             <div class="phone">
-              <div class="ph" style="height:180px;font-size:10px;">farmer portrait</div>
+              <img class="ph" src="assets/farmfresh/farmer-lakshmi.webp" alt="Lakshmi Devi holding freshly picked tomatoes" loading="lazy" decoding="async" style="height:180px;object-position:38% 30%;">
               <div style="padding:16px 20px 20px;">
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:2px;"><h4 style="font-size:19px;font-weight:800;color:var(--p-ink);margin:0;">Lakshmi Devi</h4><span style="color:var(--p-green);">✓</span></div>
                 <div style="font-size:12.5px;font-weight:600;color:var(--p-faint);margin-bottom:14px;">Green Valley Farms · Devanahalli</div>
@@ -633,7 +638,7 @@
                 <p style="font-size:12px;line-height:1.6;color:var(--p-soft);margin:0 0 14px;">Third-generation farmer growing heirloom tomatoes and leafy greens on 6 acres, using drip irrigation to cut water use by half.</p>
                 <div style="font-size:13.5px;font-weight:800;color:var(--p-ink);margin-bottom:8px;">Farming Methods</div>
                 <div style="display:flex;gap:6px;margin-bottom:16px;"><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;">Organic</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;">No Pesticides</span><span style="background:var(--p-sage);color:var(--p-green);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;">Drip Irrigation</span></div>
-                <div style="display:flex;gap:8px;margin-bottom:16px;"><div class="ph" style="flex:1;height:80px;border-radius:12px;font-size:9px;">farm photo</div><div class="ph" style="flex:1;height:80px;border-radius:12px;font-size:9px;">farm photo</div></div>
+                <div style="display:flex;gap:8px;margin-bottom:16px;"><img class="ph" src="assets/farmfresh/farm-vines.webp" alt="Tomatoes ripening on the vine at Green Valley Farms" loading="lazy" decoding="async" style="flex:1;height:80px;border-radius:12px;"><img class="ph" src="assets/farmfresh/farm-aerial.webp" alt="Aerial view of the farm fields" loading="lazy" decoding="async" style="flex:1;height:80px;border-radius:12px;"></div>
                 <span style="display:block;text-align:center;background:var(--p-ink);color:#fff;border-radius:12px;padding:12px;font-size:13px;font-weight:800;">View This Farm's Journey</span>
               </div>
             </div>
@@ -711,8 +716,8 @@
             <div class="phone">
               <div style="padding:16px 20px 10px;display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--p-surface);"></div><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Your Cart</span></div>
               <div style="padding:6px 20px 0;">
-                <div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line);"><div class="ph" style="width:48px;height:48px;border-radius:10px;font-size:8px;flex-shrink:0;">photo</div><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Heirloom Tomatoes</div><div style="font-size:10.5px;color:var(--p-faint);">Lakshmi Devi</div></div><div style="text-align:right;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">₹170</div><div style="font-size:10px;color:var(--p-faint);">Qty 2</div></div></div>
-                <div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line);"><div class="ph" style="width:48px;height:48px;border-radius:10px;font-size:8px;flex-shrink:0;">photo</div><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Organic Spinach</div><div style="font-size:10.5px;color:var(--p-faint);">Ravi Shankar</div></div><div style="text-align:right;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">₹45</div><div style="font-size:10px;color:var(--p-faint);">Qty 1</div></div></div>
+                <div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line);"><img class="ph" src="assets/farmfresh/tomatoes.webp" alt="Heirloom tomatoes" loading="lazy" decoding="async" style="width:48px;height:48px;border-radius:10px;flex-shrink:0;"><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Heirloom Tomatoes</div><div style="font-size:10.5px;color:var(--p-faint);">Lakshmi Devi</div></div><div style="text-align:right;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">₹170</div><div style="font-size:10px;color:var(--p-faint);">Qty 2</div></div></div>
+                <div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line);"><img class="ph" src="assets/farmfresh/spinach.webp" alt="Organic spinach" loading="lazy" decoding="async" style="width:48px;height:48px;border-radius:10px;flex-shrink:0;"><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Organic Spinach</div><div style="font-size:10.5px;color:var(--p-faint);">Ravi Shankar</div></div><div style="text-align:right;"><div style="font-size:13px;font-weight:800;color:var(--p-ink);">₹45</div><div style="font-size:10px;color:var(--p-faint);">Qty 1</div></div></div>
                 <div style="display:flex;align-items:center;gap:9px;background:var(--p-sage);border-radius:14px;padding:12px 13px;margin:14px 0;"><span style="color:var(--p-green);">🛡</span><span style="font-size:11px;line-height:1.4;color:var(--p-green);font-weight:600;">Freshness Guarantee — free replacement or refund, no questions asked.</span></div>
                 <div style="font-size:12.5px;font-weight:700;color:var(--p-ink);margin-bottom:8px;">Delivery Slot</div>
                 <div style="display:flex;gap:8px;margin-bottom:16px;">
@@ -778,9 +783,9 @@
           <div class="frame">
             <div class="phone">
               <div style="padding:16px 20px 10px;"><span style="font-size:16px;font-weight:800;color:var(--p-ink);">Track Your Order</span><div style="font-size:11.5px;color:var(--p-faint);margin-top:2px;">Order #FF-10482</div></div>
-              <div class="ph" style="height:150px;font-size:10px;">live map view</div>
+              <img class="ph" src="assets/farmfresh/map.webp" alt="Live delivery map" loading="lazy" decoding="async" style="height:150px;">
               <div style="padding:14px 20px 20px;">
-                <div style="display:flex;align-items:center;gap:10px;background:var(--p-surface);border-radius:14px;padding:12px 14px;margin-bottom:14px;"><div class="ph" style="width:42px;height:42px;border-radius:50%;font-size:8px;flex-shrink:0;">photo</div><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Manjunath K.</div><div style="font-size:10.5px;color:var(--p-faint);">Bike · KA-05 AB 1234</div></div><div style="font-size:13px;font-weight:800;color:var(--p-ink);">6:45 PM</div></div>
+                <div style="display:flex;align-items:center;gap:10px;background:var(--p-surface);border-radius:14px;padding:12px 14px;margin-bottom:14px;"><div class="ph ph-icon" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 7.5"/><path d="M5.5 17.5 9 10h6l3.5 7.5"/><path d="M9 10 7.5 6H5"/></svg></div><div style="flex:1;"><div style="font-size:12.5px;font-weight:700;color:var(--p-ink);">Manjunath K.</div><div style="font-size:10.5px;color:var(--p-faint);">Bike · KA-05 AB 1234</div></div><div style="font-size:13px;font-weight:800;color:var(--p-ink);">6:45 PM</div></div>
                 <div style="display:flex;align-items:center;gap:9px;background:var(--p-sage);border-radius:14px;padding:12px 13px;"><span style="color:var(--p-green);">❄</span><span style="font-size:11px;line-height:1.4;color:var(--p-green);font-weight:600;">Packed within 30 minutes of harvest — cold-chain maintained.</span></div>
               </div>
             </div>
