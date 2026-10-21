@@ -75,15 +75,119 @@
   .parallax-blob{position:absolute;border-radius:50%;filter:blur(50px);pointer-events:none;z-index:0;will-change:transform;}
   @media (prefers-reduced-motion: reduce){ .parallax-blob{transition:none;} }
 
-  /* AVATAR STAGE — hero-only 3D render of assets/avatar.glb, true colors, no
-     material or filter effects layered on top. Placeholder figure (plain
-     capsules) is the fallback if the file isn't there yet. */
-  .avatar-stage{
-    position:relative;width:100%;max-width:320px;height:420px;margin:0 auto;
-    cursor:pointer;
+  /* ARTBOARD — hero visual. A live Figma-style frame that acts out the
+     headline: each rotating word gets a scene where scattered fragments snap
+     into a finished product, a collaborator signs off, and a real result from
+     that project lands. One clock drives both the word and the scene. Pure
+     DOM + CSS transitions; the only assets are six ~5 KB webp 3D icons. */
+  .artboard{
+    position:relative;width:100%;max-width:400px;margin:0 auto;
+    --u:1rem; /* type unit; scaled down with the canvas on narrow screens */
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);
+    box-shadow:0 24px 60px rgba(23,23,23,0.08), 0 2px 6px rgba(23,23,23,0.04);
+    overflow:hidden;user-select:none;-webkit-user-select:none;
   }
-  .avatar-stage canvas{width:100%;height:100%;display:block;}
-  @media (max-width:900px){ .avatar-stage{max-width:260px;height:320px;} }
+  .ab-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);
+    font-family:'JetBrains Mono',monospace;font-size:calc(0.7 * var(--u));color:var(--muted);}
+  .ab-dots{display:flex;gap:5px;}
+  .ab-dots i{width:8px;height:8px;border-radius:50%;background:var(--border);}
+  .ab-file{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ab-file b{color:var(--text);font-weight:600;}
+  .ab-live{display:flex;align-items:center;gap:6px;}
+  .ab-live i{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:abPulse 1.6s ease-in-out infinite;}
+  @keyframes abPulse{50%{opacity:.35;}}
+
+  .ab-canvas{
+    position:relative;aspect-ratio:400/340;overflow:hidden;touch-action:none;
+    background-color:#FCFCFB;
+    background-image:radial-gradient(circle, #D3D8DF 1px, transparent 1.2px);
+    background-size:16px 16px;
+  }
+  .ab-p{
+    position:absolute;display:flex;align-items:center;gap:6px;
+    font-family:'Inter',system-ui,sans-serif;font-size:calc(0.7 * var(--u));line-height:1.25;color:var(--text);
+    transition:transform .75s cubic-bezier(.34,1.45,.5,1), opacity .4s ease, box-shadow .25s ease;
+    will-change:transform;cursor:grab;
+  }
+  .ab-p.mess{opacity:.92;box-shadow:0 8px 20px rgba(23,23,23,0.1);}
+  .ab-p.out{opacity:0;transition:transform .35s ease-in, opacity .3s ease-in;}
+  .ab-p.dragging{transition:none;cursor:grabbing;z-index:20;box-shadow:0 14px 30px rgba(23,23,23,0.16);
+    outline:1.5px solid var(--blue);outline-offset:3px;}
+  .ab-p.dragging::after{content:attr(data-size);position:absolute;left:50%;bottom:-24px;transform:translateX(-50%);
+    background:var(--blue);color:#fff;font-family:'JetBrains Mono',monospace;font-size:calc(0.6 * var(--u));padding:2px 6px;border-radius:4px;white-space:nowrap;}
+  .ab-p.snapped{animation:abSnap .5s ease;}
+  @keyframes abSnap{0%{outline:1.5px solid var(--teal);outline-offset:3px;}100%{outline:1.5px solid transparent;outline-offset:6px;}}
+  .ab-p.static{cursor:default;}
+
+  /* piece skins */
+  .sk-node{justify-content:center;background:#fff;border:1px solid var(--border);border-radius:10px;font-weight:600;}
+  .sk-node em{width:7px;height:7px;border-radius:50%;background:var(--c);flex-shrink:0;}
+  .sk-label{font-family:'JetBrains Mono',monospace;font-size:calc(0.62 * var(--u));color:var(--muted);}
+  .sk-title{font-family:'General Sans','Inter',sans-serif;font-weight:700;font-size:calc(0.86 * var(--u));letter-spacing:-0.01em;}
+  .sk-screen{background:#fff;border:1px solid var(--border);border-radius:22px;box-shadow:0 10px 30px rgba(23,23,23,0.06);cursor:default;}
+  .sk-tile{justify-content:center;background:color-mix(in srgb, var(--c) 12%, #fff);border-radius:12px;}
+  .sk-tile img{width:78%;height:auto;pointer-events:none;}
+  .sk-card{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:0 10px;border-radius:12px;
+    background:color-mix(in srgb, var(--c) 14%, #fff);border:1px dashed color-mix(in srgb, var(--c) 55%, transparent);}
+  .sk-card small{font-size:calc(0.6 * var(--u));color:var(--muted);}
+  .sk-bar{border-radius:6px;background:var(--surface);overflow:hidden;}
+  .sk-bar::before{content:'';display:block;height:100%;width:72%;background:var(--c);border-radius:6px;}
+  .sk-btn{justify-content:center;border-radius:100px;background:var(--text);color:var(--bg);font-weight:600;}
+  .sk-btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);}
+  .sk-bub{padding:0 10px;border-radius:14px;background:var(--surface);}
+  .sk-bub.me{justify-content:flex-end;background:var(--text);color:var(--bg);border-bottom-right-radius:4px;}
+  .sk-bub.bot{border-bottom-left-radius:4px;background:color-mix(in srgb, var(--lavender) 14%, #fff);}
+  .sk-chip{justify-content:center;border-radius:100px;border:1px solid color-mix(in srgb, var(--lavender) 50%, var(--border));color:var(--lavender);font-weight:600;font-size:calc(0.62 * var(--u));background:#fff;}
+  .sk-prod{border-radius:10px;background:var(--surface);flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:5px 6px;font-size:calc(0.58 * var(--u));font-weight:600;}
+  .sk-prod::before{content:'';position:absolute;inset:5px 5px 18px;border-radius:7px;background:color-mix(in srgb, var(--c) 30%, #fff);}
+  .sk-input{padding:0 10px;border-radius:100px;border:1px solid var(--border);color:var(--muted);background:#fff;}
+  .sk-sw{border-radius:10px;background:var(--c);align-items:flex-end;padding:4px 5px;font-family:'JetBrains Mono',monospace;font-size:calc(0.52 * var(--u));color:#fff;}
+  .sk-type{flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;padding:0 10px;background:#fff;border:1px solid var(--border);border-radius:12px;}
+  .sk-type b{font-family:'General Sans','Inter',sans-serif;font-size:calc(1.5 * var(--u));letter-spacing:-0.03em;line-height:1;}
+  .sk-type span{font-family:'JetBrains Mono',monospace;font-size:calc(0.55 * var(--u));color:var(--muted);}
+
+  /* connectors (systems scene) */
+  .ab-wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+  .ab-wires path{fill:none;stroke-width:1.6;vector-effect:non-scaling-stroke;transition:stroke-dashoffset .9s ease, opacity .4s ease;}
+  .ab-wires .tidy{stroke:var(--blue);stroke-dasharray:240;stroke-dashoffset:240;}
+  .ab-wires .tangle{stroke:var(--coral);stroke-dasharray:4 4;opacity:.55;}
+  .ab-wires.on .tidy{stroke-dashoffset:0;}
+  .ab-wires.on .tangle{opacity:0;}
+
+  /* cursors, comment, result */
+  .ab-cur{position:absolute;left:0;top:0;z-index:30;pointer-events:none;
+    transition:transform .9s cubic-bezier(.45,.05,.25,1), opacity .3s ease;}
+  .ab-cur svg{display:block;width:16px;height:16px;}
+  .ab-cur span{display:inline-block;margin:-2px 0 0 12px;padding:2px 7px;border-radius:6px;background:var(--c);color:#fff;
+    font-family:'JetBrains Mono',monospace;font-size:calc(0.6 * var(--u));font-weight:600;white-space:nowrap;}
+  .ab-cur.guest{transition:none;opacity:0;}
+  .ab-cur.hide{opacity:0;}
+  .ab-comment{position:absolute;z-index:25;max-width:58%;min-width:calc(7.5 * var(--u));padding:7px 10px;border-radius:12px 12px 12px 3px;
+    background:#fff;border:1px solid var(--border);box-shadow:0 8px 22px rgba(23,23,23,0.1);
+    font-size:calc(0.68 * var(--u));line-height:1.35;opacity:0;transform:translateY(6px) scale(.96);transform-origin:left bottom;
+    transition:opacity .3s ease, transform .4s cubic-bezier(.34,1.45,.5,1);pointer-events:none;}
+  .ab-comment b{display:block;font-family:'JetBrains Mono',monospace;font-size:calc(0.58 * var(--u));color:var(--teal);margin-bottom:2px;}
+  .ab-comment.on{opacity:1;transform:none;}
+  .ab-result{position:absolute;right:12px;bottom:12px;z-index:26;display:inline-flex;align-items:center;gap:6px;
+    padding:7px 12px;border-radius:100px;background:var(--text);color:var(--bg);border:none;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;font-size:calc(0.66 * var(--u));font-weight:600;
+    opacity:0;transform:translateY(10px);transition:opacity .35s ease, transform .45s cubic-bezier(.34,1.45,.5,1), background .2s ease;}
+  .ab-result.on{opacity:1;transform:none;}
+  .ab-result i{width:7px;height:7px;border-radius:50%;background:var(--c);}
+  .ab-result:hover{background:#000;}
+
+  /* scene tabs = story-style progress, mirrors the headline word */
+  .ab-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:10px 14px 4px;}
+  .ab-tab{background:none;border:none;padding:6px 0 2px;cursor:pointer;text-align:left;
+    font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);transition:color .2s ease;}
+  .ab-tab .trk{display:block;height:3px;border-radius:3px;background:var(--surface);overflow:hidden;margin-bottom:6px;}
+  .ab-tab .trk i{display:block;height:100%;width:0;background:var(--c);}
+  .ab-tab.done .trk i{width:100%;}
+  .ab-tab.on{color:var(--text);}
+  .ab-tab:hover{color:var(--text);}
+  .ab-hint{padding:2px 14px 12px;font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);}
+  @media (max-width:900px){ .artboard{max-width:420px;} }
+  @media (hover:none){ .ab-cur.guest{display:none;} }
 
   /* SCROLL PROGRESS — thin gradient bar tracking read position */
   .scroll-progress{position:fixed;top:0;left:0;height:3px;width:100%;z-index:100;
@@ -137,8 +241,11 @@
   @media (max-width:760px){ .nav-burger{display:flex;} }
 
   /* HERO — graph-paper texture, editorial not photographic */
-  .hero{
-    padding:72px 0 60px;position:relative;
+  .hero{padding:72px 0 60px;position:relative;}
+  /* Grid lives on its own layer so the bottom fade only fades the paper,
+     never the hero content (on mobile the visual sits in that fade zone). */
+  .hero::before{
+    content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
     background-image:
       repeating-linear-gradient(0deg, var(--border) 0px, transparent 1px, transparent 42px),
       repeating-linear-gradient(90deg, var(--border) 0px, transparent 1px, transparent 42px);
@@ -146,7 +253,7 @@
     -webkit-mask-image:linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
     mask-image:linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
   }
-  .hero-grid{display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:center;position:relative;z-index:1;}
+  .hero-grid{display:grid;grid-template-columns:1fr 400px;gap:40px;align-items:center;position:relative;z-index:1;}
   @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;} }
   .confetti{position:absolute;border-radius:50%;pointer-events:none;}
   .ghost-mark{
@@ -209,7 +316,7 @@
   .btn:hover{transform:translateY(-2px);opacity:.92;}
   .btn:active{transform:scale(0.96);}
 
-  /* HERO VISUAL — see .avatar-stage below, which sits in-flow in the hero grid. */
+  /* HERO VISUAL — see .artboard above, which sits in-flow in the hero grid. */
 
   /* STATS */
   .stats{
@@ -661,7 +768,327 @@
           <a class="btn btn-secondary" href="mailto:sydnyaneshwari@gmail.com">Get in touch</a>
         </div>
       </div>
-      <div class="avatar-stage reveal" id="avatarStage" aria-hidden="true"></div>
+      <div class="artboard" id="artboard">
+        <div class="ab-bar" aria-hidden="true"><span class="ab-dots"><i></i><i></i><i></i></span><span class="ab-file">dnyaneshwari / <b>policy-journey.fig</b></span><span class="ab-live"><i></i>3 live</span></div>
+        <div class="ab-canvas">
+          <svg class="ab-wires" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div class="ab-cur me" style="--c:var(--blue);" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M1.5 1.5l5 12.5 1.9-5.1 5.1-1.9z" fill="var(--blue)" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg><span>Dnyaneshwari</span></div>
+          <div class="ab-cur pm hide" style="--c:var(--teal);" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M1.5 1.5l5 12.5 1.9-5.1 5.1-1.9z" fill="var(--teal)" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg><span>PM</span></div>
+          <div class="ab-cur guest" style="--c:var(--text);" aria-hidden="true"><span>You</span></div>
+          <div class="ab-comment" aria-hidden="true"></div>
+          <button class="ab-result" type="button"></button>
+        </div>
+        <div class="ab-tabs" role="group" aria-label="Pick a story">
+          <button class="ab-tab" type="button" style="--c:var(--blue);"><span class="trk"><i></i></span>systems</button>
+          <button class="ab-tab" type="button" style="--c:var(--teal);"><span class="trk"><i></i></span>insurance</button>
+          <button class="ab-tab" type="button" style="--c:var(--lavender);"><span class="trk"><i></i></span>AI chat</button>
+          <button class="ab-tab" type="button" style="--c:var(--coral);"><span class="trk"><i></i></span>design sys</button>
+        </div>
+        <div class="ab-hint" aria-hidden="true">Drag any piece. It snaps back.</div>
+      </div>
+      <!-- Runs inline, right here, so the first scene is built before first paint. -->
+      <script>
+  // Hero: headline word rotator + artboard. One clock drives both so the word
+  // on the left and the scene on the right always tell the same story. Each
+  // scene: fragments arrive scattered ("messy"), snap into a finished product
+  // while Dnyaneshwari's cursor works, a collaborator signs off, and a real
+  // result from that project lands as a link. Visitors can drag any piece —
+  // it springs back into its slot. Holds the current scene while hovered or
+  // dragged; pauses entirely off-screen or in a background tab.
+  (function () {
+    const rotatorEl = document.getElementById('rotatorWord');
+    const ab = document.getElementById('artboard');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ICON = 'assets/hero-art/';
+
+    const scenes = [
+      {
+        word: 'complex systems', color: 'var(--blue)', file: 'policy-journey.fig',
+        pieces: [
+          { k: 'sk-title', x: 6, y: 6, w: 60, h: 7, html: 'Policy journey' },
+          { k: 'sk-node', x: 6, y: 22, w: 24, h: 13, c: 'var(--blue)', html: '<em></em>Quote' },
+          { k: 'sk-node', x: 38, y: 22, w: 24, h: 13, c: 'var(--teal)', html: '<em></em>KYC' },
+          { k: 'sk-node', x: 70, y: 22, w: 24, h: 13, c: 'var(--amber)', html: '<em></em>Pay' },
+          { k: 'sk-node', x: 70, y: 52, w: 24, h: 13, c: 'var(--coral)', html: '<em></em>Claim' },
+          { k: 'sk-node', x: 38, y: 52, w: 24, h: 13, c: 'var(--lavender)', html: '<em></em>Review' },
+          { k: 'sk-node', x: 6, y: 52, w: 24, h: 13, c: 'var(--teal)', html: '<em></em>Payout' },
+          { k: 'sk-card', x: 6, y: 74, w: 48, h: 12, c: 'var(--blue)', html: '<b>One journey, end to end</b><small>quote → payout</small>' }
+        ],
+        wires: '<path class="tangle" d="M12 30 C 60 95, 20 5, 82 62 S 30 85, 70 22 S 92 92, 18 66"/>' +
+               '<path class="tidy" d="M30 28.5 H38 M62 28.5 H70 M82 35 V52 M70 58.5 H62 M38 58.5 H30"/>',
+        path: [2, 3, 5],
+        who: 'PM', comment: 'One flow. No dead ends. Ship it.', cx: 58, cy: 70, rest: [16, 42],
+        result: 'Systems, not just screens', href: '#work'
+      },
+      {
+        word: 'insurance flows', color: 'var(--teal)', file: 'rewards-unboxing.fig',
+        pieces: [
+          { k: 'sk-screen static', x: 24, y: 4, w: 52, h: 86, html: '', fixed: true },
+          { k: 'sk-title', x: 29, y: 10, w: 42, h: 7, html: 'Your rewards' },
+          { k: 'sk-label', x: 29, y: 17, w: 42, h: 5, html: 'Pick a policy to unbox' },
+          { k: 'sk-tile', x: 29, y: 25, w: 12.5, h: 15, c: 'var(--amber)', html: '<img src="' + ICON + 'motor-insurance.webp" alt="">' },
+          { k: 'sk-tile', x: 43.75, y: 25, w: 12.5, h: 15, c: 'var(--coral)', html: '<img src="' + ICON + 'health-insurance.webp" alt="">' },
+          { k: 'sk-tile', x: 58.5, y: 25, w: 12.5, h: 15, c: 'var(--blue)', html: '<img src="' + ICON + 'travel-insurance.webp" alt="">' },
+          { k: 'sk-card', x: 29, y: 44, w: 42, h: 14, c: 'var(--teal)', html: '<b>₹500 off</b><small>Motor renewal reward</small>' },
+          { k: 'sk-bar', x: 29, y: 62, w: 42, h: 3, c: 'var(--teal)', html: '' },
+          { k: 'sk-btn', x: 29, y: 70, w: 42, h: 10, html: 'Unbox reward' }
+        ],
+        path: [3, 6, 8],
+        who: 'PM', comment: 'Redemptions are climbing.', cx: 72, cy: 20, cw: 26, rest: [12, 62],
+        result: '+6.5% offer redemption', href: 'case-study-rewards-fab.html'
+      },
+      {
+        word: 'AI chatbots', color: 'var(--lavender)', file: 'shopping-assistant.fig',
+        pieces: [
+          { k: 'sk-screen static', x: 24, y: 4, w: 52, h: 86, html: '', fixed: true },
+          { k: 'sk-label', x: 29, y: 9, w: 42, h: 6, html: '✦ AI assistant' },
+          { k: 'sk-bub me', x: 41, y: 17, w: 30, h: 9, html: 'Gift under ₹2k?' },
+          { k: 'sk-bub bot', x: 29, y: 29, w: 38, h: 9, html: 'Here are 3 picks ✦' },
+          { k: 'sk-prod', x: 29, y: 41, w: 13, h: 17, c: 'var(--amber)', html: 'Mug' },
+          { k: 'sk-prod', x: 43.5, y: 41, w: 13, h: 17, c: 'var(--teal)', html: 'Lamp' },
+          { k: 'sk-prod', x: 58, y: 41, w: 13, h: 17, c: 'var(--coral)', html: 'Tote' },
+          { k: 'sk-chip', x: 29, y: 62, w: 20, h: 7, html: 'Add to cart' },
+          { k: 'sk-chip', x: 51, y: 62, w: 20, h: 7, html: 'More like this' },
+          { k: 'sk-input', x: 29, y: 75, w: 42, h: 8, html: 'Ask anything…' }
+        ],
+        path: [2, 5, 7],
+        who: 'PM', comment: 'Way fewer taps to checkout.', cx: 72, cy: 22, cw: 26, rest: [12, 70],
+        result: '−60% click paths', action: 'ai'
+      },
+      {
+        word: 'design systems', color: 'var(--coral)', file: 'design-tokens.fig',
+        pieces: [
+          { k: 'sk-title', x: 6, y: 6, w: 50, h: 7, html: 'Design tokens' },
+          { k: 'sk-label', x: 66, y: 7, w: 28, h: 5, html: 'v2.3 · synced' },
+          { k: 'sk-sw', x: 6, y: 17, w: 16, h: 17, c: 'var(--blue)', html: 'blue' },
+          { k: 'sk-sw', x: 24, y: 17, w: 16, h: 17, c: 'var(--teal)', html: 'teal' },
+          { k: 'sk-sw', x: 42, y: 17, w: 16, h: 17, c: 'var(--amber)', html: 'amber' },
+          { k: 'sk-sw', x: 60, y: 17, w: 16, h: 17, c: 'var(--lavender)', html: 'lavender' },
+          { k: 'sk-sw', x: 78, y: 17, w: 16, h: 17, c: 'var(--coral)', html: 'coral' },
+          { k: 'sk-type', x: 6, y: 40, w: 40, h: 24, html: '<b>Aa</b><span>General Sans · 700</span><span>Inter · 400</span>' },
+          { k: 'sk-btn', x: 50, y: 40, w: 20, h: 10, html: 'Primary' },
+          { k: 'sk-btn ghost', x: 72, y: 40, w: 22, h: 10, html: 'Secondary' },
+          { k: 'sk-tile', x: 50, y: 53, w: 13, h: 15, c: 'var(--amber)', html: '<img src="' + ICON + 'wallet.webp" alt="">' },
+          { k: 'sk-tile', x: 65.5, y: 53, w: 13, h: 15, c: 'var(--teal)', html: '<img src="' + ICON + 'money-coin.webp" alt="">' },
+          { k: 'sk-tile', x: 81, y: 53, w: 13, h: 15, c: 'var(--blue)', html: '<img src="' + ICON + 'support.webp" alt="">' },
+          { k: 'sk-card', x: 6, y: 70, w: 48, h: 12, c: 'var(--coral)', html: '<b>Parametric 3D icons</b><small>generated from one JSON spec</small>' }
+        ],
+        path: [3, 7, 11],
+        who: 'Dev', comment: 'Tokens synced to code.', cx: 58, cy: 70, cw: 38, rest: [36, 12],
+        result: '600% faster 3D production', href: 'case-study-3d-visual-language.html'
+      }
+    ];
+
+    // Headline word swap — same subtle rotateX flip as before.
+    function setWord(i, animate) {
+      if (!rotatorEl) return;
+      const apply = () => {
+        rotatorEl.textContent = scenes[i].word;
+        rotatorEl.style.color = scenes[i].color;
+        rotatorEl.classList.remove('swap');
+      };
+      if (!animate) { apply(); return; }
+      rotatorEl.classList.add('swap');
+      setTimeout(apply, 380);
+    }
+
+    // No artboard on the page: keep the plain word rotator.
+    if (!ab) {
+      if (rotatorEl && !reduceMotion) {
+        let wi = 0;
+        setInterval(() => { wi = (wi + 1) % scenes.length; setWord(wi, true); }, 2400);
+      }
+      return;
+    }
+
+    const canvas = ab.querySelector('.ab-canvas');
+    const wires = ab.querySelector('.ab-wires');
+    const curMe = ab.querySelector('.ab-cur.me');
+    const curPm = ab.querySelector('.ab-cur.pm');
+    const curGuest = ab.querySelector('.ab-cur.guest');
+    const comment = ab.querySelector('.ab-comment');
+    const result = ab.querySelector('.ab-result');
+    const fileEl = ab.querySelector('.ab-file b');
+    const tabs = Array.from(ab.querySelectorAll('.ab-tab'));
+    const SCENE_MS = 4200;
+
+    // Warm the icon cache so scene 2 never pops in.
+    ['motor-insurance', 'health-insurance', 'travel-insurance', 'wallet', 'money-coin', 'support']
+      .forEach((n) => { const im = new Image(); im.src = ICON + n + '.webp'; });
+
+    let idx = 0, t = 0, fired = 0, els = [], hovering = false, dragging = null, onScreen = true;
+
+    const size = () => canvas.getBoundingClientRect();
+    const rand = (a, b) => a + Math.random() * (b - a);
+
+    function moveCursor(el, xPct, yPct) {
+      const r = size();
+      el.style.transform = 'translate(' + (xPct / 100) * r.width + 'px,' + (yPct / 100) * r.height + 'px)';
+    }
+    function pieceCenter(p) { return [p.x + p.w * 0.6, p.y + p.h * 0.6]; }
+
+    function mount(i, animateWord) {
+      const s = scenes[i];
+      idx = i; t = 0; fired = 0;
+      setWord(i, animateWord);
+      fileEl.textContent = s.file;
+      tabs.forEach((tb, n) => {
+        tb.classList.toggle('on', n === i);
+        tb.classList.toggle('done', n < i);
+        tb.setAttribute('aria-pressed', n === i ? 'true' : 'false');
+        tb.querySelector('i').style.width = n < i ? '100%' : '0';
+      });
+
+      // Old pieces fly off, new ones arrive scattered.
+      els.forEach((el) => {
+        el.classList.add('out');
+        el.style.transform = 'translate(' + rand(-30, 30) + 'px,' + rand(10, 40) + 'px) rotate(' + rand(-20, 20) + 'deg) scale(.9)';
+        setTimeout(() => el.remove(), 380);
+      });
+      const r = size();
+      els = s.pieces.map((p) => {
+        const el = document.createElement('div');
+        el.className = 'ab-p ' + p.k + (reduceMotion || p.fixed ? '' : ' mess');
+        el.setAttribute('aria-hidden', 'true');
+        el.style.cssText = 'left:' + p.x + '%;top:' + p.y + '%;width:' + p.w + '%;height:' + p.h + '%;' + (p.c ? '--c:' + p.c + ';' : '');
+        el.innerHTML = p.html;
+        el.dataset.size = 'W ' + Math.round((p.w / 100) * 400) + '  H ' + Math.round((p.h / 100) * 340);
+        if (!reduceMotion && !p.fixed) {
+          // Scatter to a random spot inside the canvas, tilted.
+          const tx = rand(8, 92 - p.w), ty = rand(8, 88 - p.h);
+          el.style.transform = 'translate(' + ((tx - p.x) / 100) * r.width + 'px,' + ((ty - p.y) / 100) * r.height + 'px) rotate(' + rand(-28, 28) + 'deg)';
+        }
+        canvas.insertBefore(el, wires);
+        return el;
+      });
+
+      wires.innerHTML = s.wires || '';
+      wires.classList.toggle('on', !!reduceMotion);
+      comment.classList.remove('on');
+      result.classList.remove('on');
+      curPm.classList.add('hide');
+      moveCursor(curPm, 104, 30);
+      if (reduceMotion) finish(true);
+    }
+
+    // Timeline per scene (ms from scene start).
+    const steps = [
+      [300, () => {
+        els.forEach((el, n) => {
+          if (!el.classList.contains('mess')) return;
+          setTimeout(() => { el.style.transform = ''; el.classList.remove('mess'); }, n * 55);
+        });
+        moveCursor(curMe, ...pieceCenter(scenes[idx].pieces[scenes[idx].path[0]]));
+      }],
+      [950, () => moveCursor(curMe, ...pieceCenter(scenes[idx].pieces[scenes[idx].path[1]]))],
+      [1500, () => { moveCursor(curMe, ...pieceCenter(scenes[idx].pieces[scenes[idx].path[2]])); wires.classList.add('on'); }],
+      [1900, () => {
+        const s = scenes[idx];
+        curPm.querySelector('span').textContent = s.who;
+        curPm.classList.remove('hide');
+        moveCursor(curMe, ...s.rest); // step aside so the two name tags never collide
+        moveCursor(curPm, s.cx - 3, s.cy - 6);
+      }],
+      [2500, () => finish(false)],
+      // Clear the sign-off just before the next scene so it never overlaps it.
+      [SCENE_MS - 350, () => {
+        if (hovering || dragging) return false; // held — retry next frame
+        comment.classList.remove('on'); result.classList.remove('on'); curPm.classList.add('hide');
+      }]
+    ];
+
+    function finish(instant) {
+      const s = scenes[idx];
+      comment.style.left = s.cx + '%';
+      comment.style.top = s.cy + '%';
+      comment.style.maxWidth = (s.cw || 40) + '%';
+      comment.innerHTML = '<b>' + s.who + '</b>' + s.comment;
+      comment.classList.add('on');
+      result.style.setProperty('--c', s.color);
+      result.innerHTML = '<i></i>' + s.result + ' →';
+      result.classList.add('on');
+      if (instant) { curPm.classList.add('hide'); }
+    }
+
+    // Clock — advances only while visible and not hovered/dragged.
+    let last = performance.now();
+    function tick(now) {
+      const dt = now - last; last = now;
+      if (!reduceMotion && onScreen && !document.hidden) {
+        t += dt;
+        while (fired < steps.length && t >= steps[fired][0]) {
+          if (steps[fired][1]() === false) break;
+          fired++;
+        }
+        tabs[idx].querySelector('i').style.width = Math.min(100, (t / SCENE_MS) * 100) + '%';
+        // Hovering or dragging holds the finished scene instead of advancing.
+        if (t >= SCENE_MS && !hovering && !dragging) mount((idx + 1) % scenes.length, true);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    tabs.forEach((tb, n) => tb.addEventListener('click', () => {
+      mount(n, true);
+      if (!reduceMotion) { t = 0; fired = 0; }
+    }));
+
+    result.addEventListener('click', () => {
+      const s = scenes[idx];
+      if (s.action === 'ai') {
+        const modal = document.getElementById('skillsModal');
+        if (modal) { modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      } else if (s.href) {
+        window.location.href = s.href;
+      }
+    });
+
+    // Visitor joins the file: a "You" tag follows their pointer.
+    canvas.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { hovering = true; curGuest.style.opacity = '1'; } });
+    canvas.addEventListener('pointerleave', () => { hovering = false; curGuest.style.opacity = '0'; });
+    canvas.addEventListener('pointermove', (e) => {
+      const r = size();
+      curGuest.style.transform = 'translate(' + (e.clientX - r.left) + 'px,' + (e.clientY - r.top) + 'px)';
+      if (!dragging) return;
+      const dx = e.clientX - dragging.sx, dy = e.clientY - dragging.sy;
+      const tilt = Math.max(-10, Math.min(10, (e.clientX - dragging.lx) * 0.6));
+      dragging.lx = e.clientX;
+      dragging.el.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(' + tilt + 'deg)';
+    });
+
+    // Drag any snapped piece; on release it springs back into its slot.
+    canvas.addEventListener('pointerdown', (e) => {
+      const el = e.target.closest('.ab-p');
+      if (!el || el.classList.contains('static') || el.classList.contains('mess') || el.classList.contains('out')) return;
+      e.preventDefault();
+      try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* synthetic events */ }
+      el.classList.remove('snapped');
+      el.classList.add('dragging');
+      dragging = { el, sx: e.clientX, sy: e.clientY, lx: e.clientX };
+    });
+    const drop = () => {
+      if (!dragging) return;
+      const el = dragging.el;
+      el.classList.remove('dragging');
+      el.style.transform = '';
+      void el.offsetWidth;
+      el.classList.add('snapped');
+      dragging = null;
+    };
+    canvas.addEventListener('pointerup', drop);
+    canvas.addEventListener('pointercancel', drop);
+
+    new IntersectionObserver((en) => { onScreen = en[0].isIntersecting; }).observe(ab);
+
+    // Scale piece type with the canvas (designed at 400px wide).
+    const fit = () => ab.style.setProperty('--u', Math.min(1, size().width / 400) * 16 + 'px');
+    fit();
+    window.addEventListener('resize', fit);
+
+    moveCursor(curMe, 86, 88);
+    mount(0, false);
+    requestAnimationFrame(tick);
+  })();
+      </script>
     </div>
 
     <!-- <div class="stats reveal-group">
@@ -996,7 +1423,7 @@
   </div>
 </footer>
 
-<!-- AI toolkit modal — opened by clicking the hero avatar -->
+<!-- AI toolkit modal — opened from the hero artboard's AI chat result chip -->
 <div class="modal-overlay" id="skillsModal">
   <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="skillsModalTitle">
     <button class="modal-close" id="skillsModalClose" aria-label="Close">×</button>
@@ -1026,33 +1453,6 @@
 </div>
 
 <script>
-  // Word rotator — subtle 3D flip (rotateX) swap, loops forever. Disclosed,
-  // deliberate exception to the "no continuous looping" rule: idiomatic for
-  // a rotating hero headline, not decorative noise.
-  const rotatorEl = document.getElementById('rotatorWord');
-  if (rotatorEl) {
-    const words = [
-      { text: 'complex systems', color: 'var(--blue)' },
-      { text: 'insurance flows', color: 'var(--teal)' },
-      { text: 'AI chatbots', color: 'var(--lavender)' },
-      { text: 'design systems', color: 'var(--coral)' }
-    ];
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      rotatorEl.textContent = words[0].text;
-      rotatorEl.style.color = words[0].color;
-    } else {
-      let wi = 0;
-      setInterval(() => {
-        rotatorEl.classList.add('swap');
-        setTimeout(() => {
-          wi = (wi + 1) % words.length;
-          rotatorEl.textContent = words[wi].text;
-          rotatorEl.style.color = words[wi].color;
-          rotatorEl.classList.remove('swap');
-        }, 380);
-      }, 2400);
-    }
-  }
 
   // Generic overlay (drawer/modal) wiring — open trigger(s), close trigger(s), backdrop click, Escape
   function wireOverlay(overlayId, openTriggers, closeTriggers) {
@@ -1106,8 +1506,8 @@
   }
 
   // AI toolkit modal — the close button and Escape/backdrop handling live here;
-  // the open trigger is the hero avatar (see the module script below, which
-  // toggles the same #skillsModal element directly).
+  // the open trigger is the hero artboard's AI chat result chip (see the hero
+  // script above, which toggles the same #skillsModal element directly).
   const skillsModal = wireOverlay('skillsModal', [], [document.getElementById('skillsModalClose')]);
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1243,172 +1643,6 @@
     }
     updateParallax();
     window.addEventListener('scroll', updateParallax, { passive: true });
-  }
-</script>
-
-<!--
-  3D avatar, hero-only. Renders assets/avatar.glb exactly as exported — no
-  material, color, or filter changes — with its own baked animation clip
-  ("avaturn_animation") playing on loop via AnimationMixer. Camera is
-  auto-framed to the model's real bounding box (verified against a plain
-  debug viewer first, not guessed). Placeholder figure (primitive capsules,
-  not a likeness) is the fallback if the file is ever missing.
--->
-<script type="importmap">
-{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
-</script>
-<script type="module">
-  import * as THREE from 'three';
-  import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
-
-  const stage = document.getElementById('avatarStage');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (stage) {
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(35, stage.clientWidth / stage.clientHeight, 0.1, 100);
-    camera.position.set(0, 0.9, 3.6); // placeholder framing; re-aimed at the real model's bounding box once it loads
-
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(stage.clientWidth, stage.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    stage.appendChild(renderer.domElement);
-
-    // Neutral lighting — true colors, no color-cast tinting the model
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x666666, 2.2));
-    const key = new THREE.DirectionalLight(0xffffff, 1.8);
-    key.position.set(2, 3, 4);
-    scene.add(key);
-
-    function placeholderMat(opacity) {
-      return new THREE.MeshStandardMaterial({ color: 0xb8c4d9, transparent: true, opacity, roughness: 0.6 });
-    }
-    function wireMat() {
-      return new THREE.MeshBasicMaterial({ color: 0x9fc0ff, wireframe: true, transparent: true, opacity: 0.3 });
-    }
-
-    // Placeholder figure — primitive capsules standing in for the real avatar
-    const figure = new THREE.Group();
-
-    const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.34, 0.75, 6, 12), placeholderMat(0.5));
-    torso.position.y = 0.55; figure.add(torso);
-    const torsoWire = new THREE.Mesh(torso.geometry, wireMat()); torsoWire.position.copy(torso.position); figure.add(torsoWire);
-
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.26, 20, 20), placeholderMat(0.6));
-    head.position.y = 1.28; figure.add(head);
-    const headWire = new THREE.Mesh(head.geometry, wireMat()); headWire.position.copy(head.position); figure.add(headWire);
-
-    const hips = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.3, 6, 12), placeholderMat(0.45));
-    hips.position.y = 0.05; figure.add(hips);
-
-    function makeArm(side) {
-      const pivot = new THREE.Group();
-      pivot.position.set(side * 0.4, 0.9, 0);
-      const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.09, 0.62, 4, 10), placeholderMat(0.5));
-      arm.position.set(0, -0.34, 0);
-      pivot.add(arm);
-      const armWire = new THREE.Mesh(arm.geometry, wireMat()); armWire.position.copy(arm.position); pivot.add(armWire);
-      figure.add(pivot);
-      return pivot;
-    }
-    const armL = makeArm(-1);
-    const armR = makeArm(1);
-
-    const legGeo = new THREE.CapsuleGeometry(0.12, 0.6, 4, 10);
-    const legL = new THREE.Mesh(legGeo, placeholderMat(0.4)); legL.position.set(-0.15, -0.55, 0); figure.add(legL);
-    const legR = new THREE.Mesh(legGeo, placeholderMat(0.4)); legR.position.set(0.15, -0.55, 0); figure.add(legR);
-
-    figure.scale.setScalar(1.15);
-    scene.add(figure);
-
-    // Clicking the avatar opens the AI toolkit modal — same #skillsModal the rest
-    // of the page uses; this script can't reach that other <script>'s closures
-    // (different scope), so it toggles the shared DOM element directly. The
-    // existing close/backdrop/Escape handlers still work regardless of who
-    // opened it, since they just watch for the 'open' class.
-    stage.addEventListener('click', () => {
-      const modal = document.getElementById('skillsModal');
-      if (modal) { modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
-    });
-
-    const clock = new THREE.Clock();
-    let mixer = null; // set once assets/avatar.glb's baked clip loads
-    let elapsed = 0; // own accumulator — Clock.getElapsedTime() calls getDelta()
-                      // internally, so calling both per frame starves the second
-                      // call to ~0 and silently freezes the mixer. Call getDelta()
-                      // exactly once per frame and derive elapsed time from that.
-
-    function animate() {
-      requestAnimationFrame(animate);
-      const delta = clock.getDelta();
-      elapsed += delta;
-      const t = elapsed;
-
-      if (mixer) {
-        if (!reduceMotion) mixer.update(delta);
-      } else if (!reduceMotion) {
-        // Placeholder-only idle motion; once the real clip is playing it's
-        // driving the whole figure, so this branch stops applying then.
-        armL.rotation.set(0.1, 0, 0.15);
-        armR.rotation.set(0.1, 0, -0.15);
-        figure.rotation.y = Math.sin(t * 0.4) * 0.1;
-        figure.position.y = Math.sin(t * 0.9) * 0.05;
-      }
-
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = stage.clientWidth / stage.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(stage.clientWidth, stage.clientHeight);
-    });
-
-    // Swap in the real avatar the moment it exists. Stays on the placeholder
-    // (silently) if assets/avatar.glb hasn't been added yet. No material or
-    // color changes — this renders exactly what's in the file, at its own
-    // scale and position; only the camera moves.
-    new GLTFLoader().load('assets/avatar.glb', (gltf) => {
-      scene.remove(figure);
-      const model = gltf.scene;
-      scene.add(model);
-
-      let clip = null;
-      if (gltf.animations && gltf.animations.length) {
-        clip = gltf.animations.find((a) => /idle/i.test(a.name)) || gltf.animations[0];
-      }
-
-      // Frame the camera to the FULL range of motion, not just the resting
-      // bind pose — a single-frame bounding box was too tight for the dance's
-      // wider swings and let her step out of frame mid-loop. Scrub the whole
-      // clip first, union every sampled frame's bounding box, then frame that.
-      const unionBox = new THREE.Box3().setFromObject(model, true);
-      if (clip) {
-        const sampleMixer = new THREE.AnimationMixer(model);
-        const action = sampleMixer.clipAction(clip);
-        action.play();
-        const samples = 40;
-        for (let i = 0; i <= samples; i++) {
-          sampleMixer.setTime((clip.duration * i) / samples);
-          unionBox.union(new THREE.Box3().setFromObject(model, true));
-        }
-        sampleMixer.stopAllAction();
-        sampleMixer.uncacheAction(clip, model);
-      }
-      const size = unionBox.getSize(new THREE.Vector3());
-      const center = unionBox.getCenter(new THREE.Vector3());
-      const maxDim = Math.max(size.x, size.y, size.z);
-      camera.position.set(center.x, center.y, center.z + maxDim * 1.5);
-      camera.lookAt(center);
-
-      // Now play the clip for real — the full thing, looping.
-      if (clip) {
-        mixer = new THREE.AnimationMixer(model);
-        mixer.clipAction(clip).play();
-        if (reduceMotion) mixer.update(0); // paint the first frame only, then stay still
-      }
-    }, undefined, () => { /* no avatar.glb yet — placeholder figure stays */ });
   }
 </script>
 </body>
