@@ -106,7 +106,7 @@
   .ab-p{
     position:absolute;display:flex;align-items:center;gap:6px;
     font-family:'Inter',system-ui,sans-serif;font-size:calc(0.7 * var(--u));line-height:1.25;color:var(--text);
-    transition:transform .75s cubic-bezier(.34,1.45,.5,1), opacity .4s ease, box-shadow .25s ease;
+    transition:transform .6s cubic-bezier(.34,1.45,.5,1), opacity .35s ease, box-shadow .25s ease;
     will-change:transform;cursor:grab;
   }
   .ab-p.mess{opacity:.92;box-shadow:0 8px 20px rgba(23,23,23,0.1);}
@@ -156,7 +156,7 @@
 
   /* cursors, comment, result */
   .ab-cur{position:absolute;left:0;top:0;z-index:30;pointer-events:none;
-    transition:transform .9s cubic-bezier(.45,.05,.25,1), opacity .3s ease;}
+    transition:transform .6s cubic-bezier(.45,.05,.25,1), opacity .3s ease;}
   .ab-cur svg{display:block;width:16px;height:16px;}
   .ab-cur span{display:inline-block;margin:-2px 0 0 12px;padding:2px 7px;border-radius:6px;background:var(--c);color:#fff;
     font-family:'JetBrains Mono',monospace;font-size:calc(0.6 * var(--u));font-weight:600;white-space:nowrap;}
@@ -910,7 +910,7 @@
     const result = ab.querySelector('.ab-result');
     const fileEl = ab.querySelector('.ab-file b');
     const tabs = Array.from(ab.querySelectorAll('.ab-tab'));
-    const SCENE_MS = 4200;
+    const SCENE_MS = 3000; // time each headline word + scene stays up
 
     // Warm the icon cache so scene 2 never pops in.
     ['motor-insurance', 'health-insurance', 'travel-insurance', 'wallet', 'money-coin', 'support']
@@ -973,25 +973,25 @@
 
     // Timeline per scene (ms from scene start).
     const steps = [
-      [300, () => {
+      [150, () => {
         els.forEach((el, n) => {
           if (!el.classList.contains('mess')) return;
-          setTimeout(() => { el.style.transform = ''; el.classList.remove('mess'); }, n * 55);
+          setTimeout(() => { el.style.transform = ''; el.classList.remove('mess'); }, n * 40);
         });
         moveCursor(curMe, ...pieceCenter(scenes[idx].pieces[scenes[idx].path[0]]));
       }],
-      [950, () => moveCursor(curMe, ...pieceCenter(scenes[idx].pieces[scenes[idx].path[1]]))],
-      [1500, () => { moveCursor(curMe, ...pieceCenter(scenes[idx].pieces[scenes[idx].path[2]])); wires.classList.add('on'); }],
-      [1900, () => {
+      [550, () => moveCursor(curMe, ...pieceCenter(scenes[idx].pieces[scenes[idx].path[1]]))],
+      [950, () => { moveCursor(curMe, ...pieceCenter(scenes[idx].pieces[scenes[idx].path[2]])); wires.classList.add('on'); }],
+      [1200, () => {
         const s = scenes[idx];
         curPm.querySelector('span').textContent = s.who;
         curPm.classList.remove('hide');
         moveCursor(curMe, ...s.rest); // step aside so the two name tags never collide
         moveCursor(curPm, s.cx - 3, s.cy - 6);
       }],
-      [2500, () => finish(false)],
+      [1600, () => finish(false)],
       // Clear the sign-off just before the next scene so it never overlaps it.
-      [SCENE_MS - 350, () => {
+      [SCENE_MS - 300, () => {
         if (hovering || dragging) return false; // held — retry next frame
         comment.classList.remove('on'); result.classList.remove('on'); curPm.classList.add('hide');
       }]
