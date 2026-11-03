@@ -289,15 +289,24 @@
 
   .hero h1{
     font-family:'General Sans',sans-serif;
-    font-size:clamp(2.4rem,6vw,4.2rem);
-    font-weight:700;letter-spacing:-0.03em;line-height:1.04;
-    max-width:660px;perspective:600px;
+    font-size:clamp(2.4rem,5.2vw,4rem);
+    font-weight:600;letter-spacing:-0.035em;line-height:1.04;
+    max-width:720px;perspective:600px;text-wrap:balance;
+  }
+  /* small phones: keep the longest rotator word inside the gutter */
+  @media (max-width:360px){ .hero h1{font-size:2.1rem;} }
+  /* greeting on its own line, one even weight so it reads as a single phrase */
+  .hero h1 .hi{
+    display:block;font-size:0.5em;font-weight:500;letter-spacing:-0.02em;
+    margin-bottom:0.3em;
   }
   .accent-word{
-    display:inline-block;color:var(--blue);transform-style:preserve-3d;
+    /* own line + no wrap: swapping words never reflows the headline */
+    display:block;width:max-content;white-space:nowrap;color:var(--blue);transform-style:preserve-3d;
     transition:opacity .4s cubic-bezier(.2,.6,.2,1), transform .4s cubic-bezier(.2,.6,.2,1);
   }
   .accent-word.swap{opacity:0;transform:rotateX(-90deg) translateY(6px);}
+
   @media (prefers-reduced-motion: reduce){
     .accent-word{transition:none;}
   }
@@ -761,7 +770,7 @@
           <span class="sticker"><i></i>User Experience</span>
           <span class="sticker"><i></i>AI Design</span>
         </div>
-        <h1>Hi, I'm Dnyaneshwari. I turn messy <span class="accent-word" id="rotatorWord">complex systems</span> into products people trust.</h1>
+        <h1><span class="hi">Hi, I'm Dnyaneshwari.</span> I turn messy <span class="accent-word" id="rotatorWord">complex systems</span> into products people trust.</h1>
         <p class="sub">Senior Associate Designer at Digit Insurance, Bengaluru — designing systems, not just screens.</p>
         <div class="actions">
           <a class="btn btn-primary" href="#work">View Work →</a>
